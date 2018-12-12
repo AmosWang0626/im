@@ -25,11 +25,10 @@ apply plugin: 'com.palantir.docker'
 
 // step.3
 bootJar {
-    baseName = 'comm'
+    baseName = 'im'
     version = '1.0.0'
 }
 
-// group = 'com.amos'
 group = 'amos'
 version = '1.0.0'
 
@@ -53,7 +52,8 @@ dependencies {
 // step.4
 docker {
     dependsOn build as Task
-    name "${project.group}/${bootJar.baseName}:${bootJar.version}"
+    // name "${project.group}/${bootJar.baseName}:${bootJar.version}"
+    name "${bootJar.baseName}:${bootJar.version}"
     files bootJar.archivePath
     buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
