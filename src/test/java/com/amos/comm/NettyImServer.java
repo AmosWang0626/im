@@ -54,7 +54,7 @@ public class NettyImServer {
                             }
 
                             @Override
-                            public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+                            public void channelActive(ChannelHandlerContext ctx) throws Exception {
                                 System.out.println(new Date() + "：有新的 Client 客户端注册进来，通知一下吧……");
                                 ByteBuf byteBuf = ctx.alloc().buffer();
                                 byteBuf.writeBytes("欢迎加入 AMOS 服务器!!! ".getBytes(StandardCharsets.UTF_8));

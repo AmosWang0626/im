@@ -40,6 +40,7 @@ public class NettyImClient {
                             @Override
                             public void channelActive(ChannelHandlerContext ctx) throws Exception {
                                 System.out.println(new Date() + "：Client 客户端发送数据……");
+                                // 获取一个ByteBuf内存管理器
                                 ByteBuf byteBuf = ctx.alloc().buffer();
                                 byteBuf.writeBytes("HELLO, AMOS SERVER".getBytes(StandardCharsets.UTF_8));
                                 ctx.channel().writeAndFlush(byteBuf);
