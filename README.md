@@ -3,7 +3,6 @@
 > - Netty Gradle Docker
 
 ## build docker image
-
 - gradlew build docker
 - docker run -d -p 8080:8080 --name im im
 
@@ -24,3 +23,7 @@
 - 互发心跳
   - 服务器给客户端发送心跳：监测客户端是否下线
   - 客户端给服务器发送心跳：监测网络是否连接正常
+
+## 注
+- 序列化是方便通讯传输
+- 编码/解码则是方便程序处理
