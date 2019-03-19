@@ -1,4 +1,4 @@
-package com.amos.comm;
+package com.amos.comm.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
