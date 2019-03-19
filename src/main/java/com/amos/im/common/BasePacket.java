@@ -1,7 +1,5 @@
 package com.amos.im.common;
 
-import lombok.Data;
-
 /**
  * PROJECT: im
  * DESCRIPTION: note

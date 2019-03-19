@@ -13,13 +13,13 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class LoginPacket extends BasePacket {
+public class LoginRequest extends BasePacket {
 
-    private Long userId;
-
-    private String username;
+    private String phoneNo;
 
     private String password;
+
+    private String verifyCode;
 
     @Override
     public Byte getCommand() {
