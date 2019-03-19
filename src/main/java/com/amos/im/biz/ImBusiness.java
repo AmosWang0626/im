@@ -7,5 +7,5 @@ package com.amos.im.biz;
  * @author Daoyuan
  * @date 2018/9/29
  */
-public interface CommBusiness {
+public interface ImBusiness {
 }

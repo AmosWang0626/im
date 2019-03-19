@@ -47,6 +47,8 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     compile group: 'io.netty', name: 'netty-all', version: '4.1.15.Final'
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.56'
+    compile group: 'com.caucho', name: 'hessian', version: '4.0.60'
 }
 
 // step.4

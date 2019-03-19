@@ -1,6 +1,6 @@
 package com.amos.im.controller;
 
-import com.amos.im.biz.CommBusiness;
+import com.amos.im.biz.ImBusiness;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -13,10 +13,10 @@ import javax.annotation.Resource;
  * @date 2018/9/29
  */
 @RestController
-public class CommController {
+public class ImController {
 
     @Resource
-    private CommBusiness commBusiness;
+    private ImBusiness imBusiness;
 
 
 }

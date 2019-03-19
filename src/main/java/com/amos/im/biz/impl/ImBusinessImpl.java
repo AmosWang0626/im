@@ -1,6 +1,6 @@
 package com.amos.im.biz.impl;
 
-import com.amos.im.biz.CommBusiness;
+import com.amos.im.biz.ImBusiness;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
  * @author Daoyuan
  * @date 2018/9/29
  */
-@Service("commBusiness")
-public class CommBusinessImpl implements CommBusiness {
+@Service("imBusiness")
+public class ImBusinessImpl implements ImBusiness {
 }
