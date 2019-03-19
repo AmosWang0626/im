@@ -1,4 +1,4 @@
-package com.amos.comm.biz;
+package com.amos.im.biz;
 
 /**
  * PROJECT: communication

@@ -1,4 +1,4 @@
-package com.amos.comm;
+package com.amos.im;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

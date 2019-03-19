@@ -1,6 +1,6 @@
-package com.amos.comm.controller;
+package com.amos.im.controller;
 
-import com.amos.comm.biz.CommBusiness;
+import com.amos.im.biz.CommBusiness;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;

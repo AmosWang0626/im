@@ -1,6 +1,6 @@
-package com.amos.comm.biz.impl;
+package com.amos.im.biz.impl;
 
-import com.amos.comm.biz.CommBusiness;
+import com.amos.im.biz.CommBusiness;
 import org.springframework.stereotype.Service;
 
 /**

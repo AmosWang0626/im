@@ -1,4 +1,4 @@
-package com.amos.comm.io;
+package com.amos.im.io;
 
 import java.io.IOException;
 import java.io.InputStream;

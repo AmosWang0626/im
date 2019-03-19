@@ -1,4 +1,4 @@
-package com.amos.comm.nio;
+package com.amos.im.nio;
 
 import java.io.IOException;
 import java.net.Socket;

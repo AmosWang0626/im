@@ -1,4 +1,4 @@
-package com.amos.comm.netty;
+package com.amos.im.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * PROJECT: comm
+ * PROJECT: im
  * DESCRIPTION: note
  *
  * @author Daoyuan

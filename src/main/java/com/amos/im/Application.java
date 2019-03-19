@@ -1,4 +1,4 @@
-package com.amos.comm;
+package com.amos.im;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
