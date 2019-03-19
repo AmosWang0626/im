@@ -1,5 +1,6 @@
 package com.amos.im.common;
 
+import com.amos.im.request.Command;
 import com.amos.im.serializer.Serializer;
 import com.amos.im.serializer.SerializerAlgorithm;
 import io.netty.buffer.ByteBuf;
@@ -7,7 +8,7 @@ import io.netty.buffer.ByteBufAllocator;
 
 /**
  * PROJECT: im
- * DESCRIPTION: note
+ * DESCRIPTION: 通讯协议算法
  *
  * @author Daoyuan
  * @date 2019/3/19
@@ -24,12 +25,12 @@ public class PacketCodeC {
         // ioBuffer() 尽可能返回直接内存(也即不受JVM堆管理的内存空间)
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         // 2. 序列化 Java 对象
-        byte[] bytes = Serializer.DEFAULT.serialize(basePacket);
+        byte[] bytes = SerializerAlgorithm.DEFAULT.serialize(basePacket);
 
         // 3. 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(basePacket.getVersion());
-        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+        byteBuf.writeByte(SerializerAlgorithm.DEFAULT.getSerializerAlgorithm());
         byteBuf.writeByte(basePacket.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
@@ -53,15 +54,14 @@ public class PacketCodeC {
         byte[] bytes = new byte[length];
         byteBuf.readBytes(bytes);
 
-        Class<? extends BasePacket> requestType = ResourceMap.getRequestType(command);
+        Class<? extends BasePacket> requestType = Command.getRequestType(command);
         Serializer serializer = SerializerAlgorithm.getSerializer(serializeAlgorithm);
 
-        if (requestType != null && serializer != null) {
+        if (requestType != null) {
             return serializer.deserialize(requestType, bytes);
         }
 
         return null;
     }
-
 
 }

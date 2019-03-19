@@ -19,6 +19,11 @@ public interface SerializerAlgorithm {
      */
     byte HESSIAN = 2;
 
+    /**
+     * 默认序列化算法 JsonSerializer
+     */
+    Serializer DEFAULT = new JsonSerializer();
+
 
     /**
      * 根据算法获取序列化工具类

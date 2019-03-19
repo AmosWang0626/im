@@ -1,7 +1,6 @@
 package com.amos.im.request;
 
 import com.amos.im.common.BasePacket;
-import com.amos.im.common.Command;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

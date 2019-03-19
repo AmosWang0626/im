@@ -10,12 +10,6 @@ package com.amos.im.serializer;
 public interface Serializer {
 
     /**
-     * 默认序列化方式
-     */
-    Serializer DEFAULT = new JsonSerializer();
-
-
-    /**
      * 序列化算法
      *
      * @return serializer algorithm
