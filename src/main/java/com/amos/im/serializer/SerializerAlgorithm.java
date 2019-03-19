@@ -31,7 +31,10 @@ public interface SerializerAlgorithm {
      * @param algorithm 算法
      * @return 序列化工具类
      */
-    static Serializer getSerializer(byte algorithm) {
+    static Serializer getSerializer(Byte algorithm) {
+        if (algorithm == null) {
+            return new JsonSerializer();
+        }
         switch (algorithm) {
             case JSON:
                 return new JsonSerializer();

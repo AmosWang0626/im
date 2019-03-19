@@ -9,7 +9,6 @@ import lombok.Data;
  * @author Daoyuan
  * @date 2019/3/19
  */
-@Data
 public abstract class BasePacket {
 
     /**
@@ -24,4 +23,11 @@ public abstract class BasePacket {
      */
     public abstract Byte getCommand();
 
+    public Byte getVersion() {
+        return version;
+    }
+
+    public void setVersion(Byte version) {
+        this.version = version;
+    }
 }

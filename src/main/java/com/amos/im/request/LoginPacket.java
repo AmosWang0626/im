@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class LoginPacket extends BasePacket {
 
-    private Integer userId;
+    private Long userId;
 
     private String username;
 

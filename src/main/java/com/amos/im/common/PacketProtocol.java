@@ -13,24 +13,31 @@ import io.netty.buffer.ByteBufAllocator;
  * @author Daoyuan
  * @date 2019/3/19
  */
-public class PacketCodeC {
+public class PacketProtocol {
 
     /**
      * 魔数
      */
     private static final int MAGIC_NUMBER = 0x12345678;
 
+    /**
+     * 序列化BasePacket并根据协议编码
+     *
+     * @param basePacket BasePacket
+     * @return ByteBuf
+     */
     public ByteBuf encode(BasePacket basePacket) {
         // 1. 创建 ByteBuf 对象
         // ioBuffer() 尽可能返回直接内存(也即不受JVM堆管理的内存空间)
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         // 2. 序列化 Java 对象
-        byte[] bytes = SerializerAlgorithm.DEFAULT.serialize(basePacket);
+        Serializer serializer = SerializerAlgorithm.DEFAULT;
+        byte[] bytes = serializer.serialize(basePacket);
 
         // 3. 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(basePacket.getVersion());
-        byteBuf.writeByte(SerializerAlgorithm.DEFAULT.getSerializerAlgorithm());
+        byteBuf.writeByte(serializer.getSerializerAlgorithm());
         byteBuf.writeByte(basePacket.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
@@ -38,6 +45,12 @@ public class PacketCodeC {
         return byteBuf;
     }
 
+    /**
+     * 根据协议解码并反序列化为BasePacket
+     *
+     * @param byteBuf ByteBuf
+     * @return BasePacket
+     */
     public BasePacket decode(ByteBuf byteBuf) {
         // 跳过 魔数
         byteBuf.skipBytes(4);

@@ -24,7 +24,7 @@ public interface Command {
             case LOGIN_REQUEST:
                 return LoginPacket.class;
             default:
-                throw new RuntimeException("Command not found!!!");
+                return null;
         }
     }
 }
