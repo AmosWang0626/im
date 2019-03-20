@@ -6,6 +6,13 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+/**
+ * PROJECT: im
+ * DESCRIPTION: MessageResponse
+ *
+ * @author Daoyuan
+ * @date 2019/3/19
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class MessageResponse extends BasePacket {

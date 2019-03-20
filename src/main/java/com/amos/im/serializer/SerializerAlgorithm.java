@@ -30,15 +30,14 @@ public interface SerializerAlgorithm {
      * @param algorithm 算法
      * @return 序列化工具类
      */
-    static Serializer getSerializer(Byte algorithm) {
-        if (algorithm == null) {
-            return new JsonSerializer();
-        }
+    static Serializer getSerializer(byte algorithm) {
         switch (algorithm) {
             case JSON:
                 return new JsonSerializer();
+
             case HESSIAN:
                 return new HessianSerializer();
+
             default:
                 return new JsonSerializer();
         }

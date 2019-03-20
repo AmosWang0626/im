@@ -14,7 +14,10 @@ import io.netty.buffer.ByteBufUtil;
 public class JavaMain {
 
     public static void main(String[] args) {
-        testByteBuf();
+        // testByteBuf();
+        System.out.println("(1 << 4) = " + (1 << 4));
+        System.out.println("(1 << 4 >> 1) = " + (1 << 4 >> 1));
+        System.out.println("18937128861".replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
     }
 
     private static void testByteBuf() {

@@ -3,16 +3,18 @@ package com.amos.im.request;
 import com.amos.im.common.BasePacket;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * PROJECT: im
- * DESCRIPTION: note
+ * DESCRIPTION: LoginResponse
  *
  * @author Daoyuan
  * @date 2019/3/19
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 public class LoginResponse extends BasePacket {
     /**
      * 用户唯一标识

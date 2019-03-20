@@ -1,5 +1,8 @@
 package com.amos.im.common;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
  * PROJECT: im
  * DESCRIPTION: note
@@ -7,7 +10,14 @@ package com.amos.im.common;
  * @author Daoyuan
  * @date 2019/3/19
  */
+@Data
+@Accessors(chain = true)
 public abstract class BasePacket {
+
+    /**
+     * response
+     */
+    private ResponseEnum responseEnum;
 
     /**
      * 协议版本
@@ -21,11 +31,4 @@ public abstract class BasePacket {
      */
     public abstract Byte getCommand();
 
-    public Byte getVersion() {
-        return version;
-    }
-
-    public void setVersion(Byte version) {
-        this.version = version;
-    }
 }
