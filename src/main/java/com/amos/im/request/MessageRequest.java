@@ -3,6 +3,7 @@ package com.amos.im.request;
 import com.amos.im.common.BasePacket;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 public class MessageRequest extends BasePacket {
 
     private String message;
@@ -25,4 +27,5 @@ public class MessageRequest extends BasePacket {
     public Byte getCommand() {
         return Command.MESSAGE_REQUEST;
     }
+
 }

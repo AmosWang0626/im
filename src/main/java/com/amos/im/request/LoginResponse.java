@@ -16,6 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class LoginResponse extends BasePacket {
+
     /**
      * 用户唯一标识
      */

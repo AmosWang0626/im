@@ -5,7 +5,7 @@ import lombok.experimental.Accessors;
 
 /**
  * PROJECT: im
- * DESCRIPTION: note
+ * DESCRIPTION: request/response基类
  *
  * @author Daoyuan
  * @date 2019/3/19
@@ -17,7 +17,7 @@ public abstract class BasePacket {
     /**
      * response
      */
-    private ResponseEnum responseEnum;
+    private GeneralCode generalCode;
 
     /**
      * 协议版本

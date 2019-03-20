@@ -20,6 +20,14 @@ public class PacketProtocol {
      */
     private static final int MAGIC_NUMBER = 0x12345678;
 
+    private static volatile PacketProtocol instance;
+
+    public static PacketProtocol getInstance() {
+        if (instance == null) {
+            instance = new PacketProtocol();
+        }
+        return instance;
+    }
 
     /**
      * 序列化BasePacket并根据协议编码
@@ -27,7 +35,7 @@ public class PacketProtocol {
      * @param basePacket BasePacket
      * @return ByteBuf
      */
-    public static ByteBuf encode(BasePacket basePacket) {
+    public ByteBuf encode(BasePacket basePacket) {
         // 1. 创建 ByteBuf 对象
         // ioBuffer() 尽可能返回直接内存(也即不受JVM堆管理的内存空间)
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
@@ -52,7 +60,7 @@ public class PacketProtocol {
      * @param byteBuf ByteBuf
      * @return BasePacket
      */
-    public static BasePacket decode(ByteBuf byteBuf) {
+    public BasePacket decode(ByteBuf byteBuf) {
         // 跳过 魔数
         byteBuf.skipBytes(4);
         // 跳过版本号
