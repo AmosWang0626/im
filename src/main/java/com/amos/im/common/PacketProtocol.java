@@ -4,7 +4,6 @@ import com.amos.im.request.CommandFactory;
 import com.amos.im.serializer.Serializer;
 import com.amos.im.serializer.SerializerAlgorithm;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 
 /**
  * PROJECT: im
@@ -35,15 +34,12 @@ public class PacketProtocol {
      * @param basePacket BasePacket
      * @return ByteBuf
      */
-    public ByteBuf encode(BasePacket basePacket) {
-        // 1. 创建 ByteBuf 对象
-        // ioBuffer() 尽可能返回直接内存(也即不受JVM堆管理的内存空间)
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
-        // 2. 序列化 Java 对象
+    public ByteBuf encode(ByteBuf byteBuf, BasePacket basePacket) {
+        // 序列化 Java 对象
         Serializer serializer = SerializerAlgorithm.DEFAULT;
         byte[] bytes = serializer.serialize(basePacket);
 
-        // 3. 实际编码过程
+        // 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(basePacket.getVersion());
         byteBuf.writeByte(serializer.getSerializerAlgorithm());
