@@ -1,5 +1,6 @@
 package com.amos.im.common.attribute;
 
+import com.amos.im.controller.dto.LoginVO;
 import io.netty.util.AttributeKey;
 
 /**
@@ -11,6 +12,6 @@ import io.netty.util.AttributeKey;
  */
 public interface AttributeConstant {
 
-    AttributeKey<String> TOKEN = AttributeKey.newInstance("toToken");
+    AttributeKey<LoginVO> TOKEN = AttributeKey.newInstance("token");
 
 }

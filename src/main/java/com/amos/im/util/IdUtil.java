@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class IdUtil {
 
-    private AtomicLong userId = new AtomicLong(10000L);
+    private AtomicLong userId = new AtomicLong(1L);
 
     private static volatile IdUtil idUtil;
 
@@ -27,7 +27,7 @@ public class IdUtil {
     }
 
     public String getToken() {
-        return "TK" + getUserId();
+        return "c" + getUserId();
     }
 
 //    public static void main(String[] args) {

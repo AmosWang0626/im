@@ -1,5 +1,6 @@
 package com.amos.im.common.attribute;
 
+import com.amos.im.controller.dto.LoginVO;
 import io.netty.channel.Channel;
 
 import java.util.Map;
@@ -21,23 +22,22 @@ public class AttributeUtil {
 
 
     public static boolean hasLogin(Channel channel) {
-        String token = channel.attr(AttributeConstant.TOKEN).get();
-        return token != null;
+        return channel.attr(AttributeConstant.TOKEN).get() != null;
     }
 
-    public static void bindToken(Channel channel, String token) {
+    public static void bindToken(Channel channel, String token, String name) {
         TOKEN_CHANNEL_MAP.put(token, channel);
-        channel.attr(AttributeConstant.TOKEN).set(token);
+        channel.attr(AttributeConstant.TOKEN).set(new LoginVO().setToken(token).setNickname(name));
     }
 
     public static void unBindToken(Channel channel) {
         if (hasLogin(channel)) {
-            TOKEN_CHANNEL_MAP.remove(getToken(channel));
+            TOKEN_CHANNEL_MAP.remove(getToken(channel).getToken());
             channel.attr(AttributeConstant.TOKEN).set(null);
         }
     }
 
-    public static String getToken(Channel channel) {
+    public static LoginVO getToken(Channel channel) {
         return channel.attr(AttributeConstant.TOKEN).get();
     }
 

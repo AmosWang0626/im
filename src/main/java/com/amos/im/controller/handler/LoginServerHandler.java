@@ -10,7 +10,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- *
  * @author Daoyuan
  */
 public class LoginServerHandler extends SimpleChannelInboundHandler<LoginRequest> {
@@ -24,7 +23,7 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<LoginRequest
             response.setNickname(desensitization(msg.getPhoneNo())).setToken(token);
 
             // 保存客户端登录状态
-            AttributeUtil.bindToken(ctx.channel(), token);
+            AttributeUtil.bindToken(ctx.channel(), token, msg.getPhoneNo());
             System.out.println(">>>>>>>>> [服务端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + token);
 
             System.out.println("[服务端] >>> 客户端登录成功!!!");

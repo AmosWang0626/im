@@ -20,6 +20,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.*;
@@ -89,9 +90,11 @@ public class ClientMain {
         while (!Thread.interrupted()) {
             Scanner sc = new Scanner(System.in);
             if (AttributeUtil.hasLogin(channel)) {
+                System.out.print(MessageFormat.format("\n\t{0}\n{1}: ",
+                        new Date(), AttributeUtil.getToken(channel).getNickname()));
                 String token = sc.next();
                 exit(token);
-                String message = sc.next();
+                String message = sc.nextLine();
 
                 MessageRequest request = new MessageRequest();
                 request.setToToken(token).setMessage(message).setCreateTime(new Date());
@@ -104,9 +107,8 @@ public class ClientMain {
 
                 LoginRequest loginRequest = new LoginRequest().setPhoneNo(phoneNo).setPassword(password);
                 channel.writeAndFlush(loginRequest);
-
-                waitLogin();
             }
+            waitLogin();
         }
     }
 

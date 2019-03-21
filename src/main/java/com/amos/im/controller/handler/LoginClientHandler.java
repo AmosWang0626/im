@@ -12,15 +12,15 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class LoginClientHandler extends SimpleChannelInboundHandler<LoginResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, LoginResponse msg) throws Exception {
-        if (GeneralCode.SUCCESS.equals(msg.getGeneralCode())) {
+    protected void channelRead0(ChannelHandlerContext ctx, LoginResponse loginResponse) {
+        if (GeneralCode.SUCCESS.equals(loginResponse.getGeneralCode())) {
             // 客户端保存登录成功凭证
-            AttributeUtil.bindToken(ctx.channel(), msg.getToken());
-            System.out.println(">>>>>>>>> [客户端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + msg.getToken());
+            AttributeUtil.bindToken(ctx.channel(), loginResponse.getToken(), loginResponse.getNickname());
+            System.out.println(">>>>>>>>> [客户端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + loginResponse.getToken());
 
-            System.out.println("[客户端] >>> " + msg.getNickname() + " 登录成功, 可以聊天了!!!");
+            System.out.println("[客户端] >>> " + loginResponse.getNickname() + " 登录成功, 可以聊天了!!!");
         } else {
-            System.out.println("[客户端] >>> 登录失败!!! " + msg.getGeneralCode().getMsg());
+            System.out.println("[客户端] >>> 登录失败!!! " + loginResponse.getGeneralCode().getMsg());
         }
     }
 

@@ -26,10 +26,10 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        if (AttributeUtil.hasLogin(ctx.channel())) {
-            System.out.println("身份验证完成 <<<安全>>> AuthHandler 已移除!");
-        } else {
-            System.out.println("身份验证完成 >>>!!!未登录!!!<<< 强制关闭连接!");
-        }
+//        if (AttributeUtil.hasLogin(ctx.channel())) {
+//            System.out.println("身份验证完成 <<<安全>>> AuthHandler 已移除!");
+//        } else {
+//            System.out.println("身份验证完成 >>>!!!未登录!!!<<< 强制关闭连接!");
+//        }
     }
 }

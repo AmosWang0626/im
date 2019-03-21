@@ -13,8 +13,8 @@ public class MessageClientHandler extends SimpleChannelInboundHandler<MessageRes
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageResponse msg) throws Exception {
-        System.out.println(MessageFormat.format("[客户端回复消息] >>> TIME: [{0}], \t MESSAGE: [{1}]",
-                msg.getCreateTime(), msg.getMessage()));
+        System.out.println(MessageFormat.format("\n\t{0}\n{1}:  {2}",
+                msg.getCreateTime(), msg.getNickName(), msg.getMessage()));
     }
 
 }

@@ -19,10 +19,21 @@ import java.util.Date;
 @Accessors(chain = true)
 public class MessageResponse extends BasePacket {
 
+    /**
+     * 发送人昵称
+     */
+    private String nickName;
+    /**
+     * 发送人token
+     */
     private String fromToken;
-
+    /**
+     * 发送的消息
+     */
     private String message;
-
+    /**
+     * 发送的时间
+     */
     private Date createTime;
 
     @Override
