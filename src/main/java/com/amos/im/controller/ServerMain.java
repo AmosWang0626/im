@@ -2,11 +2,15 @@ package com.amos.im.controller;
 
 import com.amos.im.common.PacketDecoder;
 import com.amos.im.common.PacketEncoder;
+import com.amos.im.controller.handler.LoginServerHandler;
+import com.amos.im.controller.handler.MessageServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 /**
  * PROJECT: im
@@ -35,7 +39,11 @@ public class ServerMain {
                     }
                 });
 
-        serverBootstrap.bind(8080).addListener(future -> {
+        serverBootstrap.bind(8080).addListener(futureListener());
+    }
+
+    private static GenericFutureListener<Future<? super Void>> futureListener() {
+        return future -> {
             if (future.isSuccess()) {
                 System.out.println("[服务端启动] >>> 成功!");
                 return;
@@ -43,7 +51,7 @@ public class ServerMain {
 
             System.out.println("[服务端启动] >>> 失败! " + future.cause().getMessage());
             System.exit(0);
-        });
+        };
     }
 
 }

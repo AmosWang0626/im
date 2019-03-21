@@ -1,4 +1,4 @@
-package com.amos.im.controller;
+package com.amos.im.controller.handler;
 
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.constant.ImConstant;
@@ -7,6 +7,9 @@ import com.amos.im.request.LoginResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+/**
+ * @author Daoyuan
+ */
 public class LoginServerHandler extends SimpleChannelInboundHandler<LoginRequest> {
 
     @Override

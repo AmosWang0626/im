@@ -3,6 +3,8 @@ package com.amos.im.controller;
 import com.amos.im.common.PacketDecoder;
 import com.amos.im.common.PacketEncoder;
 import com.amos.im.common.attribute.AttributeUtil;
+import com.amos.im.controller.handler.LoginClientHandler;
+import com.amos.im.controller.handler.MessageClientHandler;
 import com.amos.im.request.MessageRequest;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.Bootstrap;
@@ -12,6 +14,8 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -35,7 +39,6 @@ public class ClientMain {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
-                        // pipeline像是可以看作是一条流水线，原始的原料(字节流)进来，经过加工，最后输出
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginClientHandler());
                         ch.pipeline().addLast(new MessageClientHandler());
@@ -43,44 +46,56 @@ public class ClientMain {
                     }
                 });
 
-        bootstrap.connect("", 8080).addListener(future -> {
+        bootstrap.connect("", 8080).addListener(futureListener());
+    }
+
+    private static GenericFutureListener<Future<? super Void>> futureListener() {
+        return future -> {
             if (future.isSuccess()) {
                 System.out.println("[客户端启动] >>> 连接服务器成功!");
                 ChannelFuture channelFuture = (ChannelFuture) future;
-                startConsoleThread(channelFuture.channel());
+                // 启动线程池实现客户端与服务端交互
+                startThreadPool(channelFuture.channel());
                 return;
             }
 
             System.out.println("[客户端启动] >>> 连接服务器失败! " + future.cause().getMessage());
             System.exit(0);
-        });
+        };
     }
 
-    private static void startConsoleThread(Channel channel) {
+    private static void startThreadPool(Channel channel) {
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("netty-pool-%d").build();
         ExecutorService singleThreadPool = new ThreadPoolExecutor(
                 1, 2, 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
-        singleThreadPool.execute(() -> {
-            while (!Thread.interrupted()) {
-                if (AttributeUtil.hasLogin(channel)) {
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine();
-                    if ("exit".equals(line)) {
-                        Thread.currentThread().interrupt();
-                        System.out.println("已退出聊天!");
-                        return;
-                    }
-
-                    MessageRequest request = new MessageRequest();
-                    request.setMessage(line).setCreateTime(new Date());
-                    channel.writeAndFlush(request);
-                }
-            }
-        });
+        singleThreadPool.execute(() -> console(channel));
 
         singleThreadPool.shutdown();
+    }
+
+    /**
+     * 与服务端交互
+     *
+     * @param channel 通道
+     */
+    private static void console(Channel channel) {
+        while (!Thread.interrupted()) {
+            if (AttributeUtil.hasLogin(channel)) {
+                Scanner sc = new Scanner(System.in);
+                String line = sc.nextLine();
+                if ("exit".equals(line)) {
+                    Thread.currentThread().interrupt();
+                    System.out.println("已退出聊天!");
+                    System.exit(0);
+                }
+
+                MessageRequest request = new MessageRequest();
+                request.setMessage(line).setCreateTime(new Date());
+                channel.writeAndFlush(request);
+            }
+        }
     }
 
 }

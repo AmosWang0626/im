@@ -1,4 +1,4 @@
-package com.amos.im.controller;
+package com.amos.im.controller.handler;
 
 import com.amos.im.request.MessageRequest;
 import com.amos.im.request.MessageResponse;
@@ -9,6 +9,9 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Random;
 
+/**
+ * @author Daoyuan
+ */
 public class MessageServerHandler extends SimpleChannelInboundHandler<MessageRequest> {
 
     @Override
