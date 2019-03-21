@@ -1,9 +1,9 @@
 package com.amos.im.controller;
 
-import com.amos.im.common.attribute.AttributeUtil;
 import com.amos.im.common.protocol.PacketDecoder;
 import com.amos.im.common.protocol.PacketEncoder;
 import com.amos.im.common.protocol.PacketSplitter;
+import com.amos.im.controller.handler.AuthHandler;
 import com.amos.im.controller.handler.LoginClientHandler;
 import com.amos.im.controller.handler.MessageClientHandler;
 import com.amos.im.controller.request.MessageRequest;
@@ -43,6 +43,7 @@ public class ClientMain {
                         ch.pipeline().addLast(new PacketSplitter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginClientHandler());
+                        ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageClientHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
@@ -84,19 +85,17 @@ public class ClientMain {
      */
     private static void console(Channel channel) {
         while (!Thread.interrupted()) {
-            if (AttributeUtil.hasLogin(channel)) {
-                Scanner sc = new Scanner(System.in);
-                String line = sc.nextLine();
-                if ("exit".equals(line)) {
-                    Thread.currentThread().interrupt();
-                    System.out.println("已退出聊天!");
-                    System.exit(0);
-                }
-
-                MessageRequest request = new MessageRequest();
-                request.setMessage(line).setCreateTime(new Date());
-                channel.writeAndFlush(request);
+            Scanner sc = new Scanner(System.in);
+            String line = sc.nextLine();
+            if ("exit".equals(line)) {
+                Thread.currentThread().interrupt();
+                System.out.println("已退出聊天!");
+                System.exit(0);
             }
+
+            MessageRequest request = new MessageRequest();
+            request.setMessage(line).setCreateTime(new Date());
+            channel.writeAndFlush(request);
         }
     }
 
