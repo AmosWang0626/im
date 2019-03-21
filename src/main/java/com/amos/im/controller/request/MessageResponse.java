@@ -19,6 +19,8 @@ import java.util.Date;
 @Accessors(chain = true)
 public class MessageResponse extends BasePacket {
 
+    private String fromToken;
+
     private String message;
 
     private Date createTime;

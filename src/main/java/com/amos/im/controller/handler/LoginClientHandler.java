@@ -2,7 +2,6 @@ package com.amos.im.controller.handler;
 
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.attribute.AttributeUtil;
-import com.amos.im.controller.request.LoginRequest;
 import com.amos.im.controller.request.LoginResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -15,19 +14,21 @@ public class LoginClientHandler extends SimpleChannelInboundHandler<LoginRespons
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponse msg) throws Exception {
         if (GeneralCode.SUCCESS.equals(msg.getGeneralCode())) {
+            // 客户端保存登录成功凭证
+            AttributeUtil.bindToken(ctx.channel(), msg.getToken());
+            System.out.println(">>>>>>>>> [客户端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + msg.getToken());
+
             System.out.println("[客户端] >>> " + msg.getNickname() + " 登录成功, 可以聊天了!!!");
-            // 设置登录状态为 true || token
-            AttributeUtil.maskLogin(ctx.channel());
-            AttributeUtil.maskToken(ctx.channel(), String.valueOf(System.currentTimeMillis()));
         } else {
             System.out.println("[客户端] >>> 登录失败!!! " + msg.getGeneralCode().getMsg());
         }
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("[客户端] >>> 开始登录...");
-        LoginRequest loginRequest = new LoginRequest().setPhoneNo("18937128888").setPassword("123456");
-        ctx.channel().writeAndFlush(loginRequest);
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        // 客户端移除登录成功凭证
+        AttributeUtil.unBindToken(ctx.channel());
+        super.channelInactive(ctx);
     }
+
 }

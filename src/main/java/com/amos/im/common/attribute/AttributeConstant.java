@@ -11,8 +11,6 @@ import io.netty.util.AttributeKey;
  */
 public interface AttributeConstant {
 
-    AttributeKey<Boolean> LOGIN = AttributeKey.newInstance("login");
-
-    AttributeKey<String> TOKEN = AttributeKey.newInstance("token");
+    AttributeKey<String> TOKEN = AttributeKey.newInstance("toToken");
 
 }
