@@ -5,7 +5,7 @@ import com.amos.im.common.PacketEncoder;
 import com.amos.im.common.attribute.AttributeUtil;
 import com.amos.im.controller.handler.LoginClientHandler;
 import com.amos.im.controller.handler.MessageClientHandler;
-import com.amos.im.request.MessageRequest;
+import com.amos.im.controller.request.MessageRequest;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;

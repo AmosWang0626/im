@@ -1,4 +1,4 @@
-package com.amos.im.request;
+package com.amos.im.controller.request;
 
 import com.amos.im.common.BasePacket;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * PROJECT: im
- * DESCRIPTION: MessageRequest
+ * DESCRIPTION: MessageResponse
  *
  * @author Daoyuan
  * @date 2019/3/19
@@ -17,7 +17,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class MessageRequest extends BasePacket {
+public class MessageResponse extends BasePacket {
 
     private String message;
 
@@ -25,7 +25,7 @@ public class MessageRequest extends BasePacket {
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.MESSAGE_RESPONSE;
     }
 
 }

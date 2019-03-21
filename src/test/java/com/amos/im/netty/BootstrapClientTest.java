@@ -19,7 +19,7 @@ import java.util.Date;
  * @author Daoyuan
  * @date 2018/10/18
  */
-public class ClientBootstrapTest {
+public class BootstrapClientTest {
 
     public static void main(String[] args) {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();

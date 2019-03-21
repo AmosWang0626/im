@@ -1,4 +1,4 @@
-package com.amos.im.serializer;
+package com.amos.im.common.serializer;
 
 /**
  * PROJECT: im

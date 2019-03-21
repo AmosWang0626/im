@@ -1,7 +1,7 @@
 package com.amos.im.controller.handler;
 
-import com.amos.im.request.MessageRequest;
-import com.amos.im.request.MessageResponse;
+import com.amos.im.controller.request.MessageRequest;
+import com.amos.im.controller.request.MessageResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

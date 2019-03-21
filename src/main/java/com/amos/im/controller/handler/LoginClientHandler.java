@@ -2,8 +2,8 @@ package com.amos.im.controller.handler;
 
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.attribute.AttributeUtil;
-import com.amos.im.request.LoginRequest;
-import com.amos.im.request.LoginResponse;
+import com.amos.im.controller.request.LoginRequest;
+import com.amos.im.controller.request.LoginResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

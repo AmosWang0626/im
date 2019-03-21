@@ -17,7 +17,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @author Daoyuan
  * @date 2018/10/18
  */
-public class ServerBootstrapTest {
+public class BootstrapServerTest {
 
     public static void main(String[] args) {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();

@@ -1,13 +1,15 @@
-package com.amos.im.request;
+package com.amos.im.controller.request;
 
 import com.amos.im.common.BasePacket;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * PROJECT: im
- * DESCRIPTION: LoginResponse
+ * DESCRIPTION: MessageRequest
  *
  * @author Daoyuan
  * @date 2019/3/19
@@ -15,20 +17,15 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class LoginResponse extends BasePacket {
+public class MessageRequest extends BasePacket {
 
-    /**
-     * 用户唯一标识
-     */
-    private String token;
-    /**
-     * 昵称[默认手机号后四位]
-     */
-    private String nickname;
+    private String message;
+
+    private Date createTime;
 
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_RESPONSE;
+        return Command.MESSAGE_REQUEST;
     }
 
 }

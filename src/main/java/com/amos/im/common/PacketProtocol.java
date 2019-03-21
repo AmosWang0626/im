@@ -1,8 +1,8 @@
 package com.amos.im.common;
 
-import com.amos.im.request.CommandFactory;
-import com.amos.im.serializer.Serializer;
-import com.amos.im.serializer.SerializerAlgorithm;
+import com.amos.im.controller.request.CommandFactory;
+import com.amos.im.common.serializer.Serializer;
+import com.amos.im.common.serializer.SerializerAlgorithm;
 import io.netty.buffer.ByteBuf;
 
 /**

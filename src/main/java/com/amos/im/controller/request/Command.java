@@ -1,4 +1,4 @@
-package com.amos.im.request;
+package com.amos.im.controller.request;
 
 /**
  * PROJECT: im
