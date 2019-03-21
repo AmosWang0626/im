@@ -1,8 +1,13 @@
 package com.amos.im;
 
+import com.amos.im.controller.request.LoginRequest;
+import com.amos.im.controller.request.LoginResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * PROJECT: im
@@ -14,10 +19,27 @@ import io.netty.buffer.ByteBufUtil;
 public class JavaMain {
 
     public static void main(String[] args) {
-        // testByteBuf();
         System.out.println("(1 << 4) = " + (1 << 4));
         System.out.println("(1 << 4 >> 1) = " + (1 << 4 >> 1));
+        System.out.println("=================================================");
+
+        // 手机号脱敏
         System.out.println("18937128861".replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+        System.out.println("=================================================");
+
+        // public native boolean isInstance(Object obj);
+        System.out.println(LoginRequest.class.isInstance(new LoginRequest()));
+        System.out.println(LoginResponse.class.isInstance(new LoginRequest()));
+        System.out.println("=================================================");
+
+        // test Map putIfAbsent
+        Map<Integer, String> map = new HashMap<>();
+        map.put(777, "hello world!");
+        System.out.println("map.put(777, " + map.get(777) + ")");
+        String lal = map.putIfAbsent(777, "lal");
+        System.out.println("map.putIfAbsent(777, \"lal\") >>>>>>> " + lal);
+        lal = map.putIfAbsent(666, "lal");
+        System.out.println("map.putIfAbsent(666, \"lal\") >>>>>>> " + lal);
     }
 
     private static void testByteBuf() {

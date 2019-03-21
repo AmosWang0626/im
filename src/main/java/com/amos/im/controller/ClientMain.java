@@ -1,8 +1,9 @@
 package com.amos.im.controller;
 
-import com.amos.im.common.PacketDecoder;
-import com.amos.im.common.PacketEncoder;
 import com.amos.im.common.attribute.AttributeUtil;
+import com.amos.im.common.protocol.PacketDecoder;
+import com.amos.im.common.protocol.PacketEncoder;
+import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.controller.handler.LoginClientHandler;
 import com.amos.im.controller.handler.MessageClientHandler;
 import com.amos.im.controller.request.MessageRequest;
@@ -39,6 +40,7 @@ public class ClientMain {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new PacketSplitter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginClientHandler());
                         ch.pipeline().addLast(new MessageClientHandler());
