@@ -3,9 +3,9 @@ package com.amos.im.controller.handler;
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.attribute.AttributeUtil;
 import com.amos.im.common.constant.ImConstant;
+import com.amos.im.common.util.IdUtil;
 import com.amos.im.controller.request.LoginRequest;
 import com.amos.im.controller.request.LoginResponse;
-import com.amos.im.common.util.IdUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -22,13 +22,14 @@ public class LoginServerHandler extends SimpleChannelInboundHandler<LoginRequest
         LoginResponse response = new LoginResponse();
         if (validSuccess(msg)) {
             String token = IdUtil.getInstance().getToken();
-            response.setNickname(desensitization(msg.getPhoneNo())).setToken(token);
+            String nickname = desensitization(msg.getPhoneNo());
+            response.setNickname(nickname).setToken(token);
 
             // 保存客户端登录状态
-            AttributeUtil.bindToken(ctx.channel(), token, msg.getPhoneNo());
+            AttributeUtil.bindToken(ctx.channel(), token, nickname);
             System.out.println(">>>>>>>>> [服务端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + token);
 
-            System.out.println("[服务端] >>> 客户端登录成功!!!");
+            System.out.println("[服务端] >>> 客户端 [" + token + "](" + nickname + ")登录成功!!!");
         } else {
             System.out.println("[服务端] >>> 客户端登录失败!!!");
             generalCode = GeneralCode.LOGIN_FAIL;

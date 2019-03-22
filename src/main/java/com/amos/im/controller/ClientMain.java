@@ -101,10 +101,11 @@ public class ClientMain {
 
                 PrintUtil.println(sendTime, "我", message);
             } else {
-                System.out.println("请输入[用户名 密码]登录: ");
+                System.out.print("请输入用户名登录: ");
                 String phoneNo = sc.next();
                 exit(phoneNo);
-                String password = sc.next();
+                // String password = sc.next();
+                String password = "123456";
 
                 LoginRequest loginRequest = new LoginRequest().setPhoneNo(phoneNo).setPassword(password);
                 channel.writeAndFlush(loginRequest);
