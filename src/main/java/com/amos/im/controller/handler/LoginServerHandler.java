@@ -5,11 +5,13 @@ import com.amos.im.common.attribute.AttributeUtil;
 import com.amos.im.common.constant.ImConstant;
 import com.amos.im.controller.request.LoginRequest;
 import com.amos.im.controller.request.LoginResponse;
-import com.amos.im.util.IdUtil;
+import com.amos.im.common.util.IdUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
+ * DESCRIPTION: 处理客户端发出的登录请求
+ *
  * @author Daoyuan
  */
 public class LoginServerHandler extends SimpleChannelInboundHandler<LoginRequest> {

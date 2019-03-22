@@ -4,6 +4,7 @@ import com.amos.im.common.attribute.AttributeUtil;
 import com.amos.im.common.protocol.PacketDecoder;
 import com.amos.im.common.protocol.PacketEncoder;
 import com.amos.im.common.protocol.PacketSplitter;
+import com.amos.im.common.util.PrintUtil;
 import com.amos.im.controller.handler.AuthHandler;
 import com.amos.im.controller.handler.LoginClientHandler;
 import com.amos.im.controller.handler.MessageClientHandler;
@@ -20,7 +21,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.*;
@@ -90,15 +90,16 @@ public class ClientMain {
         while (!Thread.interrupted()) {
             Scanner sc = new Scanner(System.in);
             if (AttributeUtil.hasLogin(channel)) {
-                System.out.print(MessageFormat.format("\n\t{0}\n{1}: ",
-                        new Date(), AttributeUtil.getToken(channel).getNickname()));
                 String token = sc.next();
                 exit(token);
                 String message = sc.nextLine();
 
+                Date sendTime = new Date();
                 MessageRequest request = new MessageRequest();
                 request.setToToken(token).setMessage(message).setCreateTime(new Date());
                 channel.writeAndFlush(request);
+
+                PrintUtil.println(sendTime, "我", message);
             } else {
                 System.out.println("请输入[用户名 密码]登录: ");
                 String phoneNo = sc.next();

@@ -1,4 +1,4 @@
-package com.amos.im.util;
+package com.amos.im.common.util;
 
 import java.util.concurrent.atomic.AtomicLong;
 
