@@ -36,8 +36,11 @@ public class MessageServerHandler extends SimpleChannelInboundHandler<MessageReq
         if (channel != null && AttributeUtil.hasLogin(channel)) {
             channel.writeAndFlush(response);
         } else {
-            System.out.println(MessageFormat.format(
-                    "[客户端{0}] >>> [{1}] 不在线, 发送失败!", channel, messageRequest.getToToken()));
+            response.setCreateTime(new Date())
+                    .setFromToken("SERVER")
+                    .setNickName("服务器")
+                    .setMessage(MessageFormat.format("[{0}] 未登录, 暂不能收到您的消息!!!", messageRequest.getToToken()));
+            ctx.channel().writeAndFlush(response);
         }
     }
 

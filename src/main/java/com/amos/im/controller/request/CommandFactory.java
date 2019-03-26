@@ -37,6 +37,14 @@ public class CommandFactory {
                 clazz = MessageResponse.class;
                 break;
 
+            case Command.CREATE_GROUP_REQUEST:
+                clazz = CreateGroupRequest.class;
+                break;
+
+            case Command.CREATE_GROUP_RESPONSE:
+                clazz = CreateGroupResponse.class;
+                break;
+
             default:
                 break;
         }

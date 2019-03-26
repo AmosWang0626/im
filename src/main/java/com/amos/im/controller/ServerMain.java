@@ -3,6 +3,7 @@ package com.amos.im.controller;
 import com.amos.im.common.protocol.PacketDecoder;
 import com.amos.im.common.protocol.PacketEncoder;
 import com.amos.im.common.protocol.PacketSplitter;
+import com.amos.im.controller.handler.CreateGroupServerHandler;
 import com.amos.im.controller.handler.LoginServerHandler;
 import com.amos.im.controller.handler.MessageServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -37,6 +38,7 @@ public class ServerMain {
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginServerHandler());
                         ch.pipeline().addLast(new MessageServerHandler());
+                        ch.pipeline().addLast(new CreateGroupServerHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

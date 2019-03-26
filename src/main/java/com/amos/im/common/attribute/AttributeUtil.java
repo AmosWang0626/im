@@ -34,6 +34,7 @@ public class AttributeUtil {
         if (hasLogin(channel)) {
             TOKEN_CHANNEL_MAP.remove(getToken(channel).getToken());
             channel.attr(AttributeConstant.TOKEN).set(null);
+            System.out.println(TOKEN_CHANNEL_MAP);
         }
     }
 
