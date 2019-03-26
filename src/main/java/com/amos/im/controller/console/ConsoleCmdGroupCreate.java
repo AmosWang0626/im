@@ -27,12 +27,10 @@ public class ConsoleCmdGroupCreate extends BaseConsole {
         do {
             System.out.print("请输入群聊名字, 成员ID[用','分割]: ");
             groupName = sc.next();
-            String tokenStr = sc.next() + sc.nextLine();
-            tokenList = Arrays.stream(tokenStr.split(",")).map(String::trim).collect(Collectors.toList());
-        } while (tokenList.size() > 0);
-
-        // 默认向群聊里添加自己
-        tokenList.add(AttributeLoginUtil.getLoginInfo(channel).getToken());
+            // 默认向群聊里添加自己
+            String tokenStr = sc.nextLine() + "," + AttributeLoginUtil.getLoginInfo(channel).getToken();
+            tokenList = Arrays.stream(tokenStr.split(",")).map(String::trim).distinct().collect(Collectors.toList());
+        } while (tokenList.size() == 0);
 
         GroupCreateRequest groupCreateRequest = new GroupCreateRequest();
         groupCreateRequest.setSponsor(AttributeLoginUtil.getLoginInfo(channel).getToken())
