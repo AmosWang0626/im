@@ -14,6 +14,7 @@ public enum GeneralCode {
     ERROR_PARAM("102", "参数错误"),
     ILLEGAL_REQUEST("103", "非法请求"),
     LOGIN_FAIL("301", "账号或密码错误"),
+    CREATE_GROUP_FAIL("302", "群内不能没有成员"),
     ;
 
     private final String code;

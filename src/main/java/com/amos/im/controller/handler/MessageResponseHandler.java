@@ -8,11 +8,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
 /**
  * @author Daoyuan
  */
-public class MessageClientHandler extends SimpleChannelInboundHandler<MessageResponse> {
+public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponse> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageResponse msg) {
-        PrintUtil.println(msg.getCreateTime(), msg.getNickName(), msg.getMessage());
+        PrintUtil.message(msg.getCreateTime(), msg.getNickName(), msg.getMessage());
     }
 
 }

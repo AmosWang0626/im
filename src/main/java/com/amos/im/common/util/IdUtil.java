@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class IdUtil {
 
-    private AtomicLong userId = new AtomicLong(1L);
-    private AtomicLong groupId = new AtomicLong(100L);
+    private AtomicLong userId = new AtomicLong(0L);
+    private AtomicLong groupId = new AtomicLong(10L);
 
     private static volatile IdUtil idUtil;
 
@@ -28,7 +28,7 @@ public class IdUtil {
     }
 
     public String getGroupId() {
-        return "g00" + groupId.getAndAdd(1L);
+        return "g" + groupId.getAndAdd(1L);
     }
 
     public String getToken() {
@@ -36,8 +36,8 @@ public class IdUtil {
     }
 
 //    public static void main(String[] args) {
-//        System.out.println(IdUtil.getInstance().getToToken());
-//        System.out.println(IdUtil.getInstance().getToToken());
+//        System.out.message(IdUtil.getInstance().getToToken());
+//        System.out.message(IdUtil.getInstance().getToToken());
 //    }
 
 }

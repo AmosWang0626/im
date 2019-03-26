@@ -13,23 +13,27 @@ import java.util.List;
  * DESCRIPTION: note
  *
  * @author Daoyuan
- * @date 2019/3/23
+ * @date 2019/3/26
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class CreateGroupRequest extends BasePacket {
+public class GroupJoinResponse extends BasePacket {
 
-    private String sponsor;
+    private String groupId;
 
     private String groupName;
 
-    private List<String> tokenList;
+    private Boolean success;
+
+    private String sponsorName;
+
+    private List<String> nicknameList;
 
     private Date createTime;
 
     @Override
     public Byte getCommand() {
-        return Command.CREATE_GROUP_REQUEST;
+        return Command.GROUP_JOIN_RESPONSE;
     }
 }

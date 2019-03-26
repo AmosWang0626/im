@@ -50,7 +50,7 @@ public class PacketSplitter extends LengthFieldBasedFrameDecoder {
 //    public static void main(String[] args) {
 //        // Integer(MAX: 2147483647; MIN: -2147483648)
 //        // 第一位为符号位, 所以不是 [2 ^ (4 * 8)], 而是 [2 ^ (4 * 8 - 1)]
-//        System.out.println(Integer.MAX_VALUE);
-//        System.out.println(Integer.MAX_VALUE + 1 + "");
+//        System.out.message(Integer.MAX_VALUE);
+//        System.out.message(Integer.MAX_VALUE + 1 + "");
 //    }
 }

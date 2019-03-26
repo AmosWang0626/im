@@ -1,6 +1,6 @@
 package com.amos.im.controller.handler;
 
-import com.amos.im.common.attribute.AttributeUtil;
+import com.amos.im.common.attribute.AttributeLoginUtil;
 import com.amos.im.controller.dto.LoginVO;
 import com.amos.im.controller.request.MessageRequest;
 import com.amos.im.controller.request.MessageResponse;
@@ -16,16 +16,16 @@ import java.util.Date;
  *
  * @author Daoyuan
  */
-public class MessageServerHandler extends SimpleChannelInboundHandler<MessageRequest> {
+public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequest> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequest messageRequest) {
-        LoginVO sendClient = AttributeUtil.getToken(ctx.channel());
+        LoginVO sendClient = AttributeLoginUtil.getLoginInfo(ctx.channel());
         System.out.println(MessageFormat.format("[{0}] >>> {1}, {2}",
                 sendClient.getNickname(), messageRequest.getCreateTime(), messageRequest.getMessage()));
 
         // 根据消息中指定的token，发送给对应用户
-        Channel channel = AttributeUtil.getChannel(messageRequest.getToToken());
+        Channel channel = AttributeLoginUtil.getChannel(messageRequest.getToToken());
 
         MessageResponse response = new MessageResponse();
         response.setCreateTime(new Date())
@@ -33,7 +33,7 @@ public class MessageServerHandler extends SimpleChannelInboundHandler<MessageReq
                 .setNickName(sendClient.getNickname())
                 .setMessage(messageRequest.getMessage());
 
-        if (channel != null && AttributeUtil.hasLogin(channel)) {
+        if (channel != null && AttributeLoginUtil.hasLogin(channel)) {
             channel.writeAndFlush(response);
         } else {
             response.setCreateTime(new Date())

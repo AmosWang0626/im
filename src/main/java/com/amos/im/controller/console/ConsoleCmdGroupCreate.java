@@ -1,0 +1,44 @@
+package com.amos.im.controller.console;
+
+import com.amos.im.common.attribute.AttributeLoginUtil;
+import com.amos.im.controller.request.GroupCreateRequest;
+import io.netty.channel.Channel;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * PROJECT: im
+ * DESCRIPTION: note
+ *
+ * @author Daoyuan
+ * @date 2019/3/26
+ */
+public class ConsoleCmdGroupCreate extends BaseConsole {
+
+    @Override
+    void exec(Channel channel) {
+        // 群聊名字
+        String groupName;
+        // token集合
+        List<String> tokenList;
+        do {
+            System.out.print("请输入群聊名字, 成员ID[用','分割]: ");
+            groupName = sc.next();
+            String tokenStr = sc.next() + sc.nextLine();
+            tokenList = Arrays.stream(tokenStr.split(",")).map(String::trim).collect(Collectors.toList());
+        } while (tokenList.size() > 0);
+
+        // 默认向群聊里添加自己
+        tokenList.add(AttributeLoginUtil.getLoginInfo(channel).getToken());
+
+        GroupCreateRequest groupCreateRequest = new GroupCreateRequest();
+        groupCreateRequest.setSponsor(AttributeLoginUtil.getLoginInfo(channel).getToken())
+                .setGroupName(groupName).setTokenList(tokenList).setCreateTime(new Date());
+
+        channel.writeAndFlush(groupCreateRequest);
+    }
+
+}

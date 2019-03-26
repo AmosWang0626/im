@@ -1,15 +1,13 @@
 package com.amos.im.controller;
 
-import com.amos.im.common.attribute.AttributeUtil;
 import com.amos.im.common.protocol.PacketDecoder;
 import com.amos.im.common.protocol.PacketEncoder;
 import com.amos.im.common.protocol.PacketSplitter;
-import com.amos.im.controller.console.Console;
-import com.amos.im.controller.console.ConsoleImpl;
+import com.amos.im.controller.console.ConsoleManager;
 import com.amos.im.controller.handler.AuthHandler;
-import com.amos.im.controller.handler.CreateGroupClientHandler;
-import com.amos.im.controller.handler.LoginClientHandler;
-import com.amos.im.controller.handler.MessageClientHandler;
+import com.amos.im.controller.handler.GroupCreateResponseHandler;
+import com.amos.im.controller.handler.LoginResponseHandler;
+import com.amos.im.controller.handler.MessageResponseHandler;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -43,10 +41,10 @@ public class ClientMain {
                     protected void initChannel(SocketChannel ch) {
                         ch.pipeline().addLast(new PacketSplitter());
                         ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new LoginClientHandler());
+                        ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new AuthHandler());
-                        ch.pipeline().addLast(new MessageClientHandler());
-                        ch.pipeline().addLast(new CreateGroupClientHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new GroupCreateResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
@@ -59,7 +57,7 @@ public class ClientMain {
             if (future.isSuccess()) {
                 System.out.println("[客户端启动] >>> 连接服务器成功!");
                 ChannelFuture channelFuture = (ChannelFuture) future;
-                // 启动线程池实现客户端与服务端交互
+                // 控制台
                 startThreadPool(channelFuture.channel());
                 return;
             }
@@ -69,31 +67,25 @@ public class ClientMain {
         };
     }
 
+    /**
+     * 线程启动控制台,实现客户端与服务端交互
+     *
+     * @param channel channel
+     */
     private static void startThreadPool(Channel channel) {
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("netty-pool-%d").build();
         ExecutorService singleThreadPool = new ThreadPoolExecutor(
                 1, 2, 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
-        singleThreadPool.execute(() -> console(channel));
+        singleThreadPool.execute(() -> {
+            while (!Thread.interrupted()) {
+                // 客户端控制台
+                ConsoleManager.newInstance().exec(channel);
+            }
+        });
 
         singleThreadPool.shutdown();
-    }
-
-    /**
-     * 与控制台交互
-     *
-     * @param channel 通道
-     */
-    private static void console(Channel channel) {
-        while (!Thread.interrupted()) {
-            Console console = new ConsoleImpl();
-            if (AttributeUtil.hasLogin(channel)) {
-                console.exec(channel);
-            } else {
-                console.sign(channel);
-            }
-        }
     }
 
 }
