@@ -20,16 +20,24 @@ public class AttributeLoginUtil {
      */
     private static final Map<String, Channel> CHANNEL_TOKEN_MAP = new ConcurrentHashMap<>();
 
-
+    /**
+     * 是否已登录
+     */
     public static boolean hasLogin(Channel channel) {
         return channel.attr(AttributeConstant.LOGIN_INFO).get() != null;
     }
 
+    /**
+     * 保存登录token
+     */
     public static void bindToken(Channel channel, String token, String name) {
         CHANNEL_TOKEN_MAP.put(token, channel);
         channel.attr(AttributeConstant.LOGIN_INFO).set(new LoginVO().setToken(token).setNickname(name));
     }
 
+    /**
+     * 解绑登录token
+     */
     public static void unBindToken(Channel channel) {
         if (hasLogin(channel)) {
             CHANNEL_TOKEN_MAP.remove(getLoginInfo(channel).getToken());
@@ -37,10 +45,16 @@ public class AttributeLoginUtil {
         }
     }
 
+    /**
+     * 根据channel获取登录信息
+     */
     public static LoginVO getLoginInfo(Channel channel) {
         return channel.attr(AttributeConstant.LOGIN_INFO).get();
     }
 
+    /**
+     * 根据token获取channel
+     */
     public static Channel getChannel(String token) {
         return CHANNEL_TOKEN_MAP.get(token);
     }
