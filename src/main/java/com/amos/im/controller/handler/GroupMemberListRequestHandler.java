@@ -6,6 +6,7 @@ import com.amos.im.common.attribute.AttributeGroupUtil;
 import com.amos.im.controller.dto.LoginInfoVO;
 import com.amos.im.controller.request.GroupMemberListRequest;
 import com.amos.im.controller.request.GroupMemberListResponse;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -20,7 +21,10 @@ import java.util.Vector;
  * @author Daoyuan
  * @date 2019/3/23
  */
+@ChannelHandler.Sharable
 public class GroupMemberListRequestHandler extends SimpleChannelInboundHandler<GroupMemberListRequest> {
+
+    public static final GroupMemberListRequestHandler INSTANCE = new GroupMemberListRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, GroupMemberListRequest request) throws Exception {

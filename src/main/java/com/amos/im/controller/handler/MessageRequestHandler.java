@@ -5,6 +5,7 @@ import com.amos.im.controller.dto.LoginInfoVO;
 import com.amos.im.controller.request.MessageRequest;
 import com.amos.im.controller.request.MessageResponse;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -16,7 +17,10 @@ import java.util.Date;
  *
  * @author Daoyuan
  */
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequest> {
+
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequest messageRequest) {

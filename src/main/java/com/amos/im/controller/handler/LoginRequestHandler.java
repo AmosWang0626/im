@@ -6,6 +6,7 @@ import com.amos.im.common.constant.ImConstant;
 import com.amos.im.common.util.IdUtil;
 import com.amos.im.controller.request.LoginRequest;
 import com.amos.im.controller.request.LoginResponse;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -14,7 +15,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
  *
  * @author Daoyuan
  */
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequest> {
+
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequest msg) throws Exception {

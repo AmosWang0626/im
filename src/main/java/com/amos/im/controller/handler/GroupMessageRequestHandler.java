@@ -6,6 +6,7 @@ import com.amos.im.common.attribute.AttributeLoginUtil;
 import com.amos.im.controller.dto.LoginInfoVO;
 import com.amos.im.controller.request.GroupMessageRequest;
 import com.amos.im.controller.request.GroupMessageResponse;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -18,7 +19,10 @@ import java.util.Date;
  *
  * @author Daoyuan
  */
+@ChannelHandler.Sharable
 public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<GroupMessageRequest> {
+
+    public static final GroupMessageRequestHandler INSTANCE = new GroupMessageRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, GroupMessageRequest request) {

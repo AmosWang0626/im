@@ -5,6 +5,7 @@ import com.amos.im.common.attribute.AttributeGroupUtil;
 import com.amos.im.controller.request.GroupQuitRequest;
 import com.amos.im.controller.request.GroupQuitResponse;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -16,7 +17,10 @@ import io.netty.channel.group.ChannelGroup;
  * @author Daoyuan
  * @date 2019/3/23
  */
+@ChannelHandler.Sharable
 public class GroupQuitRequestHandler extends SimpleChannelInboundHandler<GroupQuitRequest> {
+
+    public static final GroupQuitRequestHandler INSTANCE = new GroupQuitRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, GroupQuitRequest request) throws Exception {

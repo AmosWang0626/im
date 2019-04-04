@@ -1,9 +1,9 @@
 package com.amos.im.controller;
 
-import com.amos.im.common.protocol.PacketDecoder;
-import com.amos.im.common.protocol.PacketEncoder;
+import com.amos.im.common.protocol.PacketCodec;
 import com.amos.im.common.protocol.PacketSplitter;
-import com.amos.im.controller.handler.*;
+import com.amos.im.controller.handler.ImHandler;
+import com.amos.im.controller.handler.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -33,15 +33,9 @@ public class ServerMain {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
                         ch.pipeline().addLast(new PacketSplitter());
-                        ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new LoginRequestHandler());
-                        ch.pipeline().addLast(new MessageRequestHandler());
-                        ch.pipeline().addLast(new GroupCreateRequestHandler());
-                        ch.pipeline().addLast(new GroupJoinRequestHandler());
-                        ch.pipeline().addLast(new GroupMemberListRequestHandler());
-                        ch.pipeline().addLast(new GroupQuitRequestHandler());
-                        ch.pipeline().addLast(new GroupMessageRequestHandler());
-                        ch.pipeline().addLast(new PacketEncoder());
+                        ch.pipeline().addLast(PacketCodec.INSTANCE);
+                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(ImHandler.INSTANCE);
                     }
                 });
 
