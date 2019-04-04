@@ -18,7 +18,7 @@ public class ConsoleManager extends BaseConsole {
 
     private static Map<ConsoleCmd, BaseConsole> CMD_MAP = new ConcurrentHashMap<>();
 
-    private static volatile ConsoleManager consoleManager;
+    private static ConsoleManager consoleManager;
 
     public static ConsoleManager newInstance() {
         if (consoleManager == null) {

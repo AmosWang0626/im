@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * PROJECT: im
- * DESCRIPTION: TODO
+ * DESCRIPTION: 退出群聊Request
  *
  * @author amos
  * @date 2019/4/4

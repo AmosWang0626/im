@@ -56,7 +56,7 @@ public class GroupJoinRequestHandler extends SimpleChannelInboundHandler<GroupJo
         response.setSuccess(true);
         response.setCreateTime(new Date());
         response.setNickName(loginInfo.getNickname());
-        response.setGroupInfoVO(AttributeGroupUtil.getGroupInfo(groupId));
+        response.setGroupInfoVO(AttributeGroupUtil.getGroupInfoServer(groupId));
 
         channels.writeAndFlush(response);
 

@@ -52,14 +52,14 @@ public class AttributeGroupUtil {
     /**
      * 客户端 --- 获取指定群信息
      */
-    public static GroupInfoVO getGroupInfo(Channel channel, String groupId) {
+    public static GroupInfoVO getGroupInfoClient(Channel channel, String groupId) {
         return channel.attr(AttributeConstant.GROUP_INFO_MAP).get().get(groupId);
     }
 
     /**
      * 客户端 --- 获取已加入群的群信息
      */
-    public static List<GroupInfoVO> getGroupInfo(Channel channel) {
+    public static List<GroupInfoVO> getGroupInfoClient(Channel channel) {
         Map<String, GroupInfoVO> groupInfoVOMap = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
         if (groupInfoVOMap == null || groupInfoVOMap.size() == 0) {
             return null;
@@ -110,7 +110,7 @@ public class AttributeGroupUtil {
     /**
      * 获取群信息
      */
-    public static GroupInfoVO getGroupInfo(String groupId) {
+    public static GroupInfoVO getGroupInfoServer(String groupId) {
         return GROUP_INFO.get(groupId);
     }
 }

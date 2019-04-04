@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * PROJECT: im
- * DESCRIPTION: TODO
+ * DESCRIPTION: 群成员列表Response
  *
  * @author amos
  * @date 2019/4/4

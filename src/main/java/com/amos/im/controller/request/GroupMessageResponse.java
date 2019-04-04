@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 
 /**
  * PROJECT: im
- * DESCRIPTION: GroupMessageRequest
+ * DESCRIPTION: GroupMessageResponse
  *
  * @author Daoyuan
  * @date 2019/4/4
@@ -15,15 +15,24 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class GroupMessageRequest extends BasePacket {
+public class GroupMessageResponse extends BasePacket {
 
-    private String toGroup;
-
+    /**
+     * 发送人昵称
+     */
+    private String nickName;
+    /**
+     * 发送人token
+     */
+    private String fromGroup;
+    /**
+     * 发送的消息
+     */
     private String message;
 
     @Override
     public Byte getCommand() {
-        return Command.GROUP_MESSAGE_REQUEST;
+        return Command.GROUP_MESSAGE_RESPONSE;
     }
 
 }

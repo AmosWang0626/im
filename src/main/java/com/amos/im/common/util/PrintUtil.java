@@ -1,6 +1,7 @@
 package com.amos.im.common.util;
 
 import com.amos.im.controller.dto.GroupInfoVO;
+import com.amos.im.controller.request.GroupMessageResponse;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -35,11 +36,23 @@ public class PrintUtil {
      * 打印用户加入的所有群信息
      */
     public static void groups(List<GroupInfoVO> list) {
-        if (list == null || list.size() == 0) {
-            System.out.println("您还未加入任何群!");
-            return;
-        }
-        list.forEach(groupInfoVO -> System.out.println(String.format("已加入的群聊: [%s](%s)", groupInfoVO.getGroupId(), groupInfoVO.getGroupName())));
+        StringBuilder sb = new StringBuilder();
+        sb.append("已加入的群聊: ");
+        list.forEach(groupInfoVO -> sb.append(String.format("[%s](%s)\t", groupInfoVO.getGroupId(), groupInfoVO.getGroupName())));
+        System.out.println(sb.toString());
     }
+
+    /**
+     * 打印用户发的消息
+     */
+    public static void groupMessage(GroupMessageResponse response, GroupInfoVO groupInfo) {
+        System.out.println(String.format("\n[群消息] %s\t%tT\n%s:  %s\n",
+                groupInfo.getGroupName(), response.getCreateTime(), response.getNickName(), response.getMessage()));
+    }
+
+//    public static void main(String[] args) {
+//        System.out.println(String.format("\n%s\t%tT\n%s:  %s\n",
+//                "群聊A", new Date(), "nickName", "message"));
+//    }
 
 }

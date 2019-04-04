@@ -40,6 +40,7 @@ public class ServerMain {
                         ch.pipeline().addLast(new GroupJoinRequestHandler());
                         ch.pipeline().addLast(new GroupMemberListRequestHandler());
                         ch.pipeline().addLast(new GroupQuitRequestHandler());
+                        ch.pipeline().addLast(new GroupMessageRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

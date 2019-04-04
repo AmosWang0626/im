@@ -21,7 +21,7 @@ public interface Command {
     byte GROUP_LIST_RESPONSE = 10;
     byte GROUP_QUIT_REQUEST = 11;
     byte GROUP_QUIT_RESPONSE = 12;
-    byte GROUP_MESAGE_REQUEST = 13;
-    byte GROUP_MESAGE_RESPONSE = 14;
+    byte GROUP_MESSAGE_REQUEST = 13;
+    byte GROUP_MESSAGE_RESPONSE = 14;
 
 }
