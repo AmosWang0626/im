@@ -15,10 +15,12 @@ public enum GeneralCode {
     ILLEGAL_REQUEST("103", "非法请求"),
     LOGIN_FAIL("301", "账号或密码错误"),
     CREATE_GROUP_FAIL("302", "群内不能没有成员"),
+    GROUP_NOT_EXIST("303", "群聊不存在"),
+    YOU_HAVE_JOINED_THE_GROUP("304", "您已加入该群聊"),
     ;
 
     private final String code;
-    private final String msg;
+    private String msg;
 
     GeneralCode(String code, String msg) {
         this.code = code;
@@ -31,4 +33,11 @@ public enum GeneralCode {
 
     public String getMsg() {
         return msg;
-    }}
+    }
+
+    public GeneralCode setMsg(String msg) {
+        this.msg += msg;
+        return this;
+    }
+
+}

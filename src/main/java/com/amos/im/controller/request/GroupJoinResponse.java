@@ -1,12 +1,12 @@
 package com.amos.im.controller.request;
 
 import com.amos.im.common.BasePacket;
+import com.amos.im.controller.dto.GroupInfoVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * PROJECT: im
@@ -20,15 +20,11 @@ import java.util.List;
 @Accessors(chain = true)
 public class GroupJoinResponse extends BasePacket {
 
-    private String groupId;
-
-    private String groupName;
+    private String nickName;
 
     private Boolean success;
 
-    private String sponsorName;
-
-    private List<String> nicknameList;
+    private GroupInfoVO groupInfoVO;
 
     private Date createTime;
 

@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class GroupVO {
+public class GroupInfoVO {
 
     private String groupId;
 

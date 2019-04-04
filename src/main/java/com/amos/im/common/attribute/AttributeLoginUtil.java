@@ -1,6 +1,6 @@
 package com.amos.im.common.attribute;
 
-import com.amos.im.controller.dto.LoginVO;
+import com.amos.im.controller.dto.LoginInfoVO;
 import io.netty.channel.Channel;
 
 import java.util.Map;
@@ -32,7 +32,7 @@ public class AttributeLoginUtil {
      */
     public static void bindToken(Channel channel, String token, String name) {
         CHANNEL_TOKEN_MAP.put(token, channel);
-        channel.attr(AttributeConstant.LOGIN_INFO).set(new LoginVO().setToken(token).setNickname(name));
+        channel.attr(AttributeConstant.LOGIN_INFO).set(new LoginInfoVO().setToken(token).setNickname(name));
     }
 
     /**
@@ -48,7 +48,7 @@ public class AttributeLoginUtil {
     /**
      * 根据channel获取登录信息
      */
-    public static LoginVO getLoginInfo(Channel channel) {
+    public static LoginInfoVO getLoginInfo(Channel channel) {
         return channel.attr(AttributeConstant.LOGIN_INFO).get();
     }
 

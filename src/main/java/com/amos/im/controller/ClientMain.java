@@ -4,10 +4,7 @@ import com.amos.im.common.protocol.PacketDecoder;
 import com.amos.im.common.protocol.PacketEncoder;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.controller.console.ConsoleManager;
-import com.amos.im.controller.handler.AuthHandler;
-import com.amos.im.controller.handler.GroupCreateResponseHandler;
-import com.amos.im.controller.handler.LoginResponseHandler;
-import com.amos.im.controller.handler.MessageResponseHandler;
+import com.amos.im.controller.handler.*;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -45,6 +42,7 @@ public class ClientMain {
                         ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new GroupCreateResponseHandler());
+                        ch.pipeline().addLast(new GroupJoinResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

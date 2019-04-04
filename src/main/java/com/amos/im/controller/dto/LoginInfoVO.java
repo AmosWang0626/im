@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class LoginVO {
+public class LoginInfoVO {
 
     private String token;
 

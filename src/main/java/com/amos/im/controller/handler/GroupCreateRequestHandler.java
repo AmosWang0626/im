@@ -4,6 +4,7 @@ import com.amos.im.common.GeneralCode;
 import com.amos.im.common.attribute.AttributeGroupUtil;
 import com.amos.im.common.attribute.AttributeLoginUtil;
 import com.amos.im.common.util.IdUtil;
+import com.amos.im.controller.dto.GroupInfoVO;
 import com.amos.im.controller.request.GroupCreateRequest;
 import com.amos.im.controller.request.GroupCreateResponse;
 import io.netty.channel.Channel;
@@ -61,7 +62,12 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
             channels.add(channel);
         });
 
-        AttributeGroupUtil.addGroupServer(channels, groupId);
+        GroupInfoVO groupInfoVO = new GroupInfoVO();
+        groupInfoVO.setGroupId(groupId);
+        groupInfoVO.setGroupName(groupName);
+        groupInfoVO.setSponsorName(sponsor);
+        groupInfoVO.setCreateTime(createTime);
+        AttributeGroupUtil.createGroupServer(channels, groupInfoVO);
 
         GroupCreateResponse groupCreateResponse = new GroupCreateResponse();
         groupCreateResponse.setSuccess(true).setCreateTime(new Date())

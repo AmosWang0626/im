@@ -1,7 +1,7 @@
 package com.amos.im.common.attribute;
 
-import com.amos.im.controller.dto.GroupVO;
-import com.amos.im.controller.dto.LoginVO;
+import com.amos.im.controller.dto.GroupInfoVO;
+import com.amos.im.controller.dto.LoginInfoVO;
 import io.netty.util.AttributeKey;
 
 import java.util.Map;
@@ -18,10 +18,10 @@ public interface AttributeConstant {
     /**
      * 客户端留存登录信息
      */
-    AttributeKey<LoginVO> LOGIN_INFO = AttributeKey.newInstance("login");
+    AttributeKey<LoginInfoVO> LOGIN_INFO = AttributeKey.newInstance("login");
     /**
      * 客户端留存群组信息
      */
-    AttributeKey<Map<String, GroupVO>> GROUP_INFO_MAP = AttributeKey.newInstance("joinedGroups");
+    AttributeKey<Map<String, GroupInfoVO>> GROUP_INFO_MAP = AttributeKey.newInstance("joinedGroups");
 
 }

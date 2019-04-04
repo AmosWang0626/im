@@ -4,6 +4,7 @@ import com.amos.im.common.protocol.PacketDecoder;
 import com.amos.im.common.protocol.PacketEncoder;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.controller.handler.GroupCreateRequestHandler;
+import com.amos.im.controller.handler.GroupJoinRequestHandler;
 import com.amos.im.controller.handler.LoginRequestHandler;
 import com.amos.im.controller.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -39,6 +40,7 @@ public class ServerMain {
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new GroupCreateRequestHandler());
+                        ch.pipeline().addLast(new GroupJoinRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

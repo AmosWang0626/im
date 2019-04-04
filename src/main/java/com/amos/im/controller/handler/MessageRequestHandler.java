@@ -1,7 +1,7 @@
 package com.amos.im.controller.handler;
 
 import com.amos.im.common.attribute.AttributeLoginUtil;
-import com.amos.im.controller.dto.LoginVO;
+import com.amos.im.controller.dto.LoginInfoVO;
 import com.amos.im.controller.request.MessageRequest;
 import com.amos.im.controller.request.MessageResponse;
 import io.netty.channel.Channel;
@@ -20,7 +20,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequest messageRequest) {
-        LoginVO sendClient = AttributeLoginUtil.getLoginInfo(ctx.channel());
+        LoginInfoVO sendClient = AttributeLoginUtil.getLoginInfo(ctx.channel());
         System.out.println(MessageFormat.format("[{0}] >>> {1}, {2}",
                 sendClient.getNickname(), messageRequest.getCreateTime(), messageRequest.getMessage()));
 

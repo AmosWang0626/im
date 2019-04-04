@@ -1,6 +1,6 @@
 package com.amos.im.common.attribute;
 
-import com.amos.im.controller.dto.GroupVO;
+import com.amos.im.controller.dto.GroupInfoVO;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 
@@ -24,17 +24,17 @@ public class AttributeGroupUtil {
      */
 
     public static boolean hasGroup(Channel channel, String groupId) {
-        Map<String, GroupVO> groupVOMap = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
+        Map<String, GroupInfoVO> groupVOMap = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
 
         return groupVOMap != null && groupVOMap.get(groupId) != null;
     }
 
     public static void addGroupClient(Channel channel, String groupId, String groupName) {
-        Map<String, GroupVO> map = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
+        Map<String, GroupInfoVO> map = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
         if (map == null) {
             map = new HashMap<>(4);
         }
-        map.put(groupId, new GroupVO().setGroupId(groupId).setGroupName(groupName));
+        map.put(groupId, new GroupInfoVO().setGroupId(groupId).setGroupName(groupName));
         channel.attr(AttributeConstant.GROUP_INFO_MAP).set(map);
     }
 
@@ -44,7 +44,7 @@ public class AttributeGroupUtil {
         }
     }
 
-    public static GroupVO getGroupInfo(Channel channel, String groupId) {
+    public static GroupInfoVO getGroupInfo(Channel channel, String groupId) {
         return channel.attr(AttributeConstant.GROUP_INFO_MAP).get().get(groupId);
     }
 
@@ -56,17 +56,27 @@ public class AttributeGroupUtil {
      * GroupId >>> ChannelGroup
      */
     private static final Map<String, ChannelGroup> CHANNEL_GROUP_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, GroupInfoVO> GROUP_INFO = new ConcurrentHashMap<>();
 
+    public static void createGroupServer(ChannelGroup channels, GroupInfoVO groupInfoVO) {
+        GROUP_INFO.put(groupInfoVO.getGroupId(), groupInfoVO);
+        CHANNEL_GROUP_MAP.put(groupInfoVO.getGroupId(), channels);
+    }
 
     public static void addGroupServer(ChannelGroup channels, String groupId) {
         CHANNEL_GROUP_MAP.put(groupId, channels);
     }
 
     public static void removeGroup(String groupId) {
+        GROUP_INFO.remove(groupId);
         CHANNEL_GROUP_MAP.remove(groupId);
     }
 
     public static ChannelGroup getChannelGroup(String groupId) {
         return CHANNEL_GROUP_MAP.get(groupId);
+    }
+
+    public static GroupInfoVO getGroupInfo(String groupId) {
+        return GROUP_INFO.get(groupId);
     }
 }
