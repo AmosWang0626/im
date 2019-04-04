@@ -51,7 +51,7 @@ public class GroupJoinRequestHandler extends SimpleChannelInboundHandler<GroupJo
         LoginInfoVO loginInfo = AttributeLoginUtil.getLoginInfo(inxChannel);
 
         channels.add(inxChannel);
-        AttributeGroupUtil.addGroupServer(channels, groupId);
+        AttributeGroupUtil.updateGroupServer(groupId, channels);
 
         response.setSuccess(true);
         response.setCreateTime(new Date());

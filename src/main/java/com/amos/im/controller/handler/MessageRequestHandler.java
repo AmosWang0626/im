@@ -28,18 +28,15 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         Channel channel = AttributeLoginUtil.getChannel(messageRequest.getToToken());
 
         MessageResponse response = new MessageResponse();
-        response.setCreateTime(new Date())
-                .setFromToken(sendClient.getToken())
-                .setNickName(sendClient.getNickname())
-                .setMessage(messageRequest.getMessage());
+        response.setFromToken(sendClient.getToken()).setNickName(sendClient.getNickname())
+                .setMessage(messageRequest.getMessage()).setCreateTime(new Date());
 
         if (channel != null && AttributeLoginUtil.hasLogin(channel)) {
             channel.writeAndFlush(response);
         } else {
-            response.setCreateTime(new Date())
-                    .setFromToken("SERVER")
-                    .setNickName("服务器")
-                    .setMessage(MessageFormat.format("[{0}] 未登录, 暂不能收到您的消息!!!", messageRequest.getToToken()));
+            response.setFromToken("SERVER").setNickName("服务器")
+                    .setMessage(MessageFormat.format("[{0}] 未登录, 暂不能收到您的消息!!!", messageRequest.getToToken()))
+                    .setCreateTime(new Date());
             ctx.channel().writeAndFlush(response);
         }
     }

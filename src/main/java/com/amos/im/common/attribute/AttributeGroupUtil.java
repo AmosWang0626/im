@@ -4,7 +4,9 @@ import com.amos.im.controller.dto.GroupInfoVO;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,12 +25,9 @@ public class AttributeGroupUtil {
      * ======================
      */
 
-    public static boolean hasGroup(Channel channel, String groupId) {
-        Map<String, GroupInfoVO> groupVOMap = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
-
-        return groupVOMap != null && groupVOMap.get(groupId) != null;
-    }
-
+    /**
+     * 客户端 --- 加入群组
+     */
     public static void addGroupClient(Channel channel, String groupId, String groupName) {
         Map<String, GroupInfoVO> map = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
         if (map == null) {
@@ -38,14 +37,34 @@ public class AttributeGroupUtil {
         channel.attr(AttributeConstant.GROUP_INFO_MAP).set(map);
     }
 
-    public static void quitGroup(Channel channel, String groupId) {
-        if (hasGroup(channel, groupId)) {
-            channel.attr(AttributeConstant.GROUP_INFO_MAP).set(null);
+    /**
+     * 客户端 --- 退出群组
+     */
+    public static void quitGroupClient(Channel channel, String groupId) {
+        Map<String, GroupInfoVO> groupInfoVOMap = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
+
+        if (groupInfoVOMap.get(groupId) != null) {
+            groupInfoVOMap.remove(groupId);
+            channel.attr(AttributeConstant.GROUP_INFO_MAP).set(groupInfoVOMap);
         }
     }
 
+    /**
+     * 客户端 --- 获取指定群信息
+     */
     public static GroupInfoVO getGroupInfo(Channel channel, String groupId) {
         return channel.attr(AttributeConstant.GROUP_INFO_MAP).get().get(groupId);
+    }
+
+    /**
+     * 客户端 --- 获取已加入群的群信息
+     */
+    public static List<GroupInfoVO> getGroupInfo(Channel channel) {
+        Map<String, GroupInfoVO> groupInfoVOMap = channel.attr(AttributeConstant.GROUP_INFO_MAP).get();
+        if (groupInfoVOMap == null || groupInfoVOMap.size() == 0) {
+            return null;
+        }
+        return new ArrayList<>(groupInfoVOMap.values());
     }
 
     /*
@@ -58,24 +77,39 @@ public class AttributeGroupUtil {
     private static final Map<String, ChannelGroup> CHANNEL_GROUP_MAP = new ConcurrentHashMap<>();
     private static final Map<String, GroupInfoVO> GROUP_INFO = new ConcurrentHashMap<>();
 
+    /**
+     * 创建群组
+     */
     public static void createGroupServer(ChannelGroup channels, GroupInfoVO groupInfoVO) {
         GROUP_INFO.put(groupInfoVO.getGroupId(), groupInfoVO);
         CHANNEL_GROUP_MAP.put(groupInfoVO.getGroupId(), channels);
     }
 
-    public static void addGroupServer(ChannelGroup channels, String groupId) {
+    /**
+     * 增加群成员/删除群成员
+     */
+    public static void updateGroupServer(String groupId, ChannelGroup channels) {
         CHANNEL_GROUP_MAP.put(groupId, channels);
     }
 
-    public static void removeGroup(String groupId) {
+    /**
+     * 删除群组
+     */
+    public static void removeGroupServer(String groupId) {
         GROUP_INFO.remove(groupId);
         CHANNEL_GROUP_MAP.remove(groupId);
     }
 
+    /**
+     * 根据群号获取群组
+     */
     public static ChannelGroup getChannelGroup(String groupId) {
         return CHANNEL_GROUP_MAP.get(groupId);
     }
 
+    /**
+     * 获取群信息
+     */
     public static GroupInfoVO getGroupInfo(String groupId) {
         return GROUP_INFO.get(groupId);
     }

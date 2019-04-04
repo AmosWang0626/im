@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,13 +23,9 @@ public class GroupCreateResponse extends BasePacket {
 
     private String groupName;
 
-    private Boolean success;
-
     private String sponsorName;
 
     private List<String> nicknameList;
-
-    private Date createTime;
 
     @Override
     public Byte getCommand() {

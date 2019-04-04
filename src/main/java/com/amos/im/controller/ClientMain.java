@@ -43,6 +43,8 @@ public class ClientMain {
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new GroupCreateResponseHandler());
                         ch.pipeline().addLast(new GroupJoinResponseHandler());
+                        ch.pipeline().addLast(new GroupMemberListResponseHandler());
+                        ch.pipeline().addLast(new GroupQuitResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

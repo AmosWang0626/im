@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
-
 /**
  * PROJECT: im
  * DESCRIPTION: MessageResponse
@@ -31,10 +29,6 @@ public class MessageResponse extends BasePacket {
      * 发送的消息
      */
     private String message;
-    /**
-     * 发送的时间
-     */
-    private Date createTime;
 
     @Override
     public Byte getCommand() {

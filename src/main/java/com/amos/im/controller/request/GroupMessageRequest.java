@@ -15,9 +15,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class MessageRequest extends BasePacket {
+public class GroupMessageRequest extends BasePacket {
 
-    private String toToken;
+    private String toGroupId;
 
     private String message;
 

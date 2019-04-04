@@ -70,9 +70,9 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
         AttributeGroupUtil.createGroupServer(channels, groupInfoVO);
 
         GroupCreateResponse groupCreateResponse = new GroupCreateResponse();
-        groupCreateResponse.setSuccess(true).setCreateTime(new Date())
-                .setGroupId(groupId).setGroupName(groupName).setNicknameList(nickNameList)
-                .setSponsorName(AttributeLoginUtil.getLoginInfo(ctx.channel()).getNickname());
+        groupCreateResponse.setGroupId(groupId).setGroupName(groupName)
+                .setNicknameList(nickNameList).setSponsorName(AttributeLoginUtil.getLoginInfo(ctx.channel()).getNickname())
+                .setSuccess(true).setCreateTime(new Date());
 
         channels.writeAndFlush(groupCreateResponse);
     }

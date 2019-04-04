@@ -3,6 +3,8 @@ package com.amos.im.common;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * PROJECT: im
  * DESCRIPTION: request/response基类
@@ -15,9 +17,17 @@ import lombok.experimental.Accessors;
 public abstract class BasePacket {
 
     /**
-     * response
+     * 是否成功
+     */
+    private Boolean success;
+    /**
+     * 失败原因
      */
     private GeneralCode generalCode;
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
     /**
      * 协议版本
