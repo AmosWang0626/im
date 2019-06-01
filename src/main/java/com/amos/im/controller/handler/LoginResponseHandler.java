@@ -12,7 +12,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, LoginResponse loginResponse) {
+    protected void messageReceived(ChannelHandlerContext ctx, LoginResponse loginResponse) {
         if (GeneralCode.SUCCESS.equals(loginResponse.getGeneralCode())) {
             // 客户端保存登录成功凭证
             AttributeLoginUtil.bindToken(ctx.channel(), loginResponse.getToken(), loginResponse.getNickname());

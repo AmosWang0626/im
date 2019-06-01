@@ -11,7 +11,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MessageResponse msg) {
+    protected void messageReceived(ChannelHandlerContext ctx, MessageResponse msg) {
         PrintUtil.message(msg.getCreateTime(), msg.getNickName(), msg.getMessage());
     }
 

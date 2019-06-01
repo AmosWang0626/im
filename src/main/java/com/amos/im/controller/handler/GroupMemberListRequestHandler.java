@@ -27,7 +27,7 @@ public class GroupMemberListRequestHandler extends SimpleChannelInboundHandler<G
     public static final GroupMemberListRequestHandler INSTANCE = new GroupMemberListRequestHandler();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupMemberListRequest request) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupMemberListRequest request) throws Exception {
         String groupId = request.getGroupId();
         ChannelGroup channels = AttributeGroupUtil.getChannelGroup(groupId);
 

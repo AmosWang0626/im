@@ -25,7 +25,7 @@ public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<Grou
     public static final GroupMessageRequestHandler INSTANCE = new GroupMessageRequestHandler();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupMessageRequest request) {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupMessageRequest request) {
         LoginInfoVO loginInfo = AttributeLoginUtil.getLoginInfo(ctx.channel());
         System.out.println(MessageFormat.format("[{0}] >>> {1}, {2}",
                 loginInfo.getNickname(), request.getCreateTime(), request.getMessage()));

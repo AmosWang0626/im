@@ -16,7 +16,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class GroupCreateResponseHandler extends SimpleChannelInboundHandler<GroupCreateResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupCreateResponse groupCreateResponse) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupCreateResponse groupCreateResponse) throws Exception {
         if (groupCreateResponse.getSuccess()) {
             String groupId = groupCreateResponse.getGroupId();
             String groupName = groupCreateResponse.getGroupName();

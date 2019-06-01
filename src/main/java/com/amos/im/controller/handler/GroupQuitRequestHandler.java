@@ -23,7 +23,7 @@ public class GroupQuitRequestHandler extends SimpleChannelInboundHandler<GroupQu
     public static final GroupQuitRequestHandler INSTANCE = new GroupQuitRequestHandler();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupQuitRequest request) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupQuitRequest request) throws Exception {
         Channel inxChannel = ctx.channel();
 
         String groupId = request.getGroupId();

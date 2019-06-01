@@ -23,7 +23,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
     public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MessageRequest messageRequest) {
+    protected void messageReceived(ChannelHandlerContext ctx, MessageRequest messageRequest) {
         LoginInfoVO sendClient = AttributeLoginUtil.getLoginInfo(ctx.channel());
         System.out.println(MessageFormat.format("[{0}] >>> {1}, {2}",
                 sendClient.getNickname(), messageRequest.getCreateTime(), messageRequest.getMessage()));

@@ -13,7 +13,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class GroupMessageResponseHandler extends SimpleChannelInboundHandler<GroupMessageResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupMessageResponse response) {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupMessageResponse response) {
         if (!response.getSuccess()) {
             System.out.println("发送消息失败, " + response.getGeneralCode().getMsg());
             return;

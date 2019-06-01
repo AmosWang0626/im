@@ -21,7 +21,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, LoginRequest msg) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, LoginRequest msg) throws Exception {
         GeneralCode generalCode = GeneralCode.SUCCESS;
         LoginResponse response = new LoginResponse();
         if (validSuccess(msg)) {

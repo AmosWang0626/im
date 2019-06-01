@@ -30,7 +30,7 @@ public class GroupJoinRequestHandler extends SimpleChannelInboundHandler<GroupJo
     public static final GroupJoinRequestHandler INSTANCE = new GroupJoinRequestHandler();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupJoinRequest request) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupJoinRequest request) throws Exception {
         Channel inxChannel = ctx.channel();
 
         String groupId = request.getGroupId();

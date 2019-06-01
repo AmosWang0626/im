@@ -16,7 +16,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class GroupJoinResponseHandler extends SimpleChannelInboundHandler<GroupJoinResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupJoinResponse response) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupJoinResponse response) throws Exception {
         if (!response.getSuccess()) {
             System.out.println(response.getGeneralCode().getMsg());
             return;

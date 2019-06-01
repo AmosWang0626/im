@@ -34,7 +34,7 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
     public static final GroupCreateRequestHandler INSTANCE = new GroupCreateRequestHandler();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupCreateRequest groupCreateRequest) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupCreateRequest groupCreateRequest) throws Exception {
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("create-group-pool-%d").build();
         ExecutorService singleThreadPool = new ThreadPoolExecutor(2, 5,
                 0L, TimeUnit.MILLISECONDS,

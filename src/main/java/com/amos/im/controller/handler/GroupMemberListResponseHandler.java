@@ -18,7 +18,7 @@ import java.util.Vector;
 public class GroupMemberListResponseHandler extends SimpleChannelInboundHandler<GroupMemberListResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, GroupMemberListResponse response) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, GroupMemberListResponse response) throws Exception {
         if (!response.getSuccess()) {
             System.out.println("获取成员列表失败, " + response.getGeneralCode().getMsg());
             return;
