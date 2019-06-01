@@ -1,7 +1,7 @@
 package com.amos.im;
 
-import com.amos.im.controller.request.LoginRequest;
-import com.amos.im.controller.request.LoginResponse;
+import com.amos.im.core.request.LoginRequest;
+import com.amos.im.core.response.LoginResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;

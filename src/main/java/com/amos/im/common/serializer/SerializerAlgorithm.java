@@ -21,7 +21,7 @@ public interface SerializerAlgorithm {
     /**
      * 默认序列化算法 JsonSerializer
      */
-    Serializer DEFAULT = new JsonSerializer();
+    Serializer DEFAULT = getSerializer((byte) 0);
 
 
     /**

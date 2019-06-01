@@ -1,9 +1,6 @@
-server:
-  port: 8080
-
 spring:
   application:
     name: im
 
-logging:
-  level: info
+im:
+  port: 8090

@@ -42,7 +42,7 @@ public class BootstrapServerTest {
         serverBootstrap.bind(8081);
     }
 
-    private static ChannelHandlerAdapter inboundAdapterA() {
+    private static ChannelInboundHandlerAdapter inboundAdapterA() {
         return new ChannelInboundHandlerAdapter() {
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -52,7 +52,7 @@ public class BootstrapServerTest {
         };
     }
 
-    private static ChannelHandlerAdapter inboundAdapterB() {
+    private static ChannelInboundHandlerAdapter inboundAdapterB() {
         return new ChannelInboundHandlerAdapter() {
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -64,7 +64,7 @@ public class BootstrapServerTest {
         };
     }
 
-    private static ChannelHandlerAdapter inboundAdapterC() {
+    private static ChannelInboundHandlerAdapter inboundAdapterC() {
         return new ChannelInboundHandlerAdapter() {
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

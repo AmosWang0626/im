@@ -55,7 +55,8 @@ public class NettyImClient {
                     }
                 });
         // 4.建立连接 [addListener()是一个异步方法]
-        bootstrap.connect("localhost", 8081);
+        // bootstrap.connect("localhost", 8081);
+        connect(bootstrap, "localhost", 8081, MAX_RETRY);
     }
 
     /**

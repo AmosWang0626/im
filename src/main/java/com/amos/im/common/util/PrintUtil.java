@@ -1,7 +1,7 @@
 package com.amos.im.common.util;
 
-import com.amos.im.controller.dto.GroupInfoVO;
-import com.amos.im.controller.request.GroupMessageResponse;
+import com.amos.im.core.vo.GroupInfoVO;
+import com.amos.im.core.response.GroupMessageResponse;
 
 import java.text.MessageFormat;
 import java.util.Date;

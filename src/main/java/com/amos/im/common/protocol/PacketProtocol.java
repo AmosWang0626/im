@@ -1,7 +1,7 @@
 package com.amos.im.common.protocol;
 
 import com.amos.im.common.BasePacket;
-import com.amos.im.controller.request.CommandFactory;
+import com.amos.im.core.command.CommandFactory;
 import com.amos.im.common.serializer.Serializer;
 import com.amos.im.common.serializer.SerializerAlgorithm;
 import io.netty.buffer.ByteBuf;
@@ -18,7 +18,7 @@ public class PacketProtocol {
     /**
      * 魔数
      */
-    public static final int MAGIC_NUMBER = 0x12345678;
+    static final int MAGIC_NUMBER = 0x12345678;
 
     private static volatile PacketProtocol instance;
 
