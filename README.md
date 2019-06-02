@@ -1,41 +1,42 @@
-# im
-> instant messaging 鸿雁
-> - Netty Gradle Docker
+# IM 鸿雁
+> 主要由Netty实现的即时通讯项目
 
-## build docker image
+
+## NOTICE 项目须知
+
+### 1.项目技术栈
+- Netty
+- Gradle
+- Docker
+- Swagger
+- Spring Boot
+
+### 2.分支
+- master：本项目的 Spring Boot 方式实现，改造中......
+- master-console：原 master，本项目的 Console 方式实现
+
+### 3.项目 Docker 打包
 - gradlew build docker
 - docker run -d -p 8080:8080 --name im im
 
-## 通信知识
+### 4.核心内容
+- 协议（codec 方便数据解析处理）
+    - 协议里规定了魔数、版本号、序列化算法、命令、数据长度、数据域
+    - 协议编码 Encode：将对象传入编码方法，返回ByteBuf数据
+    - 协议解码 Decode：讲要 ByteBuf 数据传入解码方法，返回对象
+
+- 序列化（serializable 方便数据传输）
+    - 序列化：对象转byte[]
+    - 反序列化：byte[]转对象
+
+## COMM 通信知识
 - TCP 三次握手
-    - 客户端 第一次：喂，你好，能听到吗？
+    - 客户端 第一次：你好，能听到吗？
     - 服务器 第二次：你好，能听到的。
         - 表明客户端连接服务端正常
-    - 客户端 第三次：好的，Say something！
+    - 客户端 第三次：好的，我们开始谈正事！
         - 表明服务端连接客户端正常
-
-- TCP 四次挥手
-    - 主动结束放 第一次：断了吧
-    - 另一方------ 第二次：等下断
-    - 另一方------ 第三次：断了吧
-    - 另一方------ 第四次：断了
 
 - 互发心跳
     - 服务器给客户端发送心跳：监测客户端是否下线
     - 客户端给服务器发送心跳：监测网络是否连接正常
-
-## 注
-- 序列化是方便通讯传输
-- 编码/解码则是方便程序处理
-
-## 简单梳理
-- 请求与响应
-    - 要想做操作，需要有request和response，对应有唯一的命令
-    - 还需要处理request和response的handler
-- 协议
-    - 协议里规定了魔数、版本号、序列化算法、命令、数据长度、数据域
-    - 协议编码：将对象传入编码方法，返回ByteBuf数据
-    - 协议解码：讲要ByteBuf数据传入解码方法，返回对象
-- 序列化
-    - 序列化：对象转byte[]
-    - 反序列化：byte[]转对象
