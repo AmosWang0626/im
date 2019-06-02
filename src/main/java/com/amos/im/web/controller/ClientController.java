@@ -15,9 +15,9 @@ import java.util.List;
  * DESCRIPTION: 客户端 Controller
  *
  * @author amos
- * @date 2019/6/1
+ * @date 2019/6/2
  */
-@Api(tags = {"客户端接口"})
+@Api(tags = {"客户端"})
 @RestController
 @RequestMapping("client")
 public class ClientController {
@@ -36,8 +36,9 @@ public class ClientController {
     public String start() {
         clientBusiness.start();
 
-        return "客户端启动成功!";
+        return "Client 启动中,请稍后......";
     }
+
 
     @GetMapping("logs")
     @ApiOperation("客户端日志")

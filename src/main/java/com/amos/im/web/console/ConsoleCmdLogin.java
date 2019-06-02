@@ -15,11 +15,11 @@ public class ConsoleCmdLogin extends BaseConsole {
     @Override
     public void exec(Channel channel) {
         System.out.print("请输入用户名登录: ");
-        String phoneNo = sc.next();
+        String username = sc.next();
         /*String password = sc.next();*/
         String password = "123456";
 
-        LoginRequest loginRequest = new LoginRequest().setPhoneNo(phoneNo).setPassword(password);
+        LoginRequest loginRequest = new LoginRequest().setUsername(username).setPassword(password);
         channel.writeAndFlush(loginRequest);
     }
 

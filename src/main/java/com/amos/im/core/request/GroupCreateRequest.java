@@ -2,11 +2,11 @@ package com.amos.im.core.request;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
+@ApiModel("创建群聊Model")
 public class GroupCreateRequest extends BasePacket {
     /**
      * 发起人token
@@ -32,10 +33,6 @@ public class GroupCreateRequest extends BasePacket {
      * token 列表
      */
     private List<String> tokenList;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
 
     @Override
     public Byte getCommand() {

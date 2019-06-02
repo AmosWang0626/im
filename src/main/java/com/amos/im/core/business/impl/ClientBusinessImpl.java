@@ -1,9 +1,13 @@
 package com.amos.im.core.business.impl;
 
 import com.amos.im.common.util.RedisUtil;
+import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.business.ClientBusiness;
 import com.amos.im.core.constant.RedisKeys;
+import com.amos.im.core.request.LoginRequest;
 import com.amos.im.core.service.ClientService;
+import io.netty.channel.Channel;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,21 @@ public class ClientBusinessImpl implements ClientBusiness {
 
     @Resource
     private ClientService clientService;
+
+    @Override
+    public String login(LoginRequest loginRequest) {
+        if (StringUtils.isBlank(loginRequest.getPassword())) {
+            loginRequest.setPassword("123456");
+        }
+        Channel currentChannel = AttributeLoginUtil.getCurrentChannel();
+        if (currentChannel == null) {
+            return "客户端启动中, 请稍后登录!";
+        }
+
+        currentChannel.writeAndFlush(loginRequest);
+
+        return "客户端启动成功!";
+    }
 
     @Override
     public void start() {

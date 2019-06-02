@@ -4,14 +4,12 @@ import com.amos.im.common.protocol.PacketCodec;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
+import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.handler.*;
 import com.amos.im.core.service.ClientService;
-import com.amos.im.web.console.ConsoleManager;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -23,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * PROJECT: Sales
@@ -90,8 +88,9 @@ public class ClientServiceImpl implements ClientService {
                 RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.info(tempLog, this.getClass()));
 
                 ChannelFuture channelFuture = (ChannelFuture) future;
-                // 控制台
-                startThreadPool(channelFuture.channel());
+                // 保存当前Channel
+                AttributeLoginUtil.setCurrentChannel(channelFuture.channel());
+                LOGGER.info("[客户端启动] >>> Channel ID 为 {}", AttributeLoginUtil.getCurrentChannel().id());
                 return;
             }
 
@@ -109,27 +108,6 @@ public class ClientServiceImpl implements ClientService {
                     connect(bootstrap, host, port, retry - 1), (1 << bout >> 1), TimeUnit.SECONDS);
 
         });
-    }
-
-    /**
-     * 线程启动控制台,实现客户端与服务端交互
-     *
-     * @param channel channel
-     */
-    private void startThreadPool(Channel channel) {
-        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("netty-pool-%d").build();
-        ExecutorService singleThreadPool = new ThreadPoolExecutor(
-                1, 2, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
-
-        singleThreadPool.execute(() -> {
-            while (!Thread.interrupted()) {
-                // 客户端控制台
-                ConsoleManager.newInstance().exec(channel);
-            }
-        });
-
-        singleThreadPool.shutdown();
     }
 
     private void initGroup() {

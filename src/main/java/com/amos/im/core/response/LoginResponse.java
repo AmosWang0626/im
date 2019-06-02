@@ -23,9 +23,9 @@ public class LoginResponse extends BasePacket {
      */
     private String token;
     /**
-     * 昵称[默认手机号后四位]
+     * 用户名
      */
-    private String nickname;
+    private String username;
 
     @Override
     public Byte getCommand() {

@@ -17,7 +17,7 @@ import java.util.List;
  * @author amos
  * @date 2019/6/1
  */
-@Api(tags = {"服务端接口"})
+@Api(tags = {"服务端"})
 @RestController
 @RequestMapping("server")
 public class ServerController {
@@ -41,7 +41,7 @@ public class ServerController {
     public String start() {
         serverBusiness.start();
 
-        return "Server 启动成功!";
+        return "Server 启动中,请稍后......";
     }
 
     /**

@@ -15,10 +15,10 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponse loginResponse) {
         if (GeneralCode.SUCCESS.equals(loginResponse.getGeneralCode())) {
             // 客户端保存登录成功凭证
-            AttributeLoginUtil.bindToken(ctx.channel(), loginResponse.getToken(), loginResponse.getNickname());
+            AttributeLoginUtil.bindToken(ctx.channel(), loginResponse.getToken(), loginResponse.getUsername());
             System.out.println(">>>>>>>>> [客户端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + loginResponse.getToken());
 
-            System.out.println("[客户端] >>> " + loginResponse.getNickname() + " 登录成功, 可以聊天了!!!");
+            System.out.println("[客户端] >>> " + loginResponse.getUsername() + " 登录成功, 可以聊天了!!!");
         } else {
             System.out.println("[客户端] >>> 登录失败!!! " + loginResponse.getGeneralCode().getMsg());
         }

@@ -2,6 +2,8 @@ package com.amos.im.core.request;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -16,13 +18,14 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
+@ApiModel("登录Model")
 public class LoginRequest extends BasePacket {
 
-    private String phoneNo;
+    @ApiModelProperty(value = "用户名", required = true)
+    private String username;
 
+    @ApiModelProperty("密码")
     private String password;
-
-    private String verifyCode;
 
     @Override
     public Byte getCommand() {

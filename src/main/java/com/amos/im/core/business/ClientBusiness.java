@@ -1,5 +1,7 @@
 package com.amos.im.core.business;
 
+import com.amos.im.core.request.LoginRequest;
+
 import java.util.List;
 
 /**
@@ -10,6 +12,14 @@ import java.util.List;
  * @date 2019/6/1
  */
 public interface ClientBusiness {
+
+    /**
+     * 登录
+     *
+     * @param loginRequest 登录表单
+     * @return 登录结果
+     */
+    String login(LoginRequest loginRequest);
 
     /**
      * 启动客户端

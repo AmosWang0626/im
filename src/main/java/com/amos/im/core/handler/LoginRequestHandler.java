@@ -1,9 +1,8 @@
 package com.amos.im.core.handler;
 
 import com.amos.im.common.GeneralCode;
-import com.amos.im.core.attribute.AttributeLoginUtil;
-import com.amos.im.core.constant.ImConstant;
 import com.amos.im.common.util.IdUtil;
+import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.request.LoginRequest;
 import com.amos.im.core.response.LoginResponse;
 import io.netty.channel.ChannelHandler;
@@ -25,15 +24,15 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         GeneralCode generalCode = GeneralCode.SUCCESS;
         LoginResponse response = new LoginResponse();
         if (validSuccess(msg)) {
+            String username = msg.getUsername();
             String token = IdUtil.getInstance().getToken();
-            String nickname = desensitization(msg.getPhoneNo());
-            response.setNickname(nickname).setToken(token);
+            response.setUsername(username).setToken(token);
 
             // 保存客户端登录状态
-            AttributeLoginUtil.bindToken(ctx.channel(), token, nickname);
+            AttributeLoginUtil.bindToken(ctx.channel(), token, username);
             System.out.println(">>>>>>>>> [服务端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + token);
 
-            System.out.println("[服务端] >>> 客户端 [" + token + "](" + nickname + ")登录成功!!!");
+            System.out.println("[服务端] >>> 客户端 [" + token + "](" + username + ")登录成功!!!");
         } else {
             System.out.println("[服务端] >>> 客户端登录失败!!!");
             generalCode = GeneralCode.LOGIN_FAIL;
@@ -59,24 +58,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
      */
     private static boolean validSuccess(LoginRequest loginRequest) {
         return "123456".equals(loginRequest.getPassword());
-    }
-
-    /**
-     * 手机号脱敏
-     *
-     * @param phoneNo 手机号
-     * @return 脱敏手机号
-     */
-    private static String desensitization(String phoneNo) {
-        if (phoneNo.length() == ImConstant.PHONE_NO_LENGTH) {
-            return phoneNo.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
-        }
-
-        if (phoneNo.length() > ImConstant.PHONE_NO_LENGTH) {
-            return phoneNo.substring(0, ImConstant.PHONE_NO_LENGTH);
-        }
-
-        return phoneNo;
     }
 
 }
