@@ -2,6 +2,11 @@ spring:
   application:
     name: im
 
+  redis:
+    host: www.anthub.top
+    database: 8
+    port: 1996
+
 im:
   port: 8090
   host: localhost

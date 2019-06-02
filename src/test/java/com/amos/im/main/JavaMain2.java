@@ -1,4 +1,4 @@
-package com.amos.im;
+package com.amos.im.main;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

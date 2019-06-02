@@ -1,4 +1,4 @@
-package com.amos.im;
+package com.amos.im.main;
 
 import com.amos.im.core.request.LoginRequest;
 import com.amos.im.core.response.LoginResponse;
