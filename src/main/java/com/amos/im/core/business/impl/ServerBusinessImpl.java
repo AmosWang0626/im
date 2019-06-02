@@ -3,6 +3,7 @@ package com.amos.im.core.business.impl;
 import com.amos.im.common.protocol.PacketCodec;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.core.business.ServerBusiness;
+import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.handler.ImHandler;
 import com.amos.im.core.handler.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -16,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * PROJECT: Sales
  * DESCRIPTION: 服务端核心业务
@@ -27,6 +30,10 @@ import org.springframework.stereotype.Service;
 public class ServerBusinessImpl implements ServerBusiness {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerBusinessImpl.class);
+
+    @Resource
+    private ImConfig imConfig;
+
 
     private volatile static NioEventLoopGroup BOSS_GROUP;
     private volatile static NioEventLoopGroup WORK_GROUP;
@@ -50,7 +57,7 @@ public class ServerBusinessImpl implements ServerBusiness {
                     }
                 });
 
-        serverBootstrap.bind(8080).addListener(futureListener());
+        serverBootstrap.bind(imConfig.getPort()).addListener(futureListener());
     }
 
     private void initGroup() {

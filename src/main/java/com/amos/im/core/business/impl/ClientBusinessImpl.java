@@ -3,6 +3,7 @@ package com.amos.im.core.business.impl;
 import com.amos.im.common.protocol.PacketCodec;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.core.business.ClientBusiness;
+import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.handler.*;
 import com.amos.im.web.console.ConsoleManager;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -17,6 +18,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.concurrent.*;
 
 /**
@@ -29,11 +31,19 @@ import java.util.concurrent.*;
 @Service
 public class ClientBusinessImpl implements ClientBusiness {
 
-    public static void main(String[] args) {
-        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+    @Resource
+    private ImConfig imConfig;
+
+    private volatile static NioEventLoopGroup WORKER_GROUP;
+
+
+    @Override
+    public void init() {
+        initGroup();
+
         Bootstrap bootstrap = new Bootstrap();
         bootstrap
-                .group(workerGroup)
+                .group(WORKER_GROUP)
                 .channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -51,10 +61,10 @@ public class ClientBusinessImpl implements ClientBusiness {
                     }
                 });
 
-        bootstrap.connect("", 8080).addListener(futureListener());
+        bootstrap.connect(imConfig.getHost(), imConfig.getPort()).addListener(futureListener());
     }
 
-    private static GenericFutureListener<Future<? super Void>> futureListener() {
+    private GenericFutureListener<Future<? super Void>> futureListener() {
         return future -> {
             if (future.isSuccess()) {
                 System.out.println("[客户端启动] >>> 连接服务器成功!");
@@ -74,7 +84,7 @@ public class ClientBusinessImpl implements ClientBusiness {
      *
      * @param channel channel
      */
-    private static void startThreadPool(Channel channel) {
+    private void startThreadPool(Channel channel) {
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("netty-pool-%d").build();
         ExecutorService singleThreadPool = new ThreadPoolExecutor(
                 1, 2, 0L, TimeUnit.MILLISECONDS,
@@ -90,9 +100,10 @@ public class ClientBusinessImpl implements ClientBusiness {
         singleThreadPool.shutdown();
     }
 
-    @Override
-    public void init() {
-
+    private void initGroup() {
+        if (WORKER_GROUP == null) {
+            WORKER_GROUP = new NioEventLoopGroup();
+        }
     }
 
 }

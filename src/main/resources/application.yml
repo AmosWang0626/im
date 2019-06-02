@@ -4,3 +4,4 @@ spring:
 
 im:
   port: 8090
+  host: localhost
