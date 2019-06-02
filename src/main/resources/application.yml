@@ -10,7 +10,7 @@ spring:
     port: 1996
 
 server:
-  port: 8086
+  port: 8080
 
 im:
   port: 8090

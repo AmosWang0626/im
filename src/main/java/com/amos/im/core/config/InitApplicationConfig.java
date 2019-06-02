@@ -18,15 +18,16 @@ import org.springframework.core.annotation.Order;
 @Slf4j
 @Order(1)
 @Configuration
-public class InitApplicationRunner implements ApplicationRunner {
+public class InitApplicationConfig implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.info("init ...");
-//        RedisUtil.del(RedisKeys.SERVER_RUN_PORT);
+        long start = System.currentTimeMillis();
+        log.info("初始化项目配置开始...");
+        RedisUtil.del(RedisKeys.SERVER_RUN_PORT);
         RedisUtil.del(RedisKeys.SERVER_RUN_LOG);
         RedisUtil.del(RedisKeys.CLIENT_RUN_LOG);
-        log.info("init finish");
+        log.info("初始化项目配置完成, 耗时 {}毫秒!", (System.currentTimeMillis() - start));
     }
 
 }
