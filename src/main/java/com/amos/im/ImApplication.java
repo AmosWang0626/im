@@ -13,7 +13,16 @@ import java.util.Scanner;
 public class ImApplication {
 
     public static void main(String[] args) {
-        /*SpringApplication.run(ImApplication.class, args);*/
+        SpringApplication.run(ImApplication.class, args);
+    }
+
+
+    /**
+     * 有参启动
+     *
+     * @param args main args
+     */
+    private static void runProperties(String[] args) {
         SpringApplication app = new SpringApplication(ImApplication.class);
         app.setDefaultProperties(consoleInit());
         app.run(args);

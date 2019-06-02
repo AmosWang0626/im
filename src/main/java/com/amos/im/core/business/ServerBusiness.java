@@ -1,5 +1,7 @@
 package com.amos.im.core.business;
 
+import java.util.List;
+
 /**
  * PROJECT: Sales
  * DESCRIPTION: 服务端核心业务
@@ -10,8 +12,14 @@ package com.amos.im.core.business;
 public interface ServerBusiness {
 
     /**
-     * 初始化服务端
+     * 启动服务端
      */
-    void init();
+    void start();
 
+    /**
+     * 服务端日志
+     *
+     * @return 日志
+     */
+    List<String> logs();
 }

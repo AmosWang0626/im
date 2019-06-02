@@ -1,4 +1,4 @@
-package com.amos.im.common.constant;
+package com.amos.im.core.constant;
 
 /**
  * PROJECT: im

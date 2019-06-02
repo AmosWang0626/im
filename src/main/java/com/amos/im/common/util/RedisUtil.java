@@ -111,9 +111,15 @@ public class RedisUtil {
      * key
      */
 
+    public static void del(String key) {
+        del(key, null);
+    }
+
     public static void del(String key, Integer index) {
         Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        if (index != null) {
+            jedis.select(index);
+        }
 
         jedis.del(key);
 
@@ -127,9 +133,18 @@ public class RedisUtil {
     /**
      * 最后插入的在列表第一个位置
      */
+    public static Long lpush(String key, String... strings) {
+        return lpush(key, null, strings);
+    }
+
+    /**
+     * 最后插入的在列表第一个位置
+     */
     public static Long lpush(String key, Integer index, String... strings) {
         Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        if (index != null) {
+            jedis.select(index);
+        }
 
         Long count = jedis.lpush(key, strings);
 
@@ -138,9 +153,39 @@ public class RedisUtil {
         return count;
     }
 
-    public static List<String> lchange(String key, Integer index, long start, long end) {
+    /**
+     * 覆盖列表第一个元素
+     */
+    public static Long lpushx(String key, String... strings) {
+
+        return lpushx(key, null, strings);
+    }
+
+    /**
+     * 覆盖列表第一个元素
+     */
+    public static Long lpushx(String key, Integer index, String... strings) {
         Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        if (index != null) {
+            jedis.select(index);
+        }
+
+        Long count = jedis.lpushx(key, strings);
+
+        jedis.close();
+
+        return count;
+    }
+
+    public static List<String> lrange(String key, long start, long end) {
+        return lrange(key, null, start, end);
+    }
+
+    public static List<String> lrange(String key, Integer index, long start, long end) {
+        Jedis jedis = getPool().getResource();
+        if (index != null) {
+            jedis.select(index);
+        }
 
         List<String> list = jedis.lrange(key, start, end);
 

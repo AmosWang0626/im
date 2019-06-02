@@ -1,25 +1,15 @@
 package com.amos.im.core.business.impl;
 
-import com.amos.im.common.protocol.PacketCodec;
-import com.amos.im.common.protocol.PacketSplitter;
+import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.business.ClientBusiness;
-import com.amos.im.core.config.ImConfig;
-import com.amos.im.core.handler.*;
-import com.amos.im.web.console.ConsoleManager;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
+import com.amos.im.core.constant.RedisKeys;
+import com.amos.im.core.service.ClientService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.concurrent.*;
+import java.util.List;
 
 /**
  * PROJECT: Sales
@@ -28,82 +18,22 @@ import java.util.concurrent.*;
  * @author amos
  * @date 2019/6/1
  */
-@Service
+@Service("clientBusiness")
 public class ClientBusinessImpl implements ClientBusiness {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientBusinessImpl.class);
+
     @Resource
-    private ImConfig imConfig;
-
-    private volatile static NioEventLoopGroup WORKER_GROUP;
-
+    private ClientService clientService;
 
     @Override
-    public void init() {
-        initGroup();
-
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap
-                .group(WORKER_GROUP)
-                .channel(NioSocketChannel.class)
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new PacketSplitter());
-                        ch.pipeline().addLast(PacketCodec.INSTANCE);
-                        ch.pipeline().addLast(new LoginResponseHandler());
-                        ch.pipeline().addLast(new AuthHandler());
-                        ch.pipeline().addLast(new MessageResponseHandler());
-                        ch.pipeline().addLast(new GroupCreateResponseHandler());
-                        ch.pipeline().addLast(new GroupJoinResponseHandler());
-                        ch.pipeline().addLast(new GroupMemberListResponseHandler());
-                        ch.pipeline().addLast(new GroupQuitResponseHandler());
-                        ch.pipeline().addLast(new GroupMessageResponseHandler());
-                    }
-                });
-
-        bootstrap.connect(imConfig.getHost(), imConfig.getPort()).addListener(futureListener());
+    public void start() {
+        clientService.start();
     }
 
-    private GenericFutureListener<Future<? super Void>> futureListener() {
-        return future -> {
-            if (future.isSuccess()) {
-                System.out.println("[客户端启动] >>> 连接服务器成功!");
-                ChannelFuture channelFuture = (ChannelFuture) future;
-                // 控制台
-                startThreadPool(channelFuture.channel());
-                return;
-            }
+    @Override
+    public List<String> logs() {
 
-            System.out.println("[客户端启动] >>> 连接服务器失败! " + future.cause().getMessage());
-            System.exit(0);
-        };
+        return RedisUtil.lrange(RedisKeys.CLIENT_RUN_LOG, 0, -1);
     }
-
-    /**
-     * 线程启动控制台,实现客户端与服务端交互
-     *
-     * @param channel channel
-     */
-    private void startThreadPool(Channel channel) {
-        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("netty-pool-%d").build();
-        ExecutorService singleThreadPool = new ThreadPoolExecutor(
-                1, 2, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
-
-        singleThreadPool.execute(() -> {
-            while (!Thread.interrupted()) {
-                // 客户端控制台
-                ConsoleManager.newInstance().exec(channel);
-            }
-        });
-
-        singleThreadPool.shutdown();
-    }
-
-    private void initGroup() {
-        if (WORKER_GROUP == null) {
-            WORKER_GROUP = new NioEventLoopGroup();
-        }
-    }
-
 }

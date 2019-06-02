@@ -2,7 +2,7 @@ package com.amos.im.core.handler;
 
 import com.amos.im.common.GeneralCode;
 import com.amos.im.core.attribute.AttributeLoginUtil;
-import com.amos.im.common.constant.ImConstant;
+import com.amos.im.core.constant.ImConstant;
 import com.amos.im.common.util.IdUtil;
 import com.amos.im.core.request.LoginRequest;
 import com.amos.im.core.response.LoginResponse;

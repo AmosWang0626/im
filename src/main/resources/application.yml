@@ -1,11 +1,16 @@
 spring:
   application:
     name: im
+  profiles:
+    active: client
 
   redis:
     host: www.anthub.top
     database: 8
     port: 1996
+
+server:
+  port: 8086
 
 im:
   port: 8090
