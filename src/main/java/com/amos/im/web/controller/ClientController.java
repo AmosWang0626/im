@@ -31,15 +31,6 @@ public class ClientController {
         return "Hi, Client!";
     }
 
-    @GetMapping("start")
-    @ApiOperation("启动客户端")
-    public String start() {
-        clientBusiness.start();
-
-        return "Client 启动中,请稍后......";
-    }
-
-
     @GetMapping("logs")
     @ApiOperation("客户端日志")
     public List<String> logs() {

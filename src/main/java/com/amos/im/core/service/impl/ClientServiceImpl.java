@@ -4,10 +4,10 @@ import com.amos.im.common.protocol.PacketCodec;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
-import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.handler.*;
+import com.amos.im.core.request.LoginRequest;
 import com.amos.im.core.service.ClientService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -47,7 +47,7 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public void start() {
+    public void start(LoginRequest loginRequest) {
         initGroup();
 
         Bootstrap bootstrap = new Bootstrap();
@@ -78,19 +78,17 @@ public class ClientServiceImpl implements ClientService {
             return;
         }
 
-        connect(bootstrap, imConfig.getHost(), Integer.valueOf(serverRunPortStr), MAX_RETRY);
+        connect(bootstrap, imConfig.getHost(), Integer.valueOf(serverRunPortStr), MAX_RETRY, loginRequest);
     }
 
-    private void connect(Bootstrap bootstrap, String host, Integer port, int retry) {
+    private void connect(Bootstrap bootstrap, String host, Integer port, int retry, LoginRequest loginRequest) {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
                 String tempLog = String.format("[客户端启动] >>> 连接服务器成功! 服务端端口: %s", port);
                 RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.info(tempLog, this.getClass()));
 
                 ChannelFuture channelFuture = (ChannelFuture) future;
-                // 保存当前Channel
-                AttributeLoginUtil.setCurrentChannel(channelFuture.channel());
-                LOGGER.info("[客户端启动] >>> Channel ID 为 {}", AttributeLoginUtil.getCurrentChannel().id());
+                channelFuture.channel().writeAndFlush(loginRequest);
                 return;
             }
 
@@ -105,7 +103,7 @@ public class ClientServiceImpl implements ClientService {
             String tempLog = String.format("[客户端启动] >>> 连接服务器失败! 重试第 %s 次... Error: %s; ", bout, future.cause().getMessage());
             RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.error(tempLog, this.getClass()));
             bootstrap.config().group().schedule(() ->
-                    connect(bootstrap, host, port, retry - 1), (1 << bout >> 1), TimeUnit.SECONDS);
+                    connect(bootstrap, host, port, retry - 1, loginRequest), (1 << bout >> 1), TimeUnit.SECONDS);
 
         });
     }

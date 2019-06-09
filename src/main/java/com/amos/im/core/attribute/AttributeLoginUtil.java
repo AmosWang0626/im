@@ -16,19 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AttributeLoginUtil {
 
     /**
-     * 客户端留存当前Channel
-     */
-    private static Channel CURRENT_CHANNEL;
-
-    public static Channel getCurrentChannel() {
-        return CURRENT_CHANNEL;
-    }
-
-    public static void setCurrentChannel(Channel currentChannel) {
-        CURRENT_CHANNEL = currentChannel;
-    }
-
-    /**
      * 维护一个 [Token >>> Channel] 的映射Map
      */
     private static final Map<String, Channel> CHANNEL_TOKEN_MAP = new ConcurrentHashMap<>();

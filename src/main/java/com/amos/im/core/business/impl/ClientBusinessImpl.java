@@ -35,19 +35,13 @@ public class ClientBusinessImpl implements ClientBusiness {
         if (StringUtils.isBlank(loginRequest.getPassword())) {
             loginRequest.setPassword("123456");
         }
-        Channel currentChannel = AttributeLoginUtil.getCurrentChannel();
+        Channel currentChannel = AttributeLoginUtil.getChannel(loginRequest.getUsername());
         if (currentChannel == null) {
+            clientService.start(loginRequest);
             return "客户端启动中, 请稍后登录!";
         }
 
-        currentChannel.writeAndFlush(loginRequest);
-
-        return "客户端启动成功!";
-    }
-
-    @Override
-    public void start() {
-        clientService.start();
+        return "客户端登录成功!";
     }
 
     @Override

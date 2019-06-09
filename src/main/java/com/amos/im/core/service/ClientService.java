@@ -1,5 +1,7 @@
 package com.amos.im.core.service;
 
+import com.amos.im.core.request.LoginRequest;
+
 /**
  * PROJECT: Sales
  * DESCRIPTION: 客户端核心实现
@@ -11,7 +13,9 @@ public interface ClientService {
 
     /**
      * 客户端启动
+     *
+     * @param loginRequest 登录信息
      */
-    void start();
+    void start(LoginRequest loginRequest);
 
 }

@@ -22,11 +22,6 @@ public interface ClientBusiness {
     String login(LoginRequest loginRequest);
 
     /**
-     * 启动客户端
-     */
-    void start();
-
-    /**
      * 服务端日志
      *
      * @return 日志
