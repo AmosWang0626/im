@@ -2,8 +2,8 @@ package com.amos.im.core.handler;
 
 import com.amos.im.common.GeneralCode;
 import com.amos.im.core.attribute.AttributeGroupUtil;
-import com.amos.im.core.request.GroupQuitRequest;
-import com.amos.im.core.response.GroupQuitResponse;
+import com.amos.im.core.command.request.GroupQuitRequest;
+import com.amos.im.core.command.response.GroupQuitResponse;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

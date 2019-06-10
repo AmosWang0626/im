@@ -1,35 +1,30 @@
-package com.amos.im.core.response;
+package com.amos.im.core.command.response;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
+import com.amos.im.core.vo.GroupInfoVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * PROJECT: im
- * DESCRIPTION: LoginResponse
+ * DESCRIPTION: note
  *
  * @author Daoyuan
- * @date 2019/3/19
+ * @date 2019/3/26
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class LoginResponse extends BasePacket {
+public class GroupJoinResponse extends BasePacket {
 
-    /**
-     * 用户唯一标识
-     */
-    private String token;
-    /**
-     * 用户名
-     */
-    private String username;
+    private String nickName;
+
+    private GroupInfoVO groupInfoVO;
 
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_RESPONSE;
+        return Command.GROUP_JOIN_RESPONSE;
     }
-
 }

@@ -3,7 +3,7 @@ package com.amos.im.core.handler;
 import com.amos.im.core.attribute.AttributeGroupUtil;
 import com.amos.im.common.util.PrintUtil;
 import com.amos.im.core.vo.GroupInfoVO;
-import com.amos.im.core.response.GroupMessageResponse;
+import com.amos.im.core.command.response.GroupMessageResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

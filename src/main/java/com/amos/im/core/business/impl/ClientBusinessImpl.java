@@ -4,7 +4,7 @@ import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.business.ClientBusiness;
 import com.amos.im.core.constant.RedisKeys;
-import com.amos.im.core.request.LoginRequest;
+import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.service.ClientService;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;

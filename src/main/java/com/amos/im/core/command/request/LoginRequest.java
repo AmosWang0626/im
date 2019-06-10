@@ -1,4 +1,4 @@
-package com.amos.im.core.request;
+package com.amos.im.core.command.request;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 /**
  * PROJECT: im
- * DESCRIPTION: MessageRequest
+ * DESCRIPTION: LoginRequest
  *
  * @author Daoyuan
  * @date 2019/3/19
@@ -18,18 +18,18 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-@ApiModel("单聊消息Model")
-public class MessageRequest extends BasePacket {
+@ApiModel("登录Model")
+public class LoginRequest extends BasePacket {
 
-    @ApiModelProperty("收消息人Token")
-    private String toToken;
+    @ApiModelProperty(value = "用户名", required = true)
+    private String username;
 
-    @ApiModelProperty("单聊消息")
-    private String message;
+    @ApiModelProperty("密码")
+    private String password;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.LOGIN_REQUEST;
     }
 
 }

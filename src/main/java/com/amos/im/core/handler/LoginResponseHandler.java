@@ -2,7 +2,7 @@ package com.amos.im.core.handler;
 
 import com.amos.im.common.GeneralCode;
 import com.amos.im.core.attribute.AttributeLoginUtil;
-import com.amos.im.core.response.LoginResponse;
+import com.amos.im.core.command.response.LoginResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

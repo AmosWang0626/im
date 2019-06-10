@@ -2,8 +2,8 @@ package com.amos.im.core.handler;
 
 import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.vo.LoginInfoVO;
-import com.amos.im.core.request.MessageRequest;
-import com.amos.im.core.response.MessageResponse;
+import com.amos.im.core.command.request.MessageRequest;
+import com.amos.im.core.command.response.MessageResponse;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

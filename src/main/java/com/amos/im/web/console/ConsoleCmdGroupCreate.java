@@ -1,7 +1,7 @@
 package com.amos.im.web.console;
 
 import com.amos.im.core.attribute.AttributeLoginUtil;
-import com.amos.im.core.request.GroupCreateRequest;
+import com.amos.im.core.command.request.GroupCreateRequest;
 import io.netty.channel.Channel;
 
 import java.util.Arrays;

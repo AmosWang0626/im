@@ -7,7 +7,7 @@ import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.handler.*;
-import com.amos.im.core.request.LoginRequest;
+import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.service.ClientService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

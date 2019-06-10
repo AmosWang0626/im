@@ -1,27 +1,29 @@
-package com.amos.im.core.request;
+package com.amos.im.core.command.request;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * PROJECT: im
- * DESCRIPTION: 获取用户列表Request
+ * DESCRIPTION: note
  *
- * @author amos
- * @date 2019/4/4
+ * @author Daoyuan
+ * @date 2019/3/26
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@ApiModel("群聊成员Model")
-public class GroupMemberListRequest extends BasePacket {
+@Accessors(chain = true)
+@ApiModel("加入群聊Model")
+public class GroupJoinRequest extends BasePacket {
 
     private String groupId;
 
     @Override
     public Byte getCommand() {
-        return Command.GROUP_LIST_REQUEST;
+        return Command.GROUP_JOIN_REQUEST;
     }
 }

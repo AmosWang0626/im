@@ -1,4 +1,4 @@
-package com.amos.im.core.request;
+package com.amos.im.core.command.request;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;

@@ -28,7 +28,7 @@ public class CommandFactory {
         String packageName = Command.class.getPackage().getName();
         List<Class> classByPackageName;
         try {
-            classByPackageName = getClassByPackageName(packageName, "Command");
+            classByPackageName = getClassByPackageName(packageName);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -53,37 +53,47 @@ public class CommandFactory {
     }
 
     /**
-     * 根据包名, 拿到包下筛选后的类
+     * 根据包名, 拿到request/response包下指定类
      *
      * @param packageName 包名
-     * @param filter      筛选条件
      */
-    private static List<Class> getClassByPackageName(String packageName, String filter) throws ClassNotFoundException {
+    private static List<Class> getClassByPackageName(String packageName) throws ClassNotFoundException {
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
         String path = packageName.replace('.', '/');
-        URL resource = contextClassLoader.getResource(path);
-        if (resource == null) {
-            return null;
-        }
 
-        File[] files = new File(resource.getPath()).listFiles();
-        if (files == null) {
-            return null;
-        }
+        URL requestUrl = contextClassLoader.getResource(path + "/request");
+        URL responseUrl = contextClassLoader.getResource(path + "/response");
 
         List<Class> classes = new ArrayList<>();
 
-        for (File childFile : files) {
-            if (!childFile.isFile()) {
-                continue;
+        // request 包下所有类
+        File[] requestFiles = null;
+        if (requestUrl != null) {
+            requestFiles = new File(requestUrl.getPath()).listFiles();
+        }
+        if (requestFiles != null) {
+            for (File childFile : requestFiles) {
+                if (!childFile.isFile()) {
+                    continue;
+                }
+                String classPath = packageName + ".request." + childFile.getName().replace(".class", "");
+                classes.add(contextClassLoader.loadClass(classPath));
             }
-            // 筛除Command工具类
-            if (childFile.getName().contains(filter)) {
-                continue;
-            }
-            String classPath = packageName + "." + childFile.getName().replace(".class", "");
+        }
 
-            classes.add(contextClassLoader.loadClass(classPath));
+        // response 包下所有类
+        File[] responseFiles = null;
+        if (responseUrl != null) {
+            responseFiles = new File(responseUrl.getPath()).listFiles();
+        }
+        if (responseFiles != null) {
+            for (File childFile : responseFiles) {
+                if (!childFile.isFile()) {
+                    continue;
+                }
+                String classPath = packageName + ".response." + childFile.getName().replace(".class", "");
+                classes.add(contextClassLoader.loadClass(classPath));
+            }
         }
 
         if (classes.size() == 0) {

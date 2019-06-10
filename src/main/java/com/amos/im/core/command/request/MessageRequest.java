@@ -1,4 +1,4 @@
-package com.amos.im.core.request;
+package com.amos.im.core.command.request;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
@@ -10,26 +10,26 @@ import lombok.experimental.Accessors;
 
 /**
  * PROJECT: im
- * DESCRIPTION: GroupMessageRequest
+ * DESCRIPTION: MessageRequest
  *
  * @author Daoyuan
- * @date 2019/4/4
+ * @date 2019/3/19
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-@ApiModel("群聊消息Model")
-public class GroupMessageRequest extends BasePacket {
+@ApiModel("单聊消息Model")
+public class MessageRequest extends BasePacket {
 
-    @ApiModelProperty("收消息群ID")
-    private String toGroup;
+    @ApiModelProperty("收消息人Token")
+    private String toToken;
 
-    @ApiModelProperty("群聊消息")
+    @ApiModelProperty("单聊消息")
     private String message;
 
     @Override
     public Byte getCommand() {
-        return Command.GROUP_MESSAGE_REQUEST;
+        return Command.MESSAGE_REQUEST;
     }
 
 }

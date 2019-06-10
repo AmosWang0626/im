@@ -1,6 +1,6 @@
 package com.amos.im.web.console;
 
-import com.amos.im.core.request.GroupMemberListRequest;
+import com.amos.im.core.command.request.GroupMemberListRequest;
 import io.netty.channel.Channel;
 
 /**

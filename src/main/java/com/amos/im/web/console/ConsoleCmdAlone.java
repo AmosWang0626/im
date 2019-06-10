@@ -1,7 +1,7 @@
 package com.amos.im.web.console;
 
 import com.amos.im.common.util.PrintUtil;
-import com.amos.im.core.request.MessageRequest;
+import com.amos.im.core.command.request.MessageRequest;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 

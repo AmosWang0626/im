@@ -1,7 +1,7 @@
 package com.amos.im.core.handler;
 
 import com.amos.im.core.vo.GroupInfoVO;
-import com.amos.im.core.response.GroupMemberListResponse;
+import com.amos.im.core.command.response.GroupMemberListResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

@@ -1,7 +1,8 @@
-package com.amos.im.core.response;
+package com.amos.im.core.command.request;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -18,19 +19,23 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class GroupCreateResponse extends BasePacket {
-
-    private String groupId;
-
+@ApiModel("创建群聊Model")
+public class GroupCreateRequest extends BasePacket {
+    /**
+     * 发起人token
+     */
+    private String sponsor;
+    /**
+     * 群聊名称
+     */
     private String groupName;
-
-    private String sponsorName;
-
-    private List<String> nicknameList;
+    /**
+     * token 列表
+     */
+    private List<String> tokenList;
 
     @Override
     public Byte getCommand() {
-        return Command.GROUP_CREATE_RESPONSE;
+        return Command.GROUP_CREATE_REQUEST;
     }
-
 }

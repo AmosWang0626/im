@@ -1,7 +1,7 @@
 package com.amos.im.web.controller;
 
 import com.amos.im.core.business.ClientBusiness;
-import com.amos.im.core.request.LoginRequest;
+import com.amos.im.core.command.request.LoginRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;

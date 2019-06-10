@@ -1,6 +1,6 @@
 package com.amos.im.core.service;
 
-import com.amos.im.core.request.LoginRequest;
+import com.amos.im.core.command.request.LoginRequest;
 
 /**
  * PROJECT: Sales

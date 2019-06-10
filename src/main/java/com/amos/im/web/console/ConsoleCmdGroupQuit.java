@@ -1,6 +1,6 @@
 package com.amos.im.web.console;
 
-import com.amos.im.core.request.GroupQuitRequest;
+import com.amos.im.core.command.request.GroupQuitRequest;
 import io.netty.channel.Channel;
 
 /**
