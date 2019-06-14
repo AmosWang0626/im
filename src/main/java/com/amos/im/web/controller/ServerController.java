@@ -39,9 +39,7 @@ public class ServerController {
     @GetMapping("start")
     @ApiOperation("启动服务端")
     public String start() {
-        serverBusiness.start();
-
-        return "Server 启动中,请稍后......";
+        return serverBusiness.start();
     }
 
     /**

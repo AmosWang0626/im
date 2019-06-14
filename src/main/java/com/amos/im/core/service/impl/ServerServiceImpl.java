@@ -14,6 +14,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class ServerServiceImpl implements ServerService {
 
 
     @Override
-    public void start() {
+    public String start() {
         initGroup();
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
@@ -64,6 +65,13 @@ public class ServerServiceImpl implements ServerService {
                 });
 
         bind(serverBootstrap, imConfig.getPort());
+
+        String runPort = RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
+        if (StringUtils.isNotBlank(runPort)) {
+            return "服务端启动成功! 端口号: " + runPort;
+        } else {
+            return "服务端启动失败!";
+        }
     }
 
     private void bind(ServerBootstrap serverBootstrap, final Integer startPort) {

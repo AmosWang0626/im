@@ -11,7 +11,9 @@ public interface ServerService {
 
     /**
      * 服务端启动
+     *
+     * @return 服务端启动状态
      */
-    void start();
+    String start();
 
 }

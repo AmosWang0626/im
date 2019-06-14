@@ -28,8 +28,8 @@ public class ServerBusinessImpl implements ServerBusiness {
 
 
     @Override
-    public void start() {
-        serverService.start();
+    public String start() {
+        return serverService.start();
     }
 
     @Override

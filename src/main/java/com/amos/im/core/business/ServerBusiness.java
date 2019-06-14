@@ -13,8 +13,10 @@ public interface ServerBusiness {
 
     /**
      * 启动服务端
+     *
+     * @return 服务端启动状态
      */
-    void start();
+    String start();
 
     /**
      * 服务端日志
