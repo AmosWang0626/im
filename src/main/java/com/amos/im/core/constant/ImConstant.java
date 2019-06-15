@@ -13,5 +13,9 @@ public interface ImConstant {
      * 手机号长度
      */
     int PHONE_NO_LENGTH = 11;
+    /**
+     * 用户默认密码
+     */
+    String DEFAULT_PASSWORD = "123456";
 
 }

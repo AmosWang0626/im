@@ -26,7 +26,7 @@ public class GroupCreateResponse extends BasePacket {
 
     private String sponsorName;
 
-    private List<String> nicknameList;
+    private List<String> usernameList;
 
     @Override
     public Byte getCommand() {

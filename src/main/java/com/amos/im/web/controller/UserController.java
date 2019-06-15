@@ -1,15 +1,13 @@
 package com.amos.im.web.controller;
 
-import com.amos.im.core.business.ClientBusiness;
+import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * PROJECT: Sales
@@ -24,14 +22,27 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Resource
-    private ClientBusiness clientBusiness;
+    private LoginBusiness loginBusiness;
 
+
+    @GetMapping("/")
+    @ApiOperation("Hi")
+    public String base() {
+        return "Hi, Client-User!";
+    }
+
+    @GetMapping("logs")
+    @ApiOperation("登录日志")
+    public List<String> logs() {
+
+        return loginBusiness.logs();
+    }
 
     @PostMapping("login")
     @ApiOperation("用户登录")
     public String login(@RequestBody LoginRequest loginRequest) {
 
-        return clientBusiness.login(loginRequest);
+        return loginBusiness.login(loginRequest);
     }
 
 }

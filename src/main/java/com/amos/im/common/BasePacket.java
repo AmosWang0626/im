@@ -1,5 +1,6 @@
 package com.amos.im.common;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -19,19 +20,23 @@ public abstract class BasePacket {
     /**
      * 是否成功
      */
+    @ApiModelProperty(hidden = true)
     private Boolean success;
     /**
      * 失败原因
      */
+    @ApiModelProperty(hidden = true)
     private GeneralCode generalCode;
     /**
      * 创建时间
      */
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
     /**
      * 协议版本
      */
+    @ApiModelProperty(hidden = true)
     private Byte version = 1;
 
     /**
@@ -39,6 +44,7 @@ public abstract class BasePacket {
      *
      * @return 命令
      */
+    @ApiModelProperty(hidden = true)
     public abstract Byte getCommand();
 
 }

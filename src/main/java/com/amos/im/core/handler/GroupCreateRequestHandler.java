@@ -79,7 +79,7 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
                 System.out.println(s + "用户未登录!!!");
                 return;
             }
-            nickNameList.add(AttributeLoginUtil.getLoginInfo(channel).getNickname());
+            nickNameList.add(AttributeLoginUtil.getLoginInfo(channel).getUsername());
             channels.add(channel);
         });
 
@@ -91,7 +91,7 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
         // 通知用户加入群聊
         GroupCreateResponse groupCreateResponse = new GroupCreateResponse();
         groupCreateResponse.setGroupId(groupId).setGroupName(groupName)
-                .setNicknameList(nickNameList).setSponsorName(AttributeLoginUtil.getLoginInfo(ctx.channel()).getNickname())
+                .setUsernameList(nickNameList).setSponsorName(AttributeLoginUtil.getLoginInfo(ctx.channel()).getUsername())
                 .setSuccess(true).setCreateTime(new Date());
 
         channels.writeAndFlush(groupCreateResponse).addListener(future -> {

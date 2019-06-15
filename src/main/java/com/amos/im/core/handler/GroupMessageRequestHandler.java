@@ -28,7 +28,7 @@ public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<Grou
     protected void channelRead0(ChannelHandlerContext ctx, GroupMessageRequest request) {
         LoginInfoVO loginInfo = AttributeLoginUtil.getLoginInfo(ctx.channel());
         System.out.println(MessageFormat.format("[{0}] >>> {1}, {2}",
-                loginInfo.getNickname(), request.getCreateTime(), request.getMessage()));
+                loginInfo.getUsername(), request.getCreateTime(), request.getMessage()));
 
         GroupMessageResponse response = new GroupMessageResponse();
 
@@ -41,7 +41,7 @@ public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<Grou
             return;
         }
 
-        response.setFromGroup(request.getToGroup()).setNickName(loginInfo.getNickname())
+        response.setFromGroup(request.getToGroup()).setUsername(loginInfo.getUsername())
                 .setMessage(request.getMessage()).setSuccess(true).setCreateTime(new Date());
         channels.writeAndFlush(response);
     }

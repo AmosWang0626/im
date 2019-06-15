@@ -12,7 +12,7 @@ public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageR
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageResponse msg) {
-        PrintUtil.message(msg.getCreateTime(), msg.getNickName(), msg.getMessage());
+        PrintUtil.message(msg.getCreateTime(), msg.getUsername(), msg.getMessage());
     }
 
 }

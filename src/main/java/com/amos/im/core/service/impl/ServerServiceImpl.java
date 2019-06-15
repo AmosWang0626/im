@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * PROJECT: Sales
@@ -70,8 +71,14 @@ public class ServerServiceImpl implements ServerService {
         if (StringUtils.isNotBlank(runPort)) {
             return "服务端启动成功! 端口号: " + runPort;
         } else {
-            return "服务端启动失败!";
+            return "服务端启动中, 请查看启动日志!";
         }
+    }
+
+    @Override
+    public List<String> logs() {
+
+        return RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
     }
 
     private void bind(ServerBootstrap serverBootstrap, final Integer startPort) {

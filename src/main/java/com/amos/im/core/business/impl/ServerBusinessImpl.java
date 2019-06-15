@@ -1,8 +1,6 @@
 package com.amos.im.core.business.impl;
 
-import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.business.ServerBusiness;
-import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.service.ServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +33,6 @@ public class ServerBusinessImpl implements ServerBusiness {
     @Override
     public List<String> logs() {
 
-        return RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
+        return serverService.logs();
     }
 }

@@ -21,7 +21,7 @@ public class GroupJoinResponseHandler extends SimpleChannelInboundHandler<GroupJ
             System.out.println(response.getGeneralCode().getMsg());
             return;
         }
-        String nickName = response.getNickName();
+        String nickName = response.getUsername();
         System.out.println(nickName + " 加入群聊成功!");
 
         // 客户端保存群聊信息(稍有冗余)

@@ -4,12 +4,14 @@ import com.amos.im.common.protocol.PacketCodec;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
+import com.amos.im.core.attribute.AttributeLoginUtil;
+import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.handler.*;
-import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.service.ClientService;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,7 +50,7 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public void start(LoginRequest loginRequest) {
+    public String start(LoginRequest loginRequest) {
         initGroup();
 
         Bootstrap bootstrap = new Bootstrap();
@@ -75,10 +78,22 @@ public class ClientServiceImpl implements ClientService {
         if (StringUtils.isBlank(serverRunPortStr)) {
             String tempLog = "[客户端启动] >>> 启动受限! 请检查服务端是否启动!";
             RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.error(tempLog, this.getClass()));
-            return;
+            return "登录失败, 请检查服务端是否启动!";
         }
 
         connect(bootstrap, imConfig.getHost(), Integer.valueOf(serverRunPortStr), MAX_RETRY, loginRequest);
+
+        Channel currentChannel = AttributeLoginUtil.getChannelByUsername(loginRequest.getUsername());
+        if (currentChannel != null) {
+            return "登录成功!";
+        }
+        return "登录中, 请查看登录日志!";
+    }
+
+    @Override
+    public List<String> logs() {
+
+        return RedisUtil.lrange(RedisKeys.CLIENT_RUN_LOG, 0, -1);
     }
 
     private void connect(Bootstrap bootstrap, String host, Integer port, int retry, LoginRequest loginRequest) {

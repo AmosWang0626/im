@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class GroupJoinResponse extends BasePacket {
 
-    private String nickName;
+    private String username;
 
     private GroupInfoVO groupInfoVO;
 

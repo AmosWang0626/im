@@ -16,9 +16,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AttributeLoginUtil {
 
     /**
-     * 维护一个 [Token >>> Channel] 的映射Map
+     * 维护一个 [token >>> Channel] 的映射Map
      */
     private static final Map<String, Channel> CHANNEL_TOKEN_MAP = new ConcurrentHashMap<>();
+    /**
+     * 维护一个 [username >>> Channel] 的映射Map, 限制用户名重复使用
+     */
+    private static final Map<String, Channel> CHANNEL_USERNAME_MAP = new ConcurrentHashMap<>();
 
     /**
      * 是否已登录
@@ -30,9 +34,10 @@ public class AttributeLoginUtil {
     /**
      * 保存登录token
      */
-    public static void bindToken(Channel channel, String token, String name) {
+    public static void bindToken(Channel channel, String token, String username) {
         CHANNEL_TOKEN_MAP.put(token, channel);
-        channel.attr(ImAttribute.LOGIN_INFO).set(new LoginInfoVO().setToken(token).setNickname(name));
+        CHANNEL_USERNAME_MAP.put(username, channel);
+        channel.attr(ImAttribute.LOGIN_INFO).set(new LoginInfoVO().setToken(token).setUsername(username));
     }
 
     /**
@@ -53,10 +58,17 @@ public class AttributeLoginUtil {
     }
 
     /**
-     * 根据token获取channel
+     * 根据 token 获取 channel
      */
     public static Channel getChannel(String token) {
         return CHANNEL_TOKEN_MAP.get(token);
+    }
+
+    /**
+     * 根据 username 获取 channel
+     */
+    public static Channel getChannelByUsername(String username) {
+        return CHANNEL_USERNAME_MAP.get(username);
     }
 
 }

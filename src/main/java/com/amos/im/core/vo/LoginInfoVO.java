@@ -16,6 +16,6 @@ public class LoginInfoVO {
 
     private String token;
 
-    private String nickname;
+    private String username;
 
 }

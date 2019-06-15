@@ -11,7 +11,7 @@ import java.util.List;
  * @author amos
  * @date 2019/6/1
  */
-public interface ClientBusiness {
+public interface LoginBusiness {
 
     /**
      * 登录
@@ -22,7 +22,7 @@ public interface ClientBusiness {
     String login(LoginRequest loginRequest);
 
     /**
-     * 服务端日志
+     * 登录日志
      *
      * @return 日志
      */

@@ -21,10 +21,10 @@ import lombok.experimental.Accessors;
 @ApiModel("登录Model")
 public class LoginRequest extends BasePacket {
 
-    @ApiModelProperty(value = "用户名", required = true)
+    @ApiModelProperty(value = "用户名", allowableValues = "amos", required = true)
     private String username;
 
-    @ApiModelProperty("密码")
+    @ApiModelProperty(value = "密码", allowableValues = "123456")
     private String password;
 
     @Override

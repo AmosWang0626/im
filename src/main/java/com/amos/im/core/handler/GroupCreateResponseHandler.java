@@ -24,7 +24,7 @@ public class GroupCreateResponseHandler extends SimpleChannelInboundHandler<Grou
             // 只要加入群聊，则每个成员都会添加群聊信息
             AttributeGroupUtil.addGroupClient(ctx.channel(), groupId, groupName);
 
-            PrintUtil.join(groupName, groupId, groupCreateResponse.getNicknameList().toString());
+            PrintUtil.join(groupName, groupId, groupCreateResponse.getUsernameList().toString());
         }
 
     }

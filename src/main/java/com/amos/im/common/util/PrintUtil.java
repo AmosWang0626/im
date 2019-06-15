@@ -47,7 +47,7 @@ public class PrintUtil {
      */
     public static void groupMessage(GroupMessageResponse response, GroupInfoVO groupInfo) {
         System.out.println(String.format("\n[群消息] %s\t%tT\n%s:  %s\n",
-                groupInfo.getGroupName(), response.getCreateTime(), response.getNickName(), response.getMessage()));
+                groupInfo.getGroupName(), response.getCreateTime(), response.getUsername(), response.getMessage()));
     }
 
 //    public static void main(String[] args) {

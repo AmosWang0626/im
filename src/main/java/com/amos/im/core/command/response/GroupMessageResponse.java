@@ -21,7 +21,7 @@ public class GroupMessageResponse extends BasePacket {
     /**
      * 发送人昵称
      */
-    private String nickName;
+    private String username;
     /**
      * 发送人token
      */

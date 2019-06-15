@@ -59,7 +59,7 @@ public class GroupJoinRequestHandler extends SimpleChannelInboundHandler<GroupJo
 
         response.setSuccess(true);
         response.setCreateTime(new Date());
-        response.setNickName(loginInfo.getNickname());
+        response.setUsername(loginInfo.getUsername());
         response.setGroupInfoVO(AttributeGroupUtil.getGroupInfoServer(groupId));
 
         channels.writeAndFlush(response);
@@ -68,7 +68,7 @@ public class GroupJoinRequestHandler extends SimpleChannelInboundHandler<GroupJo
 
         channels.forEach(channel -> {
             LoginInfoVO loginInfoVO = channel.attr(ImAttribute.LOGIN_INFO).get();
-            list.add(String.format("[%s](%s)", loginInfoVO.getToken(), loginInfoVO.getNickname()));
+            list.add(String.format("[%s](%s)", loginInfoVO.getToken(), loginInfoVO.getUsername()));
         });
         System.out.println("群聊成员: " + list);
     }
