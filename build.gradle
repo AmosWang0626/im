@@ -54,6 +54,7 @@ dependencies {
     compile group: 'redis.clients', name: 'jedis', version: '3.0.1'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile("org.springframework.boot:spring-boot-starter-websocket")
 }
 
 // step.4
