@@ -2,8 +2,8 @@ package com.amos.im.common.util;
 
 import com.amos.im.core.constant.RedisKeys;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @author amos
  * @date 2019/6/2
  */
-@Component
+@Configuration
 public class LogUtils {
 
     @Resource
@@ -52,12 +52,12 @@ public class LogUtils {
         LoggerFactory.getLogger(clazz).info(log);
 
         if (RedisKeys.CLIENT_RUN_LOG.equals(channel)) {
-            simpMessagingTemplate.convertAndSend("/client/message", log);
+            simpMessagingTemplate.convertAndSend("/client/logs", log);
             RedisUtil.lpush(channel, String.format(TEMPLATE_INFO, DateUtil.getNowStr(), log));
             return;
         }
 
-        simpMessagingTemplate.convertAndSend("/server/message", log);
+        simpMessagingTemplate.convertAndSend("/server/logs", log);
         RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, String.format(TEMPLATE_INFO, DateUtil.getNowStr(), log));
     }
 
@@ -72,12 +72,12 @@ public class LogUtils {
         LoggerFactory.getLogger(clazz).error(log);
 
         if (RedisKeys.CLIENT_RUN_LOG.equals(channel)) {
-            simpMessagingTemplate.convertAndSend("/client/message", log);
+            simpMessagingTemplate.convertAndSend("/client/logs", log);
             RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, String.format(TEMPLATE_ERROR, DateUtil.getNowStr(), log));
             return;
         }
 
-        simpMessagingTemplate.convertAndSend("/server/message", log);
+        simpMessagingTemplate.convertAndSend("/server/logs", log);
         RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, String.format(TEMPLATE_ERROR, DateUtil.getNowStr(), log));
     }
 
