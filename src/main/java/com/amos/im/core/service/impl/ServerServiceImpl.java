@@ -14,8 +14,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,10 +29,10 @@ import java.util.List;
 @Service("serverService")
 public class ServerServiceImpl implements ServerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServerServiceImpl.class);
-
     @Resource
     private ImConfig imConfig;
+    @Resource
+    private LogUtils logUtils;
 
     /**
      * 接受新连接线程，主要负责创建新连接
@@ -79,7 +77,7 @@ public class ServerServiceImpl implements ServerService {
         serverBootstrap.bind(startPort).addListener(future -> {
             if (future.isSuccess()) {
                 String tempLog = String.format("[服务端启动] >>> 成功! 端口号: %s", startPort);
-                RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, LogUtils.info(tempLog, this.getClass()));
+                logUtils.serverInfo(tempLog, this.getClass());
 
                 // 保存服务端启动的端口
                 RedisUtil.set(RedisKeys.SERVER_RUN_PORT, String.valueOf(startPort));
@@ -87,7 +85,7 @@ public class ServerServiceImpl implements ServerService {
             }
 
             String tempLog = String.format("[服务端启动] >>> 失败! %s", future.cause().getMessage());
-            RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, LogUtils.error(tempLog, this.getClass()));
+            logUtils.serverError(tempLog, this.getClass());
 
             bind(serverBootstrap, startPort + 1);
         });

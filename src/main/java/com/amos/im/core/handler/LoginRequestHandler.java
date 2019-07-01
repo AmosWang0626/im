@@ -3,14 +3,15 @@ package com.amos.im.core.handler;
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.util.IdUtil;
 import com.amos.im.common.util.LogUtils;
-import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.response.LoginResponse;
-import com.amos.im.core.constant.RedisKeys;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * DESCRIPTION: 处理客户端发出的登录请求
@@ -18,7 +19,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @author Daoyuan
  */
 @ChannelHandler.Sharable
+@Component
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequest> {
+
+    @Resource
+    private LogUtils logUtils;
 
     public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
@@ -36,7 +41,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             System.out.println(">>>>>>>>> [服务端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + token);
 
             String tempLog = "[服务端] >>> 客户端 [" + token + "](" + username + ")登录成功!";
-            RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, LogUtils.info(tempLog, this.getClass()));
+            logUtils.serverInfo(tempLog, this.getClass());
         } else {
             System.out.println("[服务端] >>> 客户端登录失败!!!");
             generalCode = GeneralCode.LOGIN_FAIL;

@@ -18,8 +18,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,10 +34,10 @@ import java.util.concurrent.TimeUnit;
 @Service("clientService")
 public class ClientServiceImpl implements ClientService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceImpl.class);
-
     @Resource
     private ImConfig imConfig;
+    @Resource
+    private LogUtils logUtils;
 
     private volatile static NioEventLoopGroup WORKER_GROUP;
 
@@ -77,7 +75,7 @@ public class ClientServiceImpl implements ClientService {
         String serverRunPortStr = RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
         if (StringUtils.isBlank(serverRunPortStr)) {
             String tempLog = "[客户端启动] >>> 启动受限! 请检查服务端是否启动!";
-            RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.error(tempLog, this.getClass()));
+            logUtils.clientError(tempLog, this.getClass());
             return "登录失败, 请检查服务端是否启动!";
         }
 
@@ -100,7 +98,7 @@ public class ClientServiceImpl implements ClientService {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
                 String tempLog = String.format("[客户端启动] >>> 连接服务器成功! 服务端端口: %s", port);
-                RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.info(tempLog, this.getClass()));
+                logUtils.clientInfo(tempLog, this.getClass());
 
                 ChannelFuture channelFuture = (ChannelFuture) future;
                 channelFuture.channel().writeAndFlush(loginRequest);
@@ -111,12 +109,12 @@ public class ClientServiceImpl implements ClientService {
             int bout = MAX_RETRY - retry + 1;
             if (retry == 0) {
                 String tempLog = "[客户端启动] >>> 连接服务器失败! 重试次数达上限, 请检查服务端状态!";
-                RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.error(tempLog, this.getClass()));
+                logUtils.clientError(tempLog, this.getClass());
                 return;
             }
 
             String tempLog = String.format("[客户端启动] >>> 连接服务器失败! 重试第 %s 次... Error: %s; ", bout, future.cause().getMessage());
-            RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, LogUtils.error(tempLog, this.getClass()));
+            logUtils.clientError(tempLog, this.getClass());
             bootstrap.config().group().schedule(() ->
                     connect(bootstrap, host, port, retry - 1, loginRequest), (1 << bout >> 1), TimeUnit.SECONDS);
 
