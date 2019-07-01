@@ -1,10 +1,15 @@
 package com.amos.im.web.controller;
 
+import com.amos.im.core.business.LoginBusiness;
+import com.amos.im.core.business.ServerBusiness;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * PROJECT: Sales
@@ -17,12 +22,26 @@ import org.springframework.stereotype.Controller;
 @Api(tags = {"WebSocket"})
 public class WebSocketController {
 
-    @MessageMapping("/message")
-    @SendTo("/ws/message")
-    @ApiOperation("message")
-    public String message(String message) throws Exception {
-        Thread.sleep(1000);
-        return "Hello " + message + ", welcome websocket!";
+    @Resource
+    private ServerBusiness serverBusiness;
+    @Resource
+    private LoginBusiness loginBusiness;
+
+
+    @MessageMapping("/serverLogs")
+    @SendTo("/server/logs")
+    @ApiOperation("服务器日志")
+    public List<String> serverLogs() {
+
+        return serverBusiness.logs();
+    }
+
+    @MessageMapping("/clientLogs")
+    @SendTo("/client/logs")
+    @ApiOperation("客户端日志")
+    public List<String> clientLogs() {
+
+        return loginBusiness.logs();
     }
 
 }
