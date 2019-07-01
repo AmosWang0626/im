@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
@@ -20,39 +21,32 @@ public class LogUtils {
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    private static LogUtils logUtils;
+
     private static final String TEMPLATE_INFO = "[INFO]( %s ): %s";
     private static final String TEMPLATE_ERROR = "[ERROR]( %s ): %s";
 
-
-    /**
-     * 服务端日志
-     */
-    public void serverInfo(String log, Class clazz) {
-        baseInfo(RedisKeys.SERVER_RUN_LOG, log, clazz);
+    @PostConstruct
+    public void init() {
+        logUtils = this;
     }
 
-    public void serverError(String log, Class clazz) {
-        baseError(RedisKeys.SERVER_RUN_LOG, log, clazz);
+    public static void info(String channel, String log, Class clazz) {
+        logUtils.baseInfo(channel, log, clazz);
     }
 
-    /**
-     * 客户端日志
-     */
-    public void clientInfo(String log, Class clazz) {
-        baseInfo(RedisKeys.CLIENT_RUN_LOG, log, clazz);
-    }
-
-    public void clientError(String log, Class clazz) {
-        baseError(RedisKeys.CLIENT_RUN_LOG, log, clazz);
+    public static void error(String channel, String log, Class clazz) {
+        logUtils.baseError(channel, log, clazz);
     }
 
 
     /**
      * info logs
      *
-     * @param channel RedisKeys.SERVER_RUN_LOG || RedisKeys.CLIENT_RUN_LOG
+     * @param channel RedisKeys
      * @param log     log content
      * @param clazz   print log clazz
+     * @see RedisKeys
      */
     private void baseInfo(String channel, String log, Class clazz) {
         LoggerFactory.getLogger(clazz).info(log);

@@ -31,8 +31,6 @@ public class ServerServiceImpl implements ServerService {
 
     @Resource
     private ImConfig imConfig;
-    @Resource
-    private LogUtils logUtils;
 
     /**
      * 接受新连接线程，主要负责创建新连接
@@ -77,7 +75,7 @@ public class ServerServiceImpl implements ServerService {
         serverBootstrap.bind(startPort).addListener(future -> {
             if (future.isSuccess()) {
                 String tempLog = String.format("[服务端启动] >>> 成功! 端口号: %s", startPort);
-                logUtils.serverInfo(tempLog, this.getClass());
+                LogUtils.info(RedisKeys.SERVER_RUN_LOG, tempLog, this.getClass());
 
                 // 保存服务端启动的端口
                 RedisUtil.set(RedisKeys.SERVER_RUN_PORT, String.valueOf(startPort));
@@ -85,7 +83,7 @@ public class ServerServiceImpl implements ServerService {
             }
 
             String tempLog = String.format("[服务端启动] >>> 失败! %s", future.cause().getMessage());
-            logUtils.serverError(tempLog, this.getClass());
+            LogUtils.error(RedisKeys.SERVER_RUN_LOG, tempLog, this.getClass());
 
             bind(serverBootstrap, startPort + 1);
         });

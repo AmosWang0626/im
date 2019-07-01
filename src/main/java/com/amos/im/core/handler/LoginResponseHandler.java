@@ -4,20 +4,16 @@ import com.amos.im.common.GeneralCode;
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.command.response.LoginResponse;
+import com.amos.im.core.constant.RedisKeys;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * @author Daoyuan
  */
 @Component
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponse> {
-
-    @Resource
-    private LogUtils logUtils;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponse loginResponse) {
@@ -27,7 +23,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
             System.out.println(">>>>>>>>> [客户端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + loginResponse.getToken());
 
             String tempLog = "[客户端] >>> " + loginResponse.getUsername() + " 登录成功, 可以聊天了!";
-            logUtils.clientInfo(tempLog, this.getClass());
+            LogUtils.info(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
         } else {
             System.out.println("[客户端] >>> 登录失败!!! " + loginResponse.getGeneralCode().getMsg());
         }

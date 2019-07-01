@@ -22,7 +22,7 @@ public class ScheduleManage {
     @Scheduled(fixedDelay = 300000)
     public void serverMessage() {
         String currentTime = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now());
-        LOGGER.info("Hello Schedule Manage [{}]", currentTime);
+        LOGGER.info("Schedule Manage [{}]", currentTime);
     }
 
 }

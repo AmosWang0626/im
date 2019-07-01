@@ -36,8 +36,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Resource
     private ImConfig imConfig;
-    @Resource
-    private LogUtils logUtils;
 
     private volatile static NioEventLoopGroup WORKER_GROUP;
 
@@ -75,7 +73,7 @@ public class ClientServiceImpl implements ClientService {
         String serverRunPortStr = RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
         if (StringUtils.isBlank(serverRunPortStr)) {
             String tempLog = "[客户端启动] >>> 启动受限! 请检查服务端是否启动!";
-            logUtils.clientError(tempLog, this.getClass());
+            LogUtils.error(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
             return "登录失败, 请检查服务端是否启动!";
         }
 
@@ -98,7 +96,7 @@ public class ClientServiceImpl implements ClientService {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
                 String tempLog = String.format("[客户端启动] >>> 连接服务器成功! 服务端端口: %s", port);
-                logUtils.clientInfo(tempLog, this.getClass());
+                LogUtils.info(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
 
                 ChannelFuture channelFuture = (ChannelFuture) future;
                 channelFuture.channel().writeAndFlush(loginRequest);
@@ -109,12 +107,12 @@ public class ClientServiceImpl implements ClientService {
             int bout = MAX_RETRY - retry + 1;
             if (retry == 0) {
                 String tempLog = "[客户端启动] >>> 连接服务器失败! 重试次数达上限, 请检查服务端状态!";
-                logUtils.clientError(tempLog, this.getClass());
+                LogUtils.error(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
                 return;
             }
 
             String tempLog = String.format("[客户端启动] >>> 连接服务器失败! 重试第 %s 次... Error: %s; ", bout, future.cause().getMessage());
-            logUtils.clientError(tempLog, this.getClass());
+            LogUtils.error(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
             bootstrap.config().group().schedule(() ->
                     connect(bootstrap, host, port, retry - 1, loginRequest), (1 << bout >> 1), TimeUnit.SECONDS);
 
