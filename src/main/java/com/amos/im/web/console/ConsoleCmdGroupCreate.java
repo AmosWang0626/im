@@ -4,8 +4,8 @@ import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.command.request.GroupCreateRequest;
 import io.netty.channel.Channel;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +34,7 @@ public class ConsoleCmdGroupCreate extends BaseConsole {
 
         GroupCreateRequest groupCreateRequest = new GroupCreateRequest();
         groupCreateRequest.setSponsor(AttributeLoginUtil.getLoginInfo(channel).getToken())
-                .setGroupName(groupName).setTokenList(tokenList).setCreateTime(new Date());
+                .setGroupName(groupName).setTokenList(tokenList).setCreateTime(LocalDateTime.now());
 
         channel.writeAndFlush(groupCreateRequest);
     }

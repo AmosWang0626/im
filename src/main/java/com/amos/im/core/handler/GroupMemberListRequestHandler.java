@@ -45,7 +45,7 @@ public class GroupMemberListRequestHandler extends SimpleChannelInboundHandler<G
         // List 群聊成员信息
         List<LoginInfoVO> list = new Vector<>();
         channels.forEach(channel -> list.add(channel.attr(ImAttribute.LOGIN_INFO).get()));
-        response.setLoginInfoVOS(list);
+        response.setLoginInfoList(list);
 
         ctx.channel().writeAndFlush(response);
     }

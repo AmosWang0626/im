@@ -21,9 +21,9 @@ public class ImController {
     private String imFlag;
 
     @GetMapping("/")
-    @ApiOperation("Hello")
+    @ApiOperation("ping")
     public String base() {
-        return "Hello IM!";
+        return "PONG";
     }
 
     @GetMapping("env")

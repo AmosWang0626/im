@@ -1,12 +1,12 @@
 package com.amos.im.core.handler;
 
 import com.amos.im.common.GeneralCode;
+import com.amos.im.common.util.IdUtil;
 import com.amos.im.core.attribute.AttributeGroupUtil;
 import com.amos.im.core.attribute.AttributeLoginUtil;
-import com.amos.im.common.util.IdUtil;
-import com.amos.im.core.vo.GroupInfoVO;
 import com.amos.im.core.command.request.GroupCreateRequest;
 import com.amos.im.core.command.response.GroupCreateResponse;
+import com.amos.im.core.vo.GroupInfoVO;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -16,8 +16,8 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -52,7 +52,7 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
         // 群聊基本信息
         String sponsor = groupCreateRequest.getSponsor();
         String groupName = groupCreateRequest.getGroupName();
-        Date createTime = groupCreateRequest.getCreateTime();
+        LocalDateTime createTime = groupCreateRequest.getCreateTime();
         System.out.println(MessageFormat.format(
                 "[{0}] {1} 发起建群请求 >>> 群名: {2}", createTime, sponsor, groupName));
 
@@ -61,7 +61,7 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
         if (tokenList == null || tokenList.size() == 0) {
             System.out.println("群内不能没有成员!!!");
             GroupCreateResponse groupCreateResponse = new GroupCreateResponse();
-            groupCreateResponse.setSuccess(false).setCreateTime(new Date())
+            groupCreateResponse.setSuccess(false).setCreateTime(LocalDateTime.now())
                     .setGeneralCode(GeneralCode.CREATE_GROUP_FAIL);
 
             ctx.channel().writeAndFlush(groupCreateResponse);
@@ -92,7 +92,7 @@ public class GroupCreateRequestHandler extends SimpleChannelInboundHandler<Group
         GroupCreateResponse groupCreateResponse = new GroupCreateResponse();
         groupCreateResponse.setGroupId(groupId).setGroupName(groupName)
                 .setUsernameList(nickNameList).setSponsorName(AttributeLoginUtil.getLoginInfo(ctx.channel()).getUsername())
-                .setSuccess(true).setCreateTime(new Date());
+                .setSuccess(true).setCreateTime(LocalDateTime.now());
 
         channels.writeAndFlush(groupCreateResponse).addListener(future -> {
             // 统计执行耗时

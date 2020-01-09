@@ -1,6 +1,7 @@
 package com.amos.im.core.business;
 
 import com.amos.im.core.command.request.LoginRequest;
+import com.amos.im.core.command.request.MessageRequest;
 
 import java.util.List;
 
@@ -28,4 +29,11 @@ public interface LoginBusiness {
      */
     List<String> logs();
 
+    /**
+     * 单聊
+     *
+     * @param messageRequest 消息表单
+     * @return result
+     */
+    String alone(MessageRequest messageRequest);
 }

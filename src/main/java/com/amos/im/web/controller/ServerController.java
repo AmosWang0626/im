@@ -25,12 +25,6 @@ public class ServerController {
     @Resource
     private ServerBusiness serverBusiness;
 
-    @GetMapping("/")
-    @ApiOperation("Hi")
-    public String base() {
-        return "Hi, Server!";
-    }
-
     /**
      * 启动服务端
      *

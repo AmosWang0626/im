@@ -1,10 +1,10 @@
 package com.amos.im.common.util;
 
-import com.amos.im.core.vo.GroupInfoVO;
 import com.amos.im.core.command.response.GroupMessageResponse;
+import com.amos.im.core.vo.GroupInfoVO;
 
 import java.text.MessageFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ public class PrintUtil {
     /**
      * 打印用户发的消息
      */
-    public static void message(Date createTime, String nickName, String message) {
+    public static void message(LocalDateTime createTime, String nickName, String message) {
         System.out.println(MessageFormat.format("\n\t{0}\n{1}:  {2}\n",
                 createTime, nickName, message));
     }

@@ -2,6 +2,7 @@ package com.amos.im.web.controller;
 
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
+import com.amos.im.core.command.request.MessageRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -16,20 +17,13 @@ import java.util.List;
  * @author amos
  * @date 2019/6/1
  */
-@Api(tags = {"客户端", "登录相关"})
+@Api(tags = {"客户端"})
 @RestController
 @RequestMapping("user")
-public class UserController {
+public class ClientController {
 
     @Resource
     private LoginBusiness loginBusiness;
-
-
-    @GetMapping("/")
-    @ApiOperation("Hi")
-    public String base() {
-        return "Hi, Client-User!";
-    }
 
     @GetMapping("logs")
     @ApiOperation("登录日志")
@@ -43,6 +37,13 @@ public class UserController {
     public String login(@RequestBody LoginRequest loginRequest) {
 
         return loginBusiness.login(loginRequest);
+    }
+
+    @PostMapping("alone")
+    @ApiOperation("单聊")
+    public String alone(@RequestBody MessageRequest messageRequest) {
+
+        return loginBusiness.alone(messageRequest);
     }
 
 }

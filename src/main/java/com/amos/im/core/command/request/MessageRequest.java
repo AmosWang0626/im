@@ -21,10 +21,10 @@ import lombok.experimental.Accessors;
 @ApiModel("单聊消息Model")
 public class MessageRequest extends BasePacket {
 
-    @ApiModelProperty("收消息人Token")
-    private String toToken;
+    @ApiModelProperty(value = "收消息人Token", example = "c1")
+    private String receiver;
 
-    @ApiModelProperty("单聊消息")
+    @ApiModelProperty(value = "单聊消息", example = "你好呀，很高兴与你聊天～")
     private String message;
 
     @Override

@@ -3,7 +3,7 @@ package com.amos.im.core.vo;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * PROJECT: im
@@ -22,6 +22,6 @@ public class GroupInfoVO {
 
     private String sponsorName;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

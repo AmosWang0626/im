@@ -41,11 +41,11 @@ public class AttributeGroupUtil {
      * 客户端 --- 退出群组
      */
     public static void quitGroupClient(Channel channel, String groupId) {
-        Map<String, GroupInfoVO> groupInfoVOMap = channel.attr(ImAttribute.GROUP_INFO_MAP).get();
+        Map<String, GroupInfoVO> groupInfoMap = channel.attr(ImAttribute.GROUP_INFO_MAP).get();
 
-        if (groupInfoVOMap.get(groupId) != null) {
-            groupInfoVOMap.remove(groupId);
-            channel.attr(ImAttribute.GROUP_INFO_MAP).set(groupInfoVOMap);
+        if (groupInfoMap.get(groupId) != null) {
+            groupInfoMap.remove(groupId);
+            channel.attr(ImAttribute.GROUP_INFO_MAP).set(groupInfoMap);
         }
     }
 
@@ -60,11 +60,11 @@ public class AttributeGroupUtil {
      * 客户端 --- 获取已加入群的群信息
      */
     public static List<GroupInfoVO> getGroupInfoClient(Channel channel) {
-        Map<String, GroupInfoVO> groupInfoVOMap = channel.attr(ImAttribute.GROUP_INFO_MAP).get();
-        if (groupInfoVOMap == null || groupInfoVOMap.size() == 0) {
+        Map<String, GroupInfoVO> groupInfoMap = channel.attr(ImAttribute.GROUP_INFO_MAP).get();
+        if (groupInfoMap == null || groupInfoMap.size() == 0) {
             return null;
         }
-        return new ArrayList<>(groupInfoVOMap.values());
+        return new ArrayList<>(groupInfoMap.values());
     }
 
     /*

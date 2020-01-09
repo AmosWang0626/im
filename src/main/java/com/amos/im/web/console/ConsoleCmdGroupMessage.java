@@ -8,7 +8,7 @@ import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,7 +49,7 @@ public class ConsoleCmdGroupMessage extends BaseConsole {
         backConsoleManager(channel, groupId);
 
         GroupMessageRequest request = new GroupMessageRequest();
-        request.setToGroup(groupId).setMessage(message).setCreateTime(new Date());
+        request.setToGroup(groupId).setMessage(message).setCreateTime(LocalDateTime.now());
         channel.writeAndFlush(request);
     }
 

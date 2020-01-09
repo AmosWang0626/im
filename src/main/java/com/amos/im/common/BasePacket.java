@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * PROJECT: im
@@ -17,34 +17,27 @@ import java.util.Date;
 @Accessors(chain = true)
 public abstract class BasePacket {
 
-    /**
-     * 是否成功
-     */
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(value = "是否成功", hidden = true)
     private Boolean success;
-    /**
-     * 失败原因
-     */
-    @ApiModelProperty(hidden = true)
-    private GeneralCode generalCode;
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(hidden = true)
-    private Date createTime;
 
-    /**
-     * 协议版本
-     */
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(value = "失败原因", hidden = true)
+    private GeneralCode generalCode;
+
+    @ApiModelProperty(value = "发送人token")
+    private String sender;
+
+    @ApiModelProperty(value = "创建时间", hidden = true)
+    private LocalDateTime createTime;
+
+    @ApiModelProperty(value = "协议版本", hidden = true)
     private Byte version = 1;
 
     /**
-     * 指令
+     * 指令(由实现类指定,指令数量有限[-128, 127])
      *
-     * @return 命令
+     * @return byte
      */
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(value = "指令", hidden = true)
     public abstract Byte getCommand();
 
 }

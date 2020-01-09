@@ -1,19 +1,19 @@
 package com.amos.im.core.handler;
 
 import com.amos.im.common.GeneralCode;
-import com.amos.im.core.attribute.ImAttribute;
 import com.amos.im.core.attribute.AttributeGroupUtil;
 import com.amos.im.core.attribute.AttributeLoginUtil;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.attribute.ImAttribute;
 import com.amos.im.core.command.request.GroupJoinRequest;
 import com.amos.im.core.command.response.GroupJoinResponse;
+import com.amos.im.core.vo.LoginInfoVO;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Vector;
 
@@ -58,7 +58,7 @@ public class GroupJoinRequestHandler extends SimpleChannelInboundHandler<GroupJo
         AttributeGroupUtil.updateGroupServer(groupId, channels);
 
         response.setSuccess(true);
-        response.setCreateTime(new Date());
+        response.setCreateTime(LocalDateTime.now());
         response.setUsername(loginInfo.getUsername());
         response.setGroupInfoVO(AttributeGroupUtil.getGroupInfoServer(groupId));
 

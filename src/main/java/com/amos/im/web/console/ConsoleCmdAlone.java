@@ -5,7 +5,7 @@ import com.amos.im.core.command.request.MessageRequest;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * PROJECT: im
@@ -31,12 +31,11 @@ public class ConsoleCmdAlone extends BaseConsole {
         // 对首个输入校验是否是退出标识
         backConsoleManager(channel, token);
 
-        Date sendTime = new Date();
         MessageRequest request = new MessageRequest();
-        request.setToToken(token).setMessage(message).setCreateTime(new Date());
+        request.setReceiver(token).setMessage(message).setCreateTime(LocalDateTime.now());
         channel.writeAndFlush(request);
 
-        PrintUtil.message(sendTime, "我", message);
+        PrintUtil.message(request.getCreateTime(), "我", message);
     }
 
 }

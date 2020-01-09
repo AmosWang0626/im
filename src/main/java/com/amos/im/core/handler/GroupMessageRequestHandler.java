@@ -3,16 +3,16 @@ package com.amos.im.core.handler;
 import com.amos.im.common.GeneralCode;
 import com.amos.im.core.attribute.AttributeGroupUtil;
 import com.amos.im.core.attribute.AttributeLoginUtil;
-import com.amos.im.core.vo.LoginInfoVO;
 import com.amos.im.core.command.request.GroupMessageRequest;
 import com.amos.im.core.command.response.GroupMessageResponse;
+import com.amos.im.core.vo.LoginInfoVO;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 
 import java.text.MessageFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * DESCRIPTION: 服务端 >>> 转发消息 到 指定客户端
@@ -42,7 +42,7 @@ public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<Grou
         }
 
         response.setFromGroup(request.getToGroup()).setUsername(loginInfo.getUsername())
-                .setMessage(request.getMessage()).setSuccess(true).setCreateTime(new Date());
+                .setMessage(request.getMessage()).setSuccess(true).setCreateTime(LocalDateTime.now());
         channels.writeAndFlush(response);
     }
 

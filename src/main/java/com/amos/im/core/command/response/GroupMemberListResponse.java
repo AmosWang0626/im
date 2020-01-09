@@ -22,7 +22,7 @@ public class GroupMemberListResponse extends BasePacket {
 
     private GroupInfoVO groupInfoVO;
 
-    private List<LoginInfoVO> loginInfoVOS;
+    private List<LoginInfoVO> loginInfoList;
 
     @Override
     public Byte getCommand() {

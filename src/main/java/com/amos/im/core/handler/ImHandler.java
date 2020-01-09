@@ -35,6 +35,8 @@ public class ImHandler extends SimpleChannelInboundHandler<BasePacket> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, BasePacket basePacket) throws Exception {
-        handlerMap.get(basePacket.getCommand()).channelRead(ctx, basePacket);
+        if (handlerMap.get(basePacket.getCommand()) != null) {
+            handlerMap.get(basePacket.getCommand()).channelRead(ctx, basePacket);
+        }
     }
 }

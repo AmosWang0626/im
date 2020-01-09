@@ -28,7 +28,7 @@ public class GroupMemberListResponseHandler extends SimpleChannelInboundHandler<
         String groupInfo = String.format("群聊[%s](%s)成员列表: ", groupInfoVO.getGroupId(), groupInfoVO.getGroupName());
 
         List<String> list = new Vector<>();
-        response.getLoginInfoVOS().forEach(loginInfoVO -> list.add(String.format("[%s](%s)", loginInfoVO.getToken(), loginInfoVO.getUsername())));
+        response.getLoginInfoList().forEach(loginInfoVO -> list.add(String.format("[%s](%s)", loginInfoVO.getToken(), loginInfoVO.getUsername())));
         System.out.println(groupInfo + list);
     }
 
