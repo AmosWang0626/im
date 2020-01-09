@@ -5,9 +5,9 @@ spring:
     active: client
 
   redis:
-    host: www.anthub.top
+    host: amos.wang
     database: 8
-    port: 1996
+    port: 1998
 
 server:
   port: 8080

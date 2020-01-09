@@ -31,16 +31,10 @@ public interface SerializerAlgorithm {
      * @return 序列化工具类
      */
     static Serializer getSerializer(byte algorithm) {
-        switch (algorithm) {
-            case JSON:
-                return new JsonSerializer();
-
-            case HESSIAN:
-                return new HessianSerializer();
-
-            default:
-                return new JsonSerializer();
+        if (algorithm == HESSIAN) {
+            return new HessianSerializer();
         }
+        return new JsonSerializer();
     }
 
 }
