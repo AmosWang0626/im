@@ -31,11 +31,11 @@ public class LogUtils {
         logUtils = this;
     }
 
-    public static void info(String channel, String log, Class clazz) {
+    public static void info(String channel, String log, Class<?> clazz) {
         logUtils.baseInfo(channel, log, clazz);
     }
 
-    public static void error(String channel, String log, Class clazz) {
+    public static void error(String channel, String log, Class<?> clazz) {
         logUtils.baseError(channel, log, clazz);
     }
 
@@ -48,17 +48,20 @@ public class LogUtils {
      * @param clazz   print log clazz
      * @see RedisKeys
      */
-    private void baseInfo(String channel, String log, Class clazz) {
+    private void baseInfo(String channel, String log, Class<?> clazz) {
         LoggerFactory.getLogger(clazz).info(log);
+        String infoLog = String.format(TEMPLATE_INFO, DateUtil.getNowStr(), log);
 
         if (RedisKeys.CLIENT_RUN_LOG.equals(channel)) {
-            simpMessagingTemplate.convertAndSend("/client/logs", log);
-            RedisUtil.lpush(channel, String.format(TEMPLATE_INFO, DateUtil.getNowStr(), log));
+            // websocket push
+            simpMessagingTemplate.convertAndSend("/client/logs", infoLog);
+            // redis log push
+            RedisUtil.lpush(channel, infoLog);
             return;
         }
 
-        simpMessagingTemplate.convertAndSend("/server/logs", log);
-        RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, String.format(TEMPLATE_INFO, DateUtil.getNowStr(), log));
+        simpMessagingTemplate.convertAndSend("/server/logs", infoLog);
+        RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, infoLog);
     }
 
     /**
@@ -68,17 +71,18 @@ public class LogUtils {
      * @param log     log content
      * @param clazz   print log clazz
      */
-    private void baseError(String channel, String log, Class clazz) {
+    private void baseError(String channel, String log, Class<?> clazz) {
         LoggerFactory.getLogger(clazz).error(log);
+        String errorLog = String.format(TEMPLATE_ERROR, DateUtil.getNowStr(), log);
 
         if (RedisKeys.CLIENT_RUN_LOG.equals(channel)) {
-            simpMessagingTemplate.convertAndSend("/client/logs", log);
-            RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, String.format(TEMPLATE_ERROR, DateUtil.getNowStr(), log));
+            simpMessagingTemplate.convertAndSend("/client/logs", errorLog);
+            RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, errorLog);
             return;
         }
 
-        simpMessagingTemplate.convertAndSend("/server/logs", log);
-        RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, String.format(TEMPLATE_ERROR, DateUtil.getNowStr(), log));
+        simpMessagingTemplate.convertAndSend("/server/logs", errorLog);
+        RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, errorLog);
     }
 
 }
