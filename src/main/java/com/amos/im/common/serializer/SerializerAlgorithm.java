@@ -17,6 +17,10 @@ public interface SerializerAlgorithm {
      * HESSIAN 序列化标识
      */
     byte HESSIAN = 2;
+    /**
+     * PROTOBUF 序列化标识
+     */
+    byte PROTOBUF = 2;
 
     /**
      * 默认序列化算法 JsonSerializer
