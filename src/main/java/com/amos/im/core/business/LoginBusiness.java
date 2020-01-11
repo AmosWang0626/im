@@ -2,6 +2,7 @@ package com.amos.im.core.business;
 
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.request.MessageRequest;
+import com.amos.im.core.vo.UserInfoVO;
 
 import java.util.List;
 
@@ -36,4 +37,11 @@ public interface LoginBusiness {
      * @return result
      */
     String alone(MessageRequest messageRequest);
+
+    /**
+     * 已登录用户列表
+     *
+     * @return list
+     */
+    List<UserInfoVO> list();
 }

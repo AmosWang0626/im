@@ -69,7 +69,7 @@ public class ClientServiceImpl implements ClientService {
                     }
                 });
 
-        // init 客户端启动端口
+        // init 客户端绑定端口
         String serverRunPortStr = RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
         if (StringUtils.isBlank(serverRunPortStr)) {
             String tempLog = "[客户端启动] >>> 启动受限! 请检查服务端是否启动!";

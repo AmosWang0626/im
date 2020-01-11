@@ -1,5 +1,6 @@
 package com.amos.im.core.business.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.amos.im.common.util.PrintUtil;
 import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.business.LoginBusiness;
@@ -7,6 +8,7 @@ import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.request.MessageRequest;
 import com.amos.im.core.constant.ImConstant;
 import com.amos.im.core.service.ClientService;
+import com.amos.im.core.vo.UserInfoVO;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -53,6 +55,12 @@ public class LoginBusinessImpl implements LoginBusiness {
     public List<String> logs() {
 
         return clientService.logs();
+    }
+
+    @Override
+    public List<UserInfoVO> list() {
+
+        return AttributeLoginUtil.onlineList();
     }
 
     @Override

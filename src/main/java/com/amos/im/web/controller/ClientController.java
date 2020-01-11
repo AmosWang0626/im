@@ -3,6 +3,7 @@ package com.amos.im.web.controller;
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.request.MessageRequest;
+import com.amos.im.core.vo.UserInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,14 @@ public class ClientController {
 
         return loginBusiness.login(loginRequest);
     }
+
+    @GetMapping("list")
+    @ApiOperation("已登录用户列表")
+    public List<UserInfoVO> list() {
+
+        return loginBusiness.list();
+    }
+
 
     @PostMapping("alone")
     @ApiOperation("单聊")
