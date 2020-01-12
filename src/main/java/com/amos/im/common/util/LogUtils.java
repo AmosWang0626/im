@@ -32,10 +32,18 @@ public class LogUtils {
     }
 
     public static void info(String channel, String log, Class<?> clazz) {
+        if (logUtils == null) {
+            LoggerFactory.getLogger(clazz).info(log);
+            return;
+        }
         logUtils.baseInfo(channel, log, clazz);
     }
 
     public static void error(String channel, String log, Class<?> clazz) {
+        if (logUtils == null) {
+            LoggerFactory.getLogger(clazz).error(log);
+            return;
+        }
         logUtils.baseError(channel, log, clazz);
     }
 
