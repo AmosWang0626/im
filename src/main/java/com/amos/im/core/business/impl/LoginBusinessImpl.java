@@ -1,11 +1,8 @@
 package com.amos.im.core.business.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.amos.im.common.util.PrintUtil;
 import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
-import com.amos.im.core.command.request.MessageRequest;
 import com.amos.im.core.constant.ImConstant;
 import com.amos.im.core.service.ClientService;
 import com.amos.im.core.vo.UserInfoVO;
@@ -16,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -63,14 +59,4 @@ public class LoginBusinessImpl implements LoginBusiness {
         return AttributeLoginUtil.onlineList();
     }
 
-    @Override
-    public String alone(MessageRequest messageRequest) {
-        Channel fromChannel = AttributeLoginUtil.getChannel(messageRequest.getReceiver());
-        messageRequest.setCreateTime(LocalDateTime.now());
-        fromChannel.writeAndFlush(messageRequest);
-
-        PrintUtil.message(messageRequest.getCreateTime(), "我", messageRequest.getMessage());
-
-        return "发送成功!";
-    }
 }

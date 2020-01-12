@@ -11,6 +11,7 @@ import com.amos.im.core.handler.LoginRequestHandler;
 import com.amos.im.core.service.ServerService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -56,6 +57,7 @@ public class ServerServiceImpl implements ServerService {
         serverBootstrap
                 .group(BOSS_GROUP, WORK_GROUP)
                 .channel(NioServerSocketChannel.class)
+                .option(ChannelOption.SO_KEEPALIVE,true)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {

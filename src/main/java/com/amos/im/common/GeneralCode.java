@@ -17,6 +17,7 @@ public enum GeneralCode {
     CREATE_GROUP_FAIL("302", "群内不能没有成员"),
     GROUP_NOT_EXIST("303", "群聊不存在"),
     YOU_HAVE_JOINED_THE_GROUP("304", "您已加入该群聊"),
+    ALONE_BOTH_LOGIN("305", "单聊，请先确认两人都已登录"),
     ;
 
     private final String code;
