@@ -102,6 +102,7 @@ public class ClientServiceImpl implements ClientService {
 
                 ChannelFuture channelFuture = (ChannelFuture) future;
                 channelFuture.channel().writeAndFlush(loginRequest);
+                System.out.println(this.getClass().getSimpleName() + channelFuture.channel());
                 return;
             }
 

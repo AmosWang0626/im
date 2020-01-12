@@ -31,7 +31,6 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        // 客户端移除登录成功凭证
         AttributeLoginUtil.unBindToken(ctx.channel());
         super.channelInactive(ctx);
     }

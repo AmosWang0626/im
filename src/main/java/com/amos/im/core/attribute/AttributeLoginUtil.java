@@ -59,8 +59,10 @@ public class AttributeLoginUtil {
      */
     public static void unBindToken(Channel channel) {
         if (hasLogin(channel)) {
-            CHANNEL_TOKEN_MAP.remove(getLoginInfo(channel).getToken());
-            TOKEN_USER_INFO_MAP.remove(getLoginInfo(channel).getToken());
+            LoginInfoVO loginInfo = getLoginInfo(channel);
+            CHANNEL_USERNAME_MAP.remove(loginInfo.getUsername());
+            CHANNEL_TOKEN_MAP.remove(loginInfo.getToken());
+            TOKEN_USER_INFO_MAP.remove(loginInfo.getToken());
             channel.attr(ImAttribute.LOGIN_INFO).set(null);
         }
     }
@@ -70,6 +72,13 @@ public class AttributeLoginUtil {
      */
     public static LoginInfoVO getLoginInfo(Channel channel) {
         return channel.attr(ImAttribute.LOGIN_INFO).get();
+    }
+
+    /**
+     * 根据token获取用户信息
+     */
+    public static UserInfoVO getUserInfo(String token) {
+        return TOKEN_USER_INFO_MAP.get(token);
     }
 
     /**

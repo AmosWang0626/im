@@ -3,7 +3,7 @@ package com.amos.im.core.handler;
 import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.command.request.MessageRequest;
 import com.amos.im.core.command.response.MessageResponse;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.vo.UserInfoVO;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,15 +24,16 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequest messageRequest) {
-        LoginInfoVO sendClient = AttributeLoginUtil.getLoginInfo(ctx.channel());
+        UserInfoVO userInfo = AttributeLoginUtil.getUserInfo(messageRequest.getSender());
         System.out.println(MessageFormat.format("[{0}] >>> {1}, {2}",
-                sendClient.getUsername(), messageRequest.getCreateTime(), messageRequest.getMessage()));
+                userInfo.getUsername(), messageRequest.getCreateTime(), messageRequest.getMessage()));
 
         // 根据消息中指定的token，发送给对应用户
         Channel channel = AttributeLoginUtil.getChannel(messageRequest.getReceiver());
+        System.out.println(this.getClass().getSimpleName() + channel);
 
         MessageResponse response = new MessageResponse();
-        response.setFromToken(sendClient.getToken()).setUsername(sendClient.getUsername())
+        response.setFromToken(messageRequest.getSender()).setUsername(userInfo.getUsername())
                 .setMessage(messageRequest.getMessage()).setCreateTime(LocalDateTime.now());
 
         if (channel != null && AttributeLoginUtil.hasLogin(channel)) {
