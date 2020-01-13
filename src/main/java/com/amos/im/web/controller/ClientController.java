@@ -2,7 +2,7 @@ package com.amos.im.web.controller;
 
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
-import com.amos.im.core.vo.UserInfoVO;
+import com.amos.im.core.vo.LoginInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class ClientController {
 
     @GetMapping("list")
     @ApiOperation("已登录用户列表")
-    public List<UserInfoVO> list() {
+    public List<LoginInfoVO> list() {
 
         return loginBusiness.list();
     }

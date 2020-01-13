@@ -29,7 +29,7 @@ public class ChatAloneController {
 
     @PostMapping
     @ApiOperation("单聊")
-    public GeneralResponse alone(@RequestBody MessageRequest messageRequest) {
+    public GeneralResponse<?> alone(@RequestBody MessageRequest messageRequest) {
 
         return aloneBusiness.alone(messageRequest);
     }

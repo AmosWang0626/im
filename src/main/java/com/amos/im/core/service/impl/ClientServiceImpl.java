@@ -4,14 +4,13 @@ import com.amos.im.common.protocol.PacketCodec;
 import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
-import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.command.request.LoginRequest;
+import com.amos.im.core.command.response.MessageResponse;
 import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.handler.*;
 import com.amos.im.core.service.ClientService;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -22,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +54,7 @@ public class ClientServiceImpl implements ClientService {
         bootstrap
                 .group(WORKER_GROUP)
                 .channel(NioSocketChannel.class)
-                .option(ChannelOption.SO_KEEPALIVE,true)
+                .option(ChannelOption.SO_KEEPALIVE, true)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
@@ -81,10 +81,6 @@ public class ClientServiceImpl implements ClientService {
 
         connect(bootstrap, imConfig.getHost(), Integer.valueOf(serverRunPortStr), MAX_RETRY, loginRequest);
 
-        Channel currentChannel = AttributeLoginUtil.getChannelByUsername(loginRequest.getUsername());
-        if (currentChannel != null) {
-            return "登录成功!";
-        }
         return "登录中, 请查看登录日志!";
     }
 
@@ -101,7 +97,12 @@ public class ClientServiceImpl implements ClientService {
                 LogUtils.info(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
 
                 ChannelFuture channelFuture = (ChannelFuture) future;
+                System.out.println("[客户端] >>>>>> " + channelFuture.channel());
                 channelFuture.channel().writeAndFlush(loginRequest);
+
+                MessageResponse response = new MessageResponse();
+                response.setFromToken("CLIENT").setUsername("客户端").setMessage("暂不能收到您的消息").setCreateTime(LocalDateTime.now());
+                channelFuture.channel().writeAndFlush(response);
                 System.out.println(this.getClass().getSimpleName() + channelFuture.channel());
                 return;
             }

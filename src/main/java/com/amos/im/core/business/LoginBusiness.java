@@ -1,7 +1,7 @@
 package com.amos.im.core.business;
 
 import com.amos.im.core.command.request.LoginRequest;
-import com.amos.im.core.vo.UserInfoVO;
+import com.amos.im.core.vo.LoginInfoVO;
 
 import java.util.List;
 
@@ -34,5 +34,5 @@ public interface LoginBusiness {
      *
      * @return list
      */
-    List<UserInfoVO> list();
+    List<LoginInfoVO> list();
 }

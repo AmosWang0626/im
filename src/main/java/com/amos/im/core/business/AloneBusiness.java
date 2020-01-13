@@ -17,7 +17,6 @@ public interface AloneBusiness {
      * @param messageRequest 消息表单
      * @return result
      */
-    GeneralResponse alone(MessageRequest messageRequest);
-
+    GeneralResponse<?> alone(MessageRequest messageRequest);
 
 }

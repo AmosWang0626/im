@@ -9,7 +9,6 @@ import java.util.Set;
 
 /**
  * PROJECT: 由静态方法构成的Redis工具类
- * DESCRIPTION: notes
  *
  * @author amos.wang
  * @date 2018/8/30

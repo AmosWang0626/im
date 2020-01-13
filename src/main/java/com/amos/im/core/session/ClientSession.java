@@ -1,5 +1,6 @@
-package com.amos.im.core.attribute;
+package com.amos.im.core.session;
 
+import com.amos.im.core.attribute.ImAttribute;
 import com.amos.im.core.vo.LoginInfoVO;
 import io.netty.channel.Channel;
 
@@ -10,13 +11,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * PROJECT: im
- * DESCRIPTION: note
+ * DESCRIPTION: 客户端 channel
  *
- * @author Daoyuan
- * @date 2019/3/20
+ * @author <a href="mailto:amos.wang@xiaoi.com">amos.wang</a>
+ * @date 1/13/2020
  */
-public class AttributeLoginUtil {
+public class ClientSession {
 
     /**
      * 维护一个 [token >>> Channel] 的映射Map
@@ -26,10 +26,6 @@ public class AttributeLoginUtil {
      * 维护一个 [token >>> UserInfoVO] 的映射Map, 供获取在线用户
      */
     private static final Map<String, LoginInfoVO> TOKEN_USER_INFO_MAP = new ConcurrentHashMap<>();
-    /**
-     * 维护一个 [username >>> Channel] 的映射Map, 限制用户名重复使用
-     */
-    private static final Map<String, Channel> CHANNEL_USERNAME_MAP = new ConcurrentHashMap<>();
 
 
     /**
@@ -44,10 +40,9 @@ public class AttributeLoginUtil {
      */
     public static void bindToken(Channel channel, String token, String username) {
         CHANNEL_TOKEN_MAP.put(token, channel);
-        CHANNEL_USERNAME_MAP.put(username, channel);
         LoginInfoVO loginInfo = new LoginInfoVO().setToken(token).setUsername(username).setCreateTime(LocalDateTime.now());
         TOKEN_USER_INFO_MAP.put(token, loginInfo);
-        channel.attr(ImAttribute.LOGIN_INFO).set(new LoginInfoVO().setToken(token).setUsername(username));
+        channel.attr(ImAttribute.LOGIN_INFO).set(loginInfo);
     }
 
     /**
@@ -56,7 +51,6 @@ public class AttributeLoginUtil {
     public static void unBindToken(Channel channel) {
         if (hasLogin(channel)) {
             LoginInfoVO loginInfo = getLoginInfo(channel);
-            CHANNEL_USERNAME_MAP.remove(loginInfo.getUsername());
             CHANNEL_TOKEN_MAP.remove(loginInfo.getToken());
             TOKEN_USER_INFO_MAP.remove(loginInfo.getToken());
             channel.attr(ImAttribute.LOGIN_INFO).set(null);
@@ -73,7 +67,7 @@ public class AttributeLoginUtil {
     /**
      * 根据token获取用户信息
      */
-    public static LoginInfoVO getUserInfo(String token) {
+    public static LoginInfoVO getLoginInfo(String token) {
         return TOKEN_USER_INFO_MAP.get(token);
     }
 
@@ -82,13 +76,6 @@ public class AttributeLoginUtil {
      */
     public static Channel getChannel(String token) {
         return CHANNEL_TOKEN_MAP.get(token);
-    }
-
-    /**
-     * 根据 username 获取 channel
-     */
-    public static Channel getChannelByUsername(String username) {
-        return CHANNEL_USERNAME_MAP.get(username);
     }
 
     /**

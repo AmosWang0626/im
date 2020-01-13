@@ -1,6 +1,7 @@
 package com.amos.im.core.handler;
 
 import com.amos.im.core.attribute.AttributeLoginUtil;
+import com.amos.im.core.session.ClientSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -15,7 +16,7 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (AttributeLoginUtil.hasLogin(ctx.channel())) {
+        if (ClientSession.hasLogin(ctx.channel())) {
             // 移除登录校验Handler
             ctx.pipeline().remove(this);
             super.channelRead(ctx, msg);

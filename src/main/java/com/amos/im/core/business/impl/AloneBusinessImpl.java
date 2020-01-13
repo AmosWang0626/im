@@ -3,9 +3,9 @@ package com.amos.im.core.business.impl;
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.GeneralResponse;
 import com.amos.im.common.util.PrintUtil;
-import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.business.AloneBusiness;
 import com.amos.im.core.command.request.MessageRequest;
+import com.amos.im.core.session.ClientSession;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +22,10 @@ public class AloneBusinessImpl implements AloneBusiness {
 
 
     @Override
-    public GeneralResponse alone(MessageRequest messageRequest) {
-        Channel fromChannel = AttributeLoginUtil.getChannel(messageRequest.getSender());
+    public GeneralResponse<?> alone(MessageRequest messageRequest) {
+        Channel fromChannel = ClientSession.getChannel(messageRequest.getSender());
         if (fromChannel == null) {
-            return new GeneralResponse(GeneralCode.ALONE_BOTH_LOGIN);
+            return new GeneralResponse<>(GeneralCode.ALONE_BOTH_LOGIN);
         }
         messageRequest.setCreateTime(LocalDateTime.now());
         fromChannel.writeAndFlush(messageRequest);

@@ -1,12 +1,11 @@
 package com.amos.im.core.business.impl;
 
-import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.constant.ImConstant;
 import com.amos.im.core.service.ClientService;
-import com.amos.im.core.vo.UserInfoVO;
-import io.netty.channel.Channel;
+import com.amos.im.core.session.ServerSession;
+import com.amos.im.core.vo.LoginInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +38,8 @@ public class LoginBusinessImpl implements LoginBusiness {
             return "登录失败, 密码错误!";
         }
         String username = loginRequest.getUsername();
-        Channel currentChannel = AttributeLoginUtil.getChannelByUsername(username);
-        if (currentChannel != null) {
+        LoginInfoVO loginInfo = ServerSession.onlyUsername(username);
+        if (loginInfo != null) {
             return "用户名已被占用, 请使用其他用户名登录!";
         }
 
@@ -54,9 +53,9 @@ public class LoginBusinessImpl implements LoginBusiness {
     }
 
     @Override
-    public List<UserInfoVO> list() {
+    public List<LoginInfoVO> list() {
 
-        return AttributeLoginUtil.onlineList();
+        return ServerSession.onlineList();
     }
 
 }

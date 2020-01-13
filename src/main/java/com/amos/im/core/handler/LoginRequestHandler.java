@@ -3,10 +3,10 @@ package com.amos.im.core.handler;
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.util.IdUtil;
 import com.amos.im.common.util.LogUtils;
-import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.response.LoginResponse;
 import com.amos.im.core.constant.RedisKeys;
+import com.amos.im.core.session.ServerSession;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -33,7 +33,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             response.setUsername(username).setToken(token);
 
             // 保存客户端登录状态
-            AttributeLoginUtil.bindToken(ctx.channel(), token, username);
+            ServerSession.bindToken(ctx.channel(), token, username);
             System.out.println(">>>>>>>>> [服务端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + token);
             System.out.println(this.getClass().getSimpleName() + ctx.channel());
 
@@ -52,7 +52,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        AttributeLoginUtil.unBindToken(ctx.channel());
+        ServerSession.unBindToken(ctx.channel());
         super.channelInactive(ctx);
     }
 

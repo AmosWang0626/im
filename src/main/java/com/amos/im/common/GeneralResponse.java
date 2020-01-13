@@ -1,5 +1,7 @@
 package com.amos.im.common;
 
+import java.io.Serializable;
+
 /**
  * PROJECT: im
  * DESCRIPTION: GeneralCode
@@ -7,7 +9,10 @@ package com.amos.im.common;
  * @author Daoyuan
  * @date 2019/3/20
  */
-public class GeneralResponse<T> {
+@SuppressWarnings("all")
+public class GeneralResponse<T> implements Serializable {
+
+    private static final long serialVersionUID = -5627607859424842220L;
 
     private final String code;
     private final String msg;
