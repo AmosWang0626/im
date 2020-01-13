@@ -3,7 +3,7 @@ package com.amos.im.core.handler;
 import com.amos.im.common.GeneralCode;
 import com.amos.im.core.attribute.ImAttribute;
 import com.amos.im.core.attribute.AttributeGroupUtil;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 import com.amos.im.core.command.request.GroupMemberListRequest;
 import com.amos.im.core.command.response.GroupMemberListResponse;
 import io.netty.channel.ChannelHandler;

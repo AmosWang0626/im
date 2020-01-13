@@ -97,13 +97,11 @@ public class ClientServiceImpl implements ClientService {
                 LogUtils.info(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
 
                 ChannelFuture channelFuture = (ChannelFuture) future;
-                System.out.println("[客户端] >>>>>> " + channelFuture.channel());
                 channelFuture.channel().writeAndFlush(loginRequest);
 
                 MessageResponse response = new MessageResponse();
-                response.setFromToken("CLIENT").setUsername("客户端").setMessage("暂不能收到您的消息").setCreateTime(LocalDateTime.now());
+                response.setUsername("客户端").setMessage("暂不能收到您的消息").setCreateTime(LocalDateTime.now()).setSender("CLIENT");
                 channelFuture.channel().writeAndFlush(response);
-                System.out.println(this.getClass().getSimpleName() + channelFuture.channel());
                 return;
             }
 

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class ChatRecord {
 
     @ApiModelProperty(value = "ID")
@@ -32,6 +34,9 @@ public class ChatRecord {
 
     @ApiModelProperty(value = "消息")
     private String message;
+
+    @ApiModelProperty(value = "发送人标示[一式两份](true >>> 发送人-接收人; false >>> 接收人-发送人)")
+    private Boolean chatFlag;
 
     @ApiModelProperty(value = "发送时间")
     private LocalDateTime createTime;

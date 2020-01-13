@@ -1,7 +1,7 @@
 package com.amos.im.core.attribute;
 
-import com.amos.im.core.vo.GroupInfoVO;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.pojo.vo.GroupInfoVO;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.netty.util.AttributeKey;
 
 import java.util.Map;

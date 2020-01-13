@@ -1,7 +1,7 @@
 package com.amos.im.core.business;
 
 import com.amos.im.core.command.request.LoginRequest;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.amos.im.web.console;
 
 import com.amos.im.core.attribute.AttributeGroupUtil;
 import com.amos.im.common.util.PrintUtil;
-import com.amos.im.core.vo.GroupInfoVO;
+import com.amos.im.core.pojo.vo.GroupInfoVO;
 import com.amos.im.core.command.request.GroupMessageRequest;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;

@@ -57,7 +57,6 @@ public class ServerServiceImpl implements ServerService {
         serverBootstrap
                 .group(BOSS_GROUP, WORK_GROUP)
                 .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override

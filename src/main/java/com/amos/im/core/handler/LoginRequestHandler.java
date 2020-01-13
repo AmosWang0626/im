@@ -34,10 +34,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
             // 保存客户端登录状态
             ServerSession.bindToken(ctx.channel(), token, username);
-            System.out.println(">>>>>>>>> [服务端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + token);
-            System.out.println(this.getClass().getSimpleName() + ctx.channel());
 
-            String tempLog = "[服务端] >>> 客户端 [" + token + "](" + username + ")登录成功!";
+            String tempLog = "[服务端] >>> 客户端[" + token + "](" + username + ")登录成功! " + ctx.channel();
             LogUtils.info(RedisKeys.SERVER_RUN_LOG, tempLog, this.getClass());
         } else {
             System.out.println("[服务端] >>> 客户端登录失败!!!");

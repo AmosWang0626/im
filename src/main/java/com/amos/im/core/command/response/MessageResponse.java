@@ -25,7 +25,7 @@ public class MessageResponse extends BasePacket {
     /**
      * 发送人token
      */
-    private String fromToken;
+    private String receiver;
     /**
      * 发送的消息
      */

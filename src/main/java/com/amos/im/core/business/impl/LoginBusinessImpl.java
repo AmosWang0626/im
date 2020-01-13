@@ -5,7 +5,7 @@ import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.constant.ImConstant;
 import com.amos.im.core.service.ClientService;
 import com.amos.im.core.session.ServerSession;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

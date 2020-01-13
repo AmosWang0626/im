@@ -1,6 +1,6 @@
 package com.amos.im.core.attribute;
 
-import com.amos.im.core.vo.GroupInfoVO;
+import com.amos.im.core.pojo.vo.GroupInfoVO;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 

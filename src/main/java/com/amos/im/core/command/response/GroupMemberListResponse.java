@@ -2,8 +2,8 @@ package com.amos.im.core.command.response;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
-import com.amos.im.core.vo.GroupInfoVO;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.pojo.vo.GroupInfoVO;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

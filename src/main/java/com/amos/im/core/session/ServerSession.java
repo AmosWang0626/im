@@ -1,7 +1,7 @@
 package com.amos.im.core.session;
 
 import com.amos.im.core.attribute.ImAttribute;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.netty.channel.Channel;
 
 import java.time.LocalDateTime;

@@ -284,5 +284,14 @@ public class RedisUtil {
         return list;
     }
 
+    public static void zrem(String key, Integer index, String... member) {
+        Jedis jedis = getPool().getResource();
+        jedis.select(index);
+
+        jedis.zrem(key, member);
+
+        jedis.close();
+    }
+
 
 }

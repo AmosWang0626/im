@@ -1,4 +1,4 @@
-package com.amos.im.core.vo;
+package com.amos.im.core.pojo.vo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

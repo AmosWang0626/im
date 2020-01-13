@@ -20,9 +20,8 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         if (GeneralCode.SUCCESS.equals(loginResponse.getGeneralCode())) {
             // 客户端保存登录成功凭证
             ClientSession.bindToken(ctx.channel(), loginResponse.getToken(), loginResponse.getUsername());
-            System.out.println(">>>>>>>>> [客户端DEBUG] >>> ctx.channel(): " + ctx.channel() + ", toToken: " + loginResponse.getToken());
 
-            String tempLog = "[客户端] >>> " + loginResponse.getUsername() + " 登录成功, 可以聊天了!";
+            String tempLog = "[客户端] >>> " + loginResponse.getUsername() + " 登录成功, 可以聊天了! " + ctx.channel();
             LogUtils.info(RedisKeys.CLIENT_RUN_LOG, tempLog, this.getClass());
         } else {
             System.out.println("[客户端] >>> 登录失败!!! " + loginResponse.getGeneralCode().getMsg());

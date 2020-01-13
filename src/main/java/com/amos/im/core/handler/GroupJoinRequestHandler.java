@@ -6,7 +6,7 @@ import com.amos.im.core.attribute.AttributeLoginUtil;
 import com.amos.im.core.attribute.ImAttribute;
 import com.amos.im.core.command.request.GroupJoinRequest;
 import com.amos.im.core.command.response.GroupJoinResponse;
-import com.amos.im.core.vo.LoginInfoVO;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

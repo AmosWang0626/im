@@ -1,4 +1,4 @@
-package com.amos.im.core.vo;
+package com.amos.im.core.pojo.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

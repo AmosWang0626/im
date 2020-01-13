@@ -18,8 +18,8 @@ public interface RedisCache<T> {
 
     void delete(T data);
 
-    T value(Integer index);
+    T value(T data);
 
-    List<T> values(Integer index);
+    List<T> values(T data);
 
 }

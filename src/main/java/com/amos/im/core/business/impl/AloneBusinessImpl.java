@@ -4,12 +4,16 @@ import com.amos.im.common.GeneralCode;
 import com.amos.im.common.GeneralResponse;
 import com.amos.im.common.util.PrintUtil;
 import com.amos.im.core.business.AloneBusiness;
+import com.amos.im.core.pojo.form.MessageRecordRequest;
 import com.amos.im.core.command.request.MessageRequest;
 import com.amos.im.core.session.ClientSession;
+import com.amos.im.dao.cache.ChatRecordCache;
+import com.amos.im.dao.entity.ChatRecord;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * DESCRIPTION: alone chat
@@ -28,11 +32,26 @@ public class AloneBusinessImpl implements AloneBusiness {
             return new GeneralResponse<>(GeneralCode.ALONE_BOTH_LOGIN);
         }
         messageRequest.setCreateTime(LocalDateTime.now());
-        fromChannel.writeAndFlush(messageRequest);
 
+        // chat record
+        ChatRecord chatRecord = new ChatRecord().setId(String.valueOf(System.currentTimeMillis()))
+                .setChatFlag(true)
+                .setSenderId(messageRequest.getSender()).setReceiverId(messageRequest.getReceiver())
+                .setMessage(messageRequest.getMessage()).setCreateTime(messageRequest.getCreateTime());
+        ChatRecordCache.instance().save(chatRecord);
         PrintUtil.message(messageRequest.getCreateTime(), "我", messageRequest.getMessage());
 
-        return new GeneralResponse<>(System.currentTimeMillis());
+        fromChannel.writeAndFlush(messageRequest);
+
+        return new GeneralResponse<>(chatRecord);
+    }
+
+    @Override
+    public GeneralResponse<List<ChatRecord>> list(MessageRecordRequest request) {
+        List<ChatRecord> values = ChatRecordCache.instance().values(
+                new ChatRecord().setSenderId(request.getSender()).setReceiverId(request.getReceiver())
+        );
+        return new GeneralResponse<>(values);
     }
 
 }

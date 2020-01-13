@@ -1,7 +1,7 @@
 package com.amos.im.core.handler;
 
 import com.amos.im.core.attribute.AttributeGroupUtil;
-import com.amos.im.core.vo.GroupInfoVO;
+import com.amos.im.core.pojo.vo.GroupInfoVO;
 import com.amos.im.core.command.response.GroupJoinResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
