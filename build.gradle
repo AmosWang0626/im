@@ -52,9 +52,10 @@ dependencies {
 
 docker {
     dependsOn build as Task
-    name "${project.group}/${project.name}:${project.version}"
+    name "${project.group}/im"
     files bootJar.archiveFile
-    buildArgs(['JAR_FILE': "${bootJar.archiveBaseName}"])
+    buildArgs(['JAR_FILE': "${bootJar.archiveFileName.get()}"])
+    noCache true
 }
 
 sourceSets {
