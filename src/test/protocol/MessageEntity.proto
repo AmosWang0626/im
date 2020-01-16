@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package com.amos.dao.entity;
+
+// [字段修饰] 类型 名称 = 字段编号(正整数)
+message MessageEntity {
+    int32 id = 1;
+    repeated int32 userIds = 2;
+    string content = 3;
+    string description = 4;
+}

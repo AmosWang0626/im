@@ -40,3 +40,8 @@
 - 互发心跳
     - 服务器给客户端发送心跳：监测客户端是否下线
     - 客户端给服务器发送心跳：监测网络是否连接正常
+
+## 众里寻他千百度 (使用protobuf需升级Gradle)
+- [org/gradle/api/attributes/LibraryElements](https://github.com/google/protobuf-gradle-plugin/issues/378)
+- Task :compileJava error: cannot find symbol
+  - 乍一看，gradle的问题？非也，Lombok的配置要和gradle同步升级
