@@ -52,8 +52,11 @@ dependencies {
 
 docker {
     dependsOn build as Task
-    name "${project.group}/im"
+    name "dockerhub.amos.wang/${project.name}:${project.version}"
     files bootJar.archiveFile
+    println('1.project.name >>>>> ' + project.name)
+    println('2.archive_file >>>>> ' + bootJar.archiveFile.get())
+    println('3.archive_file_name >>>>> ' + bootJar.archiveFileName.get())
     buildArgs(['JAR_FILE': "${bootJar.archiveFileName.get()}"])
     noCache true
 }
