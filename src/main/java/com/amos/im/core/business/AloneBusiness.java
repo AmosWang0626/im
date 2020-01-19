@@ -1,8 +1,8 @@
 package com.amos.im.core.business;
 
 import com.amos.im.common.GeneralResponse;
-import com.amos.im.core.pojo.form.MessageRecordRequest;
 import com.amos.im.core.command.request.MessageRequest;
+import com.amos.im.core.pojo.form.MessageRecordRequest;
 import com.amos.im.dao.entity.ChatRecord;
 
 import java.util.List;
@@ -30,4 +30,12 @@ public interface AloneBusiness {
      * @return list
      */
     GeneralResponse<List<ChatRecord>> list(MessageRecordRequest request);
+
+    /**
+     * websocket 单聊
+     *
+     * @param messageRequest 消息表单
+     */
+    void websocketAlone(MessageRequest messageRequest);
+
 }

@@ -10,8 +10,10 @@ import com.amos.im.core.session.ClientSession;
 import com.amos.im.dao.cache.ChatRecordCache;
 import com.amos.im.dao.entity.ChatRecord;
 import io.netty.channel.Channel;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,6 +26,8 @@ import java.util.List;
 @Component("aloneBusiness")
 public class AloneBusinessImpl implements AloneBusiness {
 
+    @Resource
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public GeneralResponse<?> alone(MessageRequest messageRequest) {
@@ -52,6 +56,12 @@ public class AloneBusinessImpl implements AloneBusiness {
                 new ChatRecord().setSenderId(request.getSender()).setReceiverId(request.getReceiver())
         );
         return new GeneralResponse<>(values);
+    }
+
+    @Override
+    public void websocketAlone(MessageRequest messageRequest) {
+        String receiver = messageRequest.getReceiver();
+        simpMessagingTemplate.convertAndSend("/client/push/alone/" + receiver, messageRequest);
     }
 
 }
