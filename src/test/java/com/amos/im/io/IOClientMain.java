@@ -2,6 +2,7 @@ package com.amos.im.io;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -16,15 +17,18 @@ public class IOClientMain {
     public static void main(String[] args) {
         new Thread(() -> {
             try {
-                Socket socket = new Socket("127.0.0.1", 8888);
                 while (true) {
-                    try {
-                        socket.getOutputStream().write((new Date() + ": hello world!").getBytes());
-                        System.out.println("send: " + new Date() + ": hello world!");
-                        Thread.sleep(2000);
-                    } catch (InterruptedException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    Socket socket = new Socket("127.0.0.1", 8888);
+                    int i = 5;
+                    do {
+                        try {
+                            socket.getOutputStream().write((LocalTime.now() + ": hello world!").getBytes());
+                            System.out.println("send: " + new Date() + ": hello world!");
+                            Thread.sleep(2000);
+                        } catch (InterruptedException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    } while (--i != 0);
                 }
             } catch (Exception ignored) {
             }
