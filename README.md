@@ -12,7 +12,7 @@
 - Spring Boot
 
 ### 2.分支
-- master：本项目的 Spring Boot 方式实现，改造中......
+- master：采用前后端分离，本项目只提供服务端处理
 - master-console：原 master，本项目的 Console 方式实现
 
 ### 3.项目 Docker 打包
