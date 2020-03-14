@@ -15,3 +15,7 @@ server:
 im:
   port: 8090
   host: localhost
+
+logging:
+  pattern:
+    console: '%green(%-5level) %highlight([%thread]) %magenta(${PID}) %cyan(%logger) - %msg%n'
