@@ -1,17 +1,15 @@
 package com.amos.im.core.business.impl;
 
+import com.amos.im.common.GeneralCode;
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
+import com.amos.im.core.command.response.LoginResponse;
 import com.amos.im.core.constant.ImConstant;
-import com.amos.im.core.service.ClientService;
-import com.amos.im.core.session.ServerSession;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
+import com.amos.im.core.session.ServerSession;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,37 +22,37 @@ import java.util.List;
 @Service("loginBusiness")
 public class LoginBusinessImpl implements LoginBusiness {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginBusinessImpl.class);
-
-    @Resource
-    private ClientService clientService;
 
     @Override
-    public String login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest loginRequest) {
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setSuccess(false);
+
         if (StringUtils.isBlank(loginRequest.getPassword())) {
-            loginRequest.setPassword(ImConstant.DEFAULT_PASSWORD);
+            loginResponse.setGeneralCode(GeneralCode.LOGIN_FAIL_PASSWORD_EMPTY);
+            return loginResponse;
         }
+
         if (!ImConstant.DEFAULT_PASSWORD.equals(loginRequest.getPassword())) {
-            return "登录失败, 密码错误!";
+            loginResponse.setGeneralCode(GeneralCode.LOGIN_FAIL_PASSWORD_ERROR);
+            return loginResponse;
         }
+
         String username = loginRequest.getUsername();
         LoginInfoVO loginInfo = ServerSession.onlyUsername(username);
         if (loginInfo != null) {
-            return "用户名已被占用, 请使用其他用户名登录!";
+            loginResponse.setGeneralCode(GeneralCode.LOGIN_FAIL_USERNAME_EXIST);
+            return loginResponse;
         }
 
-        return clientService.start(loginRequest);
+        loginResponse.setSuccess(true);
+        loginResponse.setGeneralCode(GeneralCode.SUCCESS);
+        return loginResponse;
     }
 
-    @Override
-    public List<String> logs() {
-
-        return clientService.logs();
-    }
 
     @Override
     public List<LoginInfoVO> list() {
-
         return ServerSession.onlineList();
     }
 

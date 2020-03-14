@@ -18,6 +18,9 @@ public enum GeneralCode {
     GROUP_NOT_EXIST("303", "群聊不存在"),
     YOU_HAVE_JOINED_THE_GROUP("304", "您已加入该群聊"),
     ALONE_BOTH_LOGIN("305", "单聊，请先确认两人都已登录"),
+    LOGIN_FAIL_PASSWORD_EMPTY("401", "用户名/密码不能为空"),
+    LOGIN_FAIL_PASSWORD_ERROR("402", "登录失败, 密码错误"),
+    LOGIN_FAIL_USERNAME_EXIST("403", "用户名已被占用, 请使用其他用户名登录!"),
     ;
 
     private final String code;

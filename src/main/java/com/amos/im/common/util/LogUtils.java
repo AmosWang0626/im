@@ -60,14 +60,6 @@ public class LogUtils {
         LoggerFactory.getLogger(clazz).info(log);
         String infoLog = String.format(TEMPLATE_INFO, DateUtil.getNowStr(), log);
 
-        if (RedisKeys.CLIENT_RUN_LOG.equals(channel)) {
-            // websocket push
-            simpMessagingTemplate.convertAndSend("/client/logs", infoLog);
-            // redis log push
-            RedisUtil.lpush(channel, infoLog);
-            return;
-        }
-
         simpMessagingTemplate.convertAndSend("/server/logs", infoLog);
         RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, infoLog);
     }
@@ -82,12 +74,6 @@ public class LogUtils {
     private void baseError(String channel, String log, Class<?> clazz) {
         LoggerFactory.getLogger(clazz).error(log);
         String errorLog = String.format(TEMPLATE_ERROR, DateUtil.getNowStr(), log);
-
-        if (RedisKeys.CLIENT_RUN_LOG.equals(channel)) {
-            simpMessagingTemplate.convertAndSend("/client/logs", errorLog);
-            RedisUtil.lpush(RedisKeys.CLIENT_RUN_LOG, errorLog);
-            return;
-        }
 
         simpMessagingTemplate.convertAndSend("/server/logs", errorLog);
         RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, errorLog);

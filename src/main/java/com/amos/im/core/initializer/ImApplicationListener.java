@@ -1,4 +1,4 @@
-package com.amos.im.application;
+package com.amos.im.core.initializer;
 
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
-public class ImServerBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+public class ImApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Resource
     private ServerService serverService;
@@ -42,7 +42,6 @@ public class ImServerBootstrap implements ApplicationListener<ContextRefreshedEv
         log.info("初始化项目配置开始...");
         RedisUtil.del(RedisKeys.SERVER_RUN_PORT);
         RedisUtil.del(RedisKeys.SERVER_RUN_LOG);
-        RedisUtil.del(RedisKeys.CLIENT_RUN_LOG);
         log.info("初始化项目配置完成, 耗时 {}毫秒!", (System.currentTimeMillis() - start));
     }
 

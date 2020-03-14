@@ -1,7 +1,5 @@
 package com.amos.im.core.service;
 
-import java.util.List;
-
 /**
  * PROJECT: Sales
  * DESCRIPTION: 服务端核心实现
@@ -17,12 +15,5 @@ public interface ServerService {
      * @return 服务端启动状态
      */
     String start();
-
-    /**
-     * 服务端日志
-     *
-     * @return 日志
-     */
-    List<String> logs();
 
 }

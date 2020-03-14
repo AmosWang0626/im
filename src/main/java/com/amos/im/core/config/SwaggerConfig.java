@@ -33,7 +33,7 @@ public class SwaggerConfig {
                 .enable(true)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.amos.im.web.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.amos.im.web"))
                 .paths(PathSelectors.any())
                 .build();
     }

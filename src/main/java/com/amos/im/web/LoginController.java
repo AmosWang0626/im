@@ -1,7 +1,8 @@
-package com.amos.im.web.controller;
+package com.amos.im.web;
 
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
+import com.amos.im.core.command.response.LoginResponse;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,24 +18,18 @@ import java.util.List;
  * @author amos
  * @date 2019/6/1
  */
-@Api(tags = {"客户端"})
+@Api(tags = {"A1 登录相关"})
 @RestController
 @RequestMapping("user")
-public class ClientController {
+public class LoginController {
 
     @Resource
     private LoginBusiness loginBusiness;
 
-    @GetMapping("logs")
-    @ApiOperation("登录日志")
-    public List<String> logs() {
-
-        return loginBusiness.logs();
-    }
 
     @PostMapping("login")
     @ApiOperation("用户登录")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
 
         return loginBusiness.login(loginRequest);
     }

@@ -1,6 +1,7 @@
 package com.amos.im.core.business;
 
 import com.amos.im.core.command.request.LoginRequest;
+import com.amos.im.core.command.response.LoginResponse;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
 
 import java.util.List;
@@ -20,14 +21,7 @@ public interface LoginBusiness {
      * @param loginRequest 登录表单
      * @return 登录结果
      */
-    String login(LoginRequest loginRequest);
-
-    /**
-     * 登录日志
-     *
-     * @return 日志
-     */
-    List<String> logs();
+    LoginResponse login(LoginRequest loginRequest);
 
     /**
      * 已登录用户列表

@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * PROJECT: Sales
@@ -30,6 +29,7 @@ public class ServerServiceImpl implements ServerService {
     private ImConfig imConfig;
 
     private ServerBootstrap serverBootstrap;
+
 
     public ServerServiceImpl() {
         // 接受新连接线程，主要负责创建新连接
@@ -56,11 +56,13 @@ public class ServerServiceImpl implements ServerService {
         return "服务端启动中, 请查看启动日志!";
     }
 
-    @Override
-    public List<String> logs() {
-        return RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
-    }
 
+    /**
+     * 服务端绑定端口启动，如果端口被占用，则递归绑定下一个端口。
+     *
+     * @param serverBootstrap 启动服务端引导类
+     * @param startPort       启动端口
+     */
     private void bind(ServerBootstrap serverBootstrap, final Integer startPort) {
         serverBootstrap.bind(startPort).addListener(future -> {
             if (future.isSuccess()) {

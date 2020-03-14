@@ -12,6 +12,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,27 +26,24 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequest msg) throws Exception {
-        GeneralCode generalCode = GeneralCode.SUCCESS;
         LoginResponse response = new LoginResponse();
-        if (validSuccess(msg)) {
-            String username = msg.getUsername();
+        response.setSuccess(true).setGeneralCode(GeneralCode.SUCCESS);
+
+        String username = msg.getUsername();
+        // 保存客户端登录状态
+        if (StringUtils.isBlank(msg.getSender())) {
             String token = IdUtil.getInstance().getToken();
             response.setUsername(username).setToken(token);
-
-            // 保存客户端登录状态
             ServerSession.bindToken(ctx.channel(), token, username);
-
-            String tempLog = "[服务端] >>> 客户端[" + token + "](" + username + ")登录成功! " + ctx.channel();
+            String tempLog = "用户[" + token + "](" + username + ")登录成功! " + ctx.channel().id().asShortText();
             LogUtils.info(RedisKeys.SERVER_RUN_LOG, tempLog, this.getClass());
         } else {
-            System.out.println("[服务端] >>> 客户端登录失败!!!");
-            generalCode = GeneralCode.LOGIN_FAIL;
+            // 兼容已登录用户再次请求登录接口
+            response.setUsername(username).setToken(msg.getSender());
         }
-
-        // 设置登录结果
-        response.setGeneralCode(generalCode);
 
         ctx.channel().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));
     }
@@ -54,16 +52,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         ServerSession.unBindToken(ctx.channel());
         super.channelInactive(ctx);
-    }
-
-    /**
-     * 校验登录信息
-     *
-     * @param loginRequest LoginRequest
-     * @return true: 信息正确
-     */
-    private static boolean validSuccess(LoginRequest loginRequest) {
-        return "123456".equals(loginRequest.getPassword());
     }
 
 }

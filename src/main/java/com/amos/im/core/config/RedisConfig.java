@@ -28,7 +28,7 @@ public class RedisConfig {
     @Bean("redisPool")
     public JedisPool jedisPool() {
         JedisPool jedisPool = new JedisPool(
-                new GenericObjectPoolConfig(),
+                new GenericObjectPoolConfig<>(),
                 host, port, 2000, password, database, false);
 
         // RedisUtil 是由静态方法构成的工具类
