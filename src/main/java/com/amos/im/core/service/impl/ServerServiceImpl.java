@@ -1,21 +1,15 @@
 package com.amos.im.core.service.impl;
 
-import com.amos.im.common.protocol.PacketCodec;
-import com.amos.im.common.protocol.PacketSplitter;
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
-import com.amos.im.core.handler.ImHandler;
-import com.amos.im.core.handler.LoginRequestHandler;
+import com.amos.im.core.initializer.ImServerInitializer;
 import com.amos.im.core.service.ServerService;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.HttpServerCodec;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -47,16 +41,7 @@ public class ServerServiceImpl implements ServerService {
                 .group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childHandler(new ChannelInitializer<NioSocketChannel>() {
-                    @Override
-                    protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(new HttpServerCodec());
-                        ch.pipeline().addLast(new PacketSplitter());
-                        ch.pipeline().addLast(PacketCodec.INSTANCE);
-                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
-                        ch.pipeline().addLast(ImHandler.INSTANCE);
-                    }
-                });
+                .childHandler(new ImServerInitializer());
     }
 
     @Override

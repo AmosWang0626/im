@@ -1,5 +1,6 @@
 package com.amos.im.core.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.util.IdUtil;
 import com.amos.im.common.util.LogUtils;
@@ -10,6 +11,7 @@ import com.amos.im.core.session.ServerSession;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,7 +47,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 设置登录结果
         response.setGeneralCode(generalCode);
 
-        ctx.channel().writeAndFlush(response);
+        ctx.channel().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));
     }
 
     @Override
