@@ -1,6 +1,9 @@
 package com.amos.im.web.controller;
 
-import com.amos.im.core.business.ServerBusiness;
+import com.amos.im.common.util.RedisUtil;
+import com.amos.im.core.config.ImConfig;
+import com.amos.im.core.constant.RedisKeys;
+import com.amos.im.core.service.ServerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,17 +26,19 @@ import java.util.List;
 public class ServerController {
 
     @Resource
-    private ServerBusiness serverBusiness;
+    private ImConfig imConfig;
+    @Resource
+    private ServerService serverService;
 
     /**
-     * 启动服务端
+     * 服务端地址
      *
      * @return Message
      */
-    @GetMapping("start")
-    @ApiOperation("启动服务端")
-    public String start() {
-        return serverBusiness.start();
+    @GetMapping("ws")
+    @ApiOperation("查看服务端日志")
+    public String ws() {
+        return imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
     }
 
     /**
@@ -44,8 +49,7 @@ public class ServerController {
     @GetMapping("logs")
     @ApiOperation("查看服务端日志")
     public List<String> logs() {
-
-        return serverBusiness.logs();
+        return serverService.logs();
     }
 
 }

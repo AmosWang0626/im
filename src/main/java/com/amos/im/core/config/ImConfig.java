@@ -1,7 +1,8 @@
 package com.amos.im.core.config;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -13,12 +14,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
+@ConfigurationProperties(prefix = "im")
+@EnableConfigurationProperties({ImConfig.class})
 public class ImConfig {
 
-    @Value("${im.port}")
     private Integer port;
 
-    @Value("${im.host}")
     private String host;
 
 }

@@ -1,8 +1,6 @@
 spring:
   application:
     name: im
-  profiles:
-    active: client
 
   redis:
     host: amos.wang

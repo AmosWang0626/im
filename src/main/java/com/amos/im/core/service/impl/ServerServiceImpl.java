@@ -15,6 +15,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.http.HttpServerCodec;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -34,15 +35,29 @@ public class ServerServiceImpl implements ServerService {
     @Resource
     private ImConfig imConfig;
 
-    /**
-     * 接受新连接线程，主要负责创建新连接
-     */
-    private volatile static NioEventLoopGroup BOSS_GROUP;
-    /**
-     * 读取数据的线程，主要用于读取数据以及业务逻辑处理
-     */
-    private volatile static NioEventLoopGroup WORK_GROUP;
+    private ServerBootstrap serverBootstrap;
 
+    public ServerServiceImpl() {
+        // 接受新连接线程，主要负责创建新连接
+        NioEventLoopGroup bossGroup = new NioEventLoopGroup();
+        // 读取数据的线程，主要用于读取数据以及业务逻辑处理
+        NioEventLoopGroup workGroup = new NioEventLoopGroup();
+        serverBootstrap = new ServerBootstrap();
+        serverBootstrap
+                .group(bossGroup, workGroup)
+                .channel(NioServerSocketChannel.class)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childHandler(new ChannelInitializer<NioSocketChannel>() {
+                    @Override
+                    protected void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new HttpServerCodec());
+                        ch.pipeline().addLast(new PacketSplitter());
+                        ch.pipeline().addLast(PacketCodec.INSTANCE);
+                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(ImHandler.INSTANCE);
+                    }
+                });
+    }
 
     @Override
     public String start() {
@@ -51,23 +66,6 @@ public class ServerServiceImpl implements ServerService {
             return "服务端已启动，端口号: " + serverRunPort;
         }
 
-        initGroup();
-
-        ServerBootstrap serverBootstrap = new ServerBootstrap();
-        serverBootstrap
-                .group(BOSS_GROUP, WORK_GROUP)
-                .channel(NioServerSocketChannel.class)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childHandler(new ChannelInitializer<NioSocketChannel>() {
-                    @Override
-                    protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(new PacketSplitter());
-                        ch.pipeline().addLast(PacketCodec.INSTANCE);
-                        ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
-                        ch.pipeline().addLast(ImHandler.INSTANCE);
-                    }
-                });
-
         bind(serverBootstrap, imConfig.getPort());
 
         return "服务端启动中, 请查看启动日志!";
@@ -75,7 +73,6 @@ public class ServerServiceImpl implements ServerService {
 
     @Override
     public List<String> logs() {
-
         return RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
     }
 
@@ -95,15 +92,6 @@ public class ServerServiceImpl implements ServerService {
 
             bind(serverBootstrap, startPort + 1);
         });
-    }
-
-    private void initGroup() {
-        if (BOSS_GROUP == null) {
-            BOSS_GROUP = new NioEventLoopGroup();
-        }
-        if (WORK_GROUP == null) {
-            WORK_GROUP = new NioEventLoopGroup();
-        }
     }
 
 }
