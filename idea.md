@@ -1,7 +1,7 @@
 # im 改造篇
 > console 模式实现后，一直在想着怎么实现一个 Web 版的
 
-## 思路很重要
+## 改造初期 --- 思路很重要
 ```text
 原本想的是，改造后，Client 连接还在后端维护，前端只需访问后端即可。
 
@@ -12,6 +12,22 @@
 然后恍然大悟，服务端根本用不到过去Client那一套，服务端单纯提供服务即可。
 
 想来也是，何为服务端，占个端口，客户端能连上而已。
+```
+
+## 改造初期 --- 前端改造
+```text
+前端改造，本想多个页面共用一个 Websocket
+
+但是发现页面刷新，原先的 Websocket 就失效了，失效的时候也会调用后端的 Websocket close 方法
+
+直接结果就是，多个页面共用一个 Websocket 是行不通的
+
+其次，也会发现，前端共用一个 Websocket 时，后端返回的数据，只会被一个 websocket.onmessage 处理，
+当然也可以通过 websocket.addEventListener 的方式监听，这样任何地方都能监听到后端返回的数据，有违初衷。
+
+结论，前端改造成，每个页面一个Websocket
+
+后端需要做相应的适配，如果前端携带 token 过来，token 合法，就将该 token 所属的 channel 改为最新的 channel。
 ```
 
 
@@ -25,3 +41,42 @@
   - ~~其次：client端，多个client是可以根据用户表示保存在一起的，所以一个工具类就够了，再不济，可以使用LocalThread。~~
 
 - web模式下，只需提供server服务即可。
+
+## Console模式下客户端构造的请求
+> 仅做笔记，web模式开发完即删除
+- 登录
+```java
+LoginRequest loginRequest = new LoginRequest().setUsername(username).setPassword(password);
+channel.writeAndFlush(loginRequest);
+```
+
+- 单聊
+```java
+MessageRequest request = new MessageRequest();
+request.setReceiver(token).setMessage(message).setCreateTime(LocalDateTime.now());
+```
+
+- 创建群聊
+```java
+GroupCreateRequest groupCreateRequest = new GroupCreateRequest();
+groupCreateRequest.setSponsor(AttributeLoginUtil.getLoginInfo(channel).getToken())
+.setGroupName(groupName).setTokenList(tokenList).setCreateTime(LocalDateTime.now());
+```
+
+- 加入群聊
+```java
+GroupJoinRequest groupJoinRequest = new GroupJoinRequest();
+groupJoinRequest.setGroupId(groupId);
+```
+
+- 退出群聊
+```java
+GroupQuitRequest quitRequest = new GroupQuitRequest();
+quitRequest.setGroupId(groupId);
+```
+
+- 群聊
+```java
+GroupMessageRequest request = new GroupMessageRequest();
+request.setToGroup(groupId).setMessage(message).setCreateTime(LocalDateTime.now());
+```
