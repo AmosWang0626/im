@@ -3,7 +3,6 @@ package com.amos.im.core.initializer;
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.constant.RedisKeys;
-import com.amos.im.core.service.ServerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -19,17 +18,17 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
-public class ImApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
+public class NettyServerInit implements ApplicationListener<ContextRefreshedEvent> {
 
     @Resource
-    private ServerService serverService;
+    private NettyServerBootstrap nettyServerBootstrap;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         init();
 
         if (event.getApplicationContext().getParent() == null) {
-            String startInfo = serverService.start();
+            String startInfo = nettyServerBootstrap.start();
             LogUtils.info(RedisKeys.SERVER_RUN_LOG, startInfo, this.getClass());
         }
     }

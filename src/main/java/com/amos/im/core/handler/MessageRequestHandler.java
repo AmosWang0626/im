@@ -1,5 +1,6 @@
 package com.amos.im.core.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.amos.im.core.command.request.MessageRequest;
 import com.amos.im.core.command.response.MessageResponse;
 import com.amos.im.core.session.ServerSession;
@@ -8,6 +9,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -37,13 +39,13 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
                 .setSender(messageRequest.getSender());
 
         if (channel != null && ServerSession.hasLogin(channel)) {
-            channel.writeAndFlush(response);
+            channel.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));
         } else {
             response.setUsername("服务器")
                     .setMessage(MessageFormat.format("[{0}] 未登录, 暂不能收到您的消息!!!", messageRequest.getReceiver()))
                     .setCreateTime(LocalDateTime.now())
                     .setSender("SERVER");
-            ctx.channel().writeAndFlush(response);
+            ctx.channel().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));
         }
     }
 

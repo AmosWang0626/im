@@ -1,8 +1,10 @@
 package com.amos.im.core.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
 import com.amos.im.core.command.request.LoginRequest;
+import com.amos.im.core.command.request.MessageRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -16,7 +18,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
  * @date 2020/3/14
  */
-public class WebsocketParseHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+public class WebsocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
     private static ChannelGroup users = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
@@ -28,9 +30,11 @@ public class WebsocketParseHandler extends SimpleChannelInboundHandler<TextWebSo
 
         JSONObject packet = JSONObject.parseObject(message);
         Byte command = packet.getByte("command");
-        LoginRequest next = null;
+        BasePacket next = null;
         if (Command.LOGIN_REQUEST == command) {
             next = JSONObject.parseObject(message, LoginRequest.class);
+        } else if (Command.MESSAGE_REQUEST == command) {
+            next = JSONObject.parseObject(message, MessageRequest.class);
         }
 
         // 继续下一个执行

@@ -1,8 +1,5 @@
-package com.amos.im.core.initializer;
+package com.amos.im.core.handler;
 
-import com.amos.im.core.handler.ImHandler;
-import com.amos.im.core.handler.LoginRequestHandler;
-import com.amos.im.core.handler.WebsocketParseHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -17,23 +14,26 @@ import io.netty.handler.stream.ChunkedWriteHandler;
  * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
  * @date 2020/3/14
  */
-public class ImServerInitializer extends ChannelInitializer<NioSocketChannel> {
+public class NettyServerHandler extends ChannelInitializer<NioSocketChannel> {
 
+
+    /**
+     * 前端要想建立 Websocket 连接，第一次握手请求消息由 HTTP 协议承载，所以它是一个 HTTP 消息。
+     * 正常情况第一次握手，消息头中会包含 Upgrade 字段。
+     * HttpServerCodec       [request]将请求和应答消息编码或者解码为 HTTP 消息，生成多个消息对象
+     * HttpObjectAggregator  [request]将多个消息对象转换成单一的 FullHttpRequest 或者 FullHttpResponse
+     * ChunkedWriteHandler   [response]处理异步发送大的码流的
+     */
     @Override
     protected void initChannel(NioSocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        /* 对 Http 进行支持 */
-        // 前端使用Websocket时，需要用到Http编解码器
         pipeline.addLast(new HttpServerCodec());
-        // support for writing a large data stream
-        pipeline.addLast(new ChunkedWriteHandler());
-        // 对HttpMessage进行聚合，聚合成FullHttpRequest或者FullHttpResponse
         pipeline.addLast(new HttpObjectAggregator(1024 * 4));
+        pipeline.addLast(new ChunkedWriteHandler());
 
-        /* 对 Websocket 进行支持 */
         // 简化 Websocket 操作；handshaking as well as processing of control frames (Close, Ping, Pong)
         pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
-        pipeline.addLast(new WebsocketParseHandler());
+        pipeline.addLast(new WebsocketHandler());
 
         /// 自定义协议
         // ch.pipeline().addLast(new PacketSplitter());

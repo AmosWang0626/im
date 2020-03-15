@@ -1,37 +1,38 @@
-package com.amos.im.core.service.impl;
+package com.amos.im.core.initializer;
 
 import com.amos.im.common.util.LogUtils;
 import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
-import com.amos.im.core.initializer.ImServerInitializer;
-import com.amos.im.core.service.ServerService;
+import com.amos.im.core.handler.NettyServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 /**
- * PROJECT: Sales
- * DESCRIPTION: 服务端核心实现
+ * DESCRIPTION: Netty Server 引导类
  *
- * @author amos
- * @date 2019/6/2
+ * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
+ * @date 2020/3/15
  */
-@Service("serverService")
-public class ServerServiceImpl implements ServerService {
+@Component
+public class NettyServerBootstrap {
 
     @Resource
     private ImConfig imConfig;
 
+    /**
+     * NettyServer 引导入口
+     */
     private ServerBootstrap serverBootstrap;
 
 
-    public ServerServiceImpl() {
+    public NettyServerBootstrap() {
         // 接受新连接线程，主要负责创建新连接
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         // 读取数据的线程，主要用于读取数据以及业务逻辑处理
@@ -41,10 +42,10 @@ public class ServerServiceImpl implements ServerService {
                 .group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childHandler(new ImServerInitializer());
+                .childHandler(new NettyServerHandler());
     }
 
-    @Override
+
     public String start() {
         String serverRunPort = RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
         if (StringUtils.isNoneBlank(serverRunPort)) {
