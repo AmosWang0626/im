@@ -3,8 +3,8 @@ package com.amos.im.core.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.amos.im.core.command.request.MessageRequest;
 import com.amos.im.core.command.response.MessageResponse;
-import com.amos.im.core.session.ServerSession;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
+import com.amos.im.core.session.ServerSession;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,6 +27,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequest messageRequest) {
         LoginInfoVO userInfo = ServerSession.getLoginInfo(messageRequest.getSender());
+        ServerSession.reBindToken(ctx.channel(), messageRequest.getSender());
 
         // 根据消息中指定的token，发送给对应用户
         Channel channel = ServerSession.getChannel(messageRequest.getReceiver());

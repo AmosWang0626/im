@@ -26,8 +26,6 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         String message = msg.text();
 
-        System.out.println("[Client]: " + message);
-
         JSONObject packet = JSONObject.parseObject(message);
         Byte command = packet.getByte("command");
         BasePacket next = null;

@@ -51,14 +51,20 @@ public class ServerSession {
     }
 
     /**
+     * 重新给 Channel 绑定 token
+     */
+    public static void reBindToken(Channel channel, String token) {
+        CHANNEL_TOKEN_MAP.put(token, channel);
+        channel.attr(ImAttribute.LOGIN_INFO).set(TOKEN_USER_INFO_MAP.get(token));
+    }
+
+    /**
      * 解绑登录token
      */
     public static void unBindToken(Channel channel) {
         if (hasLogin(channel)) {
             LoginInfoVO loginInfo = getLoginInfo(channel);
-            USERNAME_MAP.remove(loginInfo.getUsername());
             CHANNEL_TOKEN_MAP.remove(loginInfo.getToken());
-            TOKEN_USER_INFO_MAP.remove(loginInfo.getToken());
             channel.attr(ImAttribute.LOGIN_INFO).set(null);
         }
     }
@@ -95,7 +101,9 @@ public class ServerSession {
      * 根据 username 获取 channel
      */
     public static List<LoginInfoVO> onlineList() {
-        return new ArrayList<>(TOKEN_USER_INFO_MAP.values());
+        List<LoginInfoVO> loginInfoList = new ArrayList<>();
+        CHANNEL_TOKEN_MAP.keySet().forEach(token -> loginInfoList.add(TOKEN_USER_INFO_MAP.get(token)));
+        return loginInfoList;
     }
 
 }
