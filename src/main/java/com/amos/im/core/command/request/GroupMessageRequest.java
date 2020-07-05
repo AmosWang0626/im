@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 public class GroupMessageRequest extends BasePacket {
 
     @ApiModelProperty("收消息群ID")
-    private String toGroup;
+    private String groupId;
 
     @ApiModelProperty("群聊消息")
     private String message;

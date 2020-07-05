@@ -33,7 +33,7 @@ public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<Grou
         GroupMessageResponse response = new GroupMessageResponse();
 
         // 根据消息中指定的token，发送给对应用户
-        ChannelGroup channels = AttributeGroupUtil.getChannelGroup(request.getToGroup());
+        ChannelGroup channels = AttributeGroupUtil.getChannelGroup(request.getGroupId());
         if (channels == null) {
             response.setSuccess(false);
             response.setGeneralCode(GeneralCode.GROUP_NOT_EXIST);
@@ -41,7 +41,7 @@ public class GroupMessageRequestHandler extends SimpleChannelInboundHandler<Grou
             return;
         }
 
-        response.setFromGroup(request.getToGroup()).setUsername(loginInfo.getUsername())
+        response.setFromGroup(request.getGroupId()).setUsername(loginInfo.getUsername())
                 .setMessage(request.getMessage()).setSuccess(true).setCreateTime(LocalDateTime.now());
         channels.writeAndFlush(response);
     }

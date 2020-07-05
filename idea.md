@@ -42,41 +42,73 @@
 
 - web模式下，只需提供server服务即可。
 
-## Console模式下客户端构造的请求
-> 仅做笔记，web模式开发完即删除
-- 登录
+## 请求表单
+
+### 1. 登录
 ```java
 LoginRequest loginRequest = new LoginRequest().setUsername(username).setPassword(password);
 channel.writeAndFlush(loginRequest);
 ```
 
-- 单聊
+|字段名|备注|默认值|
+|---|---|---|
+|username|用户名|---|
+|password|密码|---|
+
+### 2. 单聊
 ```java
 MessageRequest request = new MessageRequest();
 request.setReceiver(token).setMessage(message).setCreateTime(LocalDateTime.now());
 ```
 
-- 创建群聊
+|字段名|备注|默认值|
+|---|---|---|
+|receiver|接收人token|---|
+|message|消息|---|
+|createTime|创建时间|---|
+
+### 3. 创建群聊
 ```java
 GroupCreateRequest groupCreateRequest = new GroupCreateRequest();
 groupCreateRequest.setSponsor(AttributeLoginUtil.getLoginInfo(channel).getToken())
 .setGroupName(groupName).setTokenList(tokenList).setCreateTime(LocalDateTime.now());
 ```
 
-- 加入群聊
+|字段名|备注|默认值|
+|---|---|---|
+|sponsor|发起人token|---|
+|groupName|群聊名称|---|
+|tokenList|用户token列表|---|
+|createTime|创建时间|---|
+
+### 4. 加入群聊
 ```java
 GroupJoinRequest groupJoinRequest = new GroupJoinRequest();
 groupJoinRequest.setGroupId(groupId);
 ```
 
-- 退出群聊
+|字段名|备注|默认值|
+|---|---|---|
+|groupId|群聊ID|---|
+
+### 5. 退出群聊
 ```java
 GroupQuitRequest quitRequest = new GroupQuitRequest();
 quitRequest.setGroupId(groupId);
 ```
 
-- 群聊
+|字段名|备注|默认值|
+|---|---|---|
+|groupId|群聊ID|---|
+
+### 6. 群聊
 ```java
 GroupMessageRequest request = new GroupMessageRequest();
-request.setToGroup(groupId).setMessage(message).setCreateTime(LocalDateTime.now());
+request.setGroupId(groupId).setMessage(message).setCreateTime(LocalDateTime.now());
 ```
+
+|字段名|备注|默认值|
+|---|---|---|
+|groupId|群聊ID|---|
+|message|消息|---|
+|createTime|创建时间|---|
