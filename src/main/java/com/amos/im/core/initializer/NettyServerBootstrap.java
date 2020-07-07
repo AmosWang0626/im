@@ -29,7 +29,7 @@ public class NettyServerBootstrap {
     /**
      * NettyServer 引导入口
      */
-    private ServerBootstrap serverBootstrap;
+    private final ServerBootstrap serverBootstrap;
 
 
     public NettyServerBootstrap() {
