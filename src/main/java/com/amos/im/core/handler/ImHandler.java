@@ -21,7 +21,7 @@ public class ImHandler extends SimpleChannelInboundHandler<BasePacket> {
 
     public static final ImHandler INSTANCE = new ImHandler();
 
-    private Map<Byte, SimpleChannelInboundHandler<? extends BasePacket>> handlerMap;
+    private final Map<Byte, SimpleChannelInboundHandler<? extends BasePacket>> handlerMap;
 
     private ImHandler() {
         handlerMap = new HashMap<>();

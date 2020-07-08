@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,9 +34,10 @@ public class ServerController {
      * @return Message
      */
     @GetMapping("ws")
-    @ApiOperation("查看服务端日志")
-    public String ws() {
-        return imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
+    @ApiOperation("获取服务端WS地址")
+    public Mono<String> ws() {
+        String wsUrl = imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
+        return Mono.just(wsUrl);
     }
 
     /**

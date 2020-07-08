@@ -20,7 +20,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  */
 public class WebsocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
-    private static ChannelGroup users = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private static final ChannelGroup USERS = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
@@ -41,20 +41,20 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        users.add(ctx.channel());
-        System.out.printf("客户端已建立连接，客户端ID [%s]，在线人数 [%d人]\n", ctx.channel().id().asShortText(), users.size());
+        USERS.add(ctx.channel());
+        System.out.printf("客户端已建立连接，客户端ID [%s]，在线人数 [%d人]\n", ctx.channel().id().asShortText(), USERS.size());
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        users.remove(ctx.channel());
-        System.out.printf("客户端连接已关闭，客户端ID [%s]，在线人数 [%d人]\n", ctx.channel().id().asShortText(), users.size());
+        USERS.remove(ctx.channel());
+        System.out.printf("客户端连接已关闭，客户端ID [%s]，在线人数 [%d人]\n", ctx.channel().id().asShortText(), USERS.size());
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.channel().close();
-        users.remove(ctx.channel());
+        USERS.remove(ctx.channel());
     }
 }

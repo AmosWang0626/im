@@ -3,10 +3,8 @@ package com.amos.im.common.util;
 import com.amos.im.core.constant.RedisKeys;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 
 /**
  * PROJECT: Sales
@@ -17,9 +15,6 @@ import javax.annotation.Resource;
  */
 @Configuration
 public class LogUtils {
-
-    @Resource
-    private SimpMessagingTemplate simpMessagingTemplate;
 
     private static LogUtils logUtils;
 
@@ -60,8 +55,7 @@ public class LogUtils {
         LoggerFactory.getLogger(clazz).info(log);
         String infoLog = String.format(TEMPLATE_INFO, DateUtil.getNowStr(), log);
 
-        simpMessagingTemplate.convertAndSend("/server/logs", infoLog);
-        RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, infoLog);
+        RedisUtil.lpush(channel, infoLog);
     }
 
     /**
@@ -75,8 +69,7 @@ public class LogUtils {
         LoggerFactory.getLogger(clazz).error(log);
         String errorLog = String.format(TEMPLATE_ERROR, DateUtil.getNowStr(), log);
 
-        simpMessagingTemplate.convertAndSend("/server/logs", errorLog);
-        RedisUtil.lpush(RedisKeys.SERVER_RUN_LOG, errorLog);
+        RedisUtil.lpush(channel, errorLog);
     }
 
 }

@@ -1,8 +1,5 @@
 package com.amos.im.main;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -24,8 +21,6 @@ public class JavaMain2 {
         System.out.println(hashSet);
     }
 
-    @Data
-    @Accessors(chain = true)
     private static class User {
         private int id;
         private String name;
@@ -42,6 +37,24 @@ public class JavaMain2 {
         @Override
         public int hashCode() {
             return Objects.hash(id, name);
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public User setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public User setName(String name) {
+            this.name = name;
+            return this;
         }
     }
 
