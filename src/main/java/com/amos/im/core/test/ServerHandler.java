@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ import java.util.List;
  * @author amos.wang
  * @date 2020/7/8 19:10
  */
-@Component
+//@Component
 public class ServerHandler {
 
     @Resource
@@ -30,7 +31,7 @@ public class ServerHandler {
     /**
      * 服务端地址
      */
-    public Mono<ServerResponse> ws() {
+    public Mono<ServerResponse> ws(ServerRequest request) {
         String wsUrl = imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
 
         return ServerResponse.ok()

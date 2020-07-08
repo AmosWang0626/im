@@ -18,7 +18,7 @@ import reactor.netty.http.server.HttpServer;
  * @author amos.wang
  * @date 2020/7/8 10:54
  */
-@Configuration
+//@Configuration
 public class ImNettyServerFactory {
 
     @Bean

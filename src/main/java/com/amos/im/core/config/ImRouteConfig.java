@@ -16,20 +16,15 @@ import org.springframework.web.reactive.function.server.ServerResponse;
  * @author amos.wang
  * @date 2020/7/8 19:09
  */
-@Configuration
+//@Configuration
 public class ImRouteConfig {
 
     @Bean
     public RouterFunction<ServerResponse> ws(ServerHandler serverHandler) {
-///        RouterFunction<ServerResponse> route = route()
-//                .GET("/person/{id}", accept(APPLICATION_JSON), handler::getPerson)
-//                .GET("/person", accept(APPLICATION_JSON), handler::listPeople)
-//                .POST("/person", handler::createPerson)
-//                .add(otherRoute)
-//                .build();
 
-        return RouterFunctions
-                .route(RequestPredicates.GET("/ws").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), serverHandler::ws);
+        return RouterFunctions.route()
+                .GET("/ws", RequestPredicates.accept(MediaType.TEXT_PLAIN), serverHandler::ws)
+                .build();
     }
 
 }
