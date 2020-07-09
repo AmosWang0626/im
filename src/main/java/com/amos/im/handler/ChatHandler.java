@@ -31,16 +31,17 @@ public class ChatHandler implements WebSocketHandler {
                 .receive()
                 .flatMap(webSocketMessage -> {
                     String payload = webSocketMessage.getPayloadAsText();
-
+                    System.out.println(AbcRegistry.TOKEN_SESSION_MAP);
                     MessageRequest messageRequest = JSONObject.parseObject(payload, MessageRequest.class);
                     String receiverToken = messageRequest.getReceiver();
-                    Optional.ofNullable(AbcRegistry.get(receiverToken))
-                            .ifPresent(session1 -> session1.send(Mono.just(session1.textMessage(messageRequest.getMessage()))));
+                    Optional<WebSocketSession> receiverSession = Optional.ofNullable(AbcRegistry.get(receiverToken));
 
-                    return session.send(Mono.just(session.textMessage("目标用户不在线")));
-                })
-                .then()
-                .doFinally(signal -> AbcRegistry.remove(token));
+                    return receiverSession
+                            .<org.reactivestreams.Publisher<? extends Void>>map(webSocketSession ->
+                                    webSocketSession.send(Mono.just(webSocketSession.textMessage(messageRequest.getMessage()))))
+                            .orElseGet(() -> session.send(Mono.just(session.textMessage("目标用户不在线"))));
+                }).then();
+//                .doFinally(signal -> AbcRegistry.remove(token));
     }
 
 

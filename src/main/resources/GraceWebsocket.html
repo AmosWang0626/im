@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grace</title>
+    <script src="index.js" type="application/javascript"></script>
+</head>
+<body>
+<h3>
+    <button onclick="init()">建立连接</button>
+    <label for="ws_url">WS地址：</label><input id="ws_url" value="ws://localhost:8080/ws/chat?token=grace" type="text"/>
+    <label for="message">消息：</label>
+    <input id="message" type="text" onkeydown="send()"
+           value='{"command":3,"createTime":"2020-07-09T21:29:26.392",
+           "message":"你们是","receiver":"amos","sender":"grace","version":1}'
+    />
+</h3>
+<span id="content"></span>
+</body>
+</html>
