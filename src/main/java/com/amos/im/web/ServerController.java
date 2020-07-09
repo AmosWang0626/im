@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
@@ -47,8 +48,10 @@ public class ServerController {
      */
     @GetMapping("logs")
     @ApiOperation("查看服务端日志")
-    public List<String> logs() {
-        return RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
+    public Flux<String> logs() {
+        List<String> logList = RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
+
+        return Flux.fromIterable(logList);
     }
 
 }

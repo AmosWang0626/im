@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * @date 2020/3/14
  */
 @Slf4j
-//@Component
+@Component
 public class ImNettyServer implements ApplicationListener<ContextRefreshedEvent> {
 
     private static ApplicationContext context = null;

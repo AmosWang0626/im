@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Websocket</title>
+    <title>TestWebsocket</title>
 </head>
 <script>
     let arr = []
+
+    function contentInnerHtml(message) {
+        arr.push(message)
+        document.getElementById("content").innerHTML = arr.join("<br>")
+    }
 
     function send() {
         if ("WebSocket" in window) {
@@ -15,20 +20,22 @@
 
             ws.onopen = function () {
                 ws.send(message);
-                arr.push("Me：" + message)
-
-                document.getElementById("content").innerHTML = arr.join("<br>")
+                contentInnerHtml("Me：" + message);
             };
 
             ws.onmessage = function (evt) {
-                arr.push("Ta：" + evt.data)
+                contentInnerHtml("Ta：" + evt.data);
+            };
+
+            ws.onerror = function () {
+                contentInnerHtml("连接失败，请检查 WS 地址");
             };
 
             ws.onclose = function () {
-                arr.push("连接已关闭")
+                contentInnerHtml("连接已关闭");
             };
         } else {
-            arr.push("您的浏览器不支持 WebSocket!");
+            contentInnerHtml("您的浏览器不支持 WebSocket!");
         }
     }
 </script>
