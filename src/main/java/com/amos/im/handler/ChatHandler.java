@@ -1,11 +1,16 @@
 package com.amos.im.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.amos.im.common.GeneralCode;
+import com.amos.im.common.GeneralResponse;
 import com.amos.im.core.command.request.MessageRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
+import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
@@ -25,23 +30,38 @@ public class ChatHandler implements WebSocketHandler {
         Map<String, String> queryMap = getUrlParams(query);
         String token = queryMap.getOrDefault("token", "");
 
-        AbcRegistry.put(token, session);
-
-        return session
-                .receive()
-                .flatMap(webSocketMessage -> {
-                    String payload = webSocketMessage.getPayloadAsText();
-                    System.out.println(AbcRegistry.TOKEN_SESSION_MAP);
+        Mono<Void> input = session.receive()
+                .map(WebSocketMessage::getPayloadAsText)
+                .flatMap(payload -> {
                     MessageRequest messageRequest = JSONObject.parseObject(payload, MessageRequest.class);
                     String receiverToken = messageRequest.getReceiver();
-                    Optional<WebSocketSession> receiverSession = Optional.ofNullable(AbcRegistry.get(receiverToken));
 
-                    return receiverSession
-                            .<org.reactivestreams.Publisher<? extends Void>>map(webSocketSession ->
-                                    webSocketSession.send(Mono.just(webSocketSession.textMessage(messageRequest.getMessage()))))
-                            .orElseGet(() -> session.send(Mono.just(session.textMessage("目标用户不在线"))));
-                }).then();
-//                .doFinally(signal -> AbcRegistry.remove(token));
+                    return Optional.ofNullable(WebsocketSenderRegistry.get(receiverToken))
+                            .map(WebSocketSender::getSession)
+                            .map(toSession -> toSession.send(Mono.just(toSession.textMessage(payload))))
+                            // MonoIgnoreThen外部访问不到 故此处使用名字比较
+                            .filter(mono -> !"MonoIgnoreThen".equals(mono.toString()))
+                            .orElseGet(() -> offline(session, receiverToken));
+                })
+                .then();
+
+        // 保存用户在线状态
+        Mono<Void> output = session.send(Flux.create(sink ->
+                WebsocketSenderRegistry.put(token, new WebSocketSender(session, sink))));
+
+        return Mono.zip(input, output).then();
+    }
+
+    /**
+     * 用户不在线
+     */
+    private Mono<Void> offline(WebSocketSession session, String token) {
+        if (WebsocketSenderRegistry.containsKey(token)) {
+            WebsocketSenderRegistry.remove(token);
+        }
+
+        return session.send(Mono.just(session.textMessage(
+                JSON.toJSONString(new GeneralResponse<>(GeneralCode.FAIL, "目标用户不在线")))));
     }
 
 

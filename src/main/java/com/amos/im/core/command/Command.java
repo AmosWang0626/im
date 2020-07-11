@@ -30,5 +30,6 @@ public interface Command {
     byte GROUP_LIST_RESPONSE = 10;
     byte GROUP_QUIT_RESPONSE = 12;
     byte GROUP_MESSAGE_RESPONSE = 14;
+    byte ONLINE_USER_RESPONSE = 15;
 
 }

@@ -7,6 +7,7 @@ import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author amos
  * @date 2019/6/1
  */
+@ApiIgnore
 @Api(tags = {"A1 登录相关"})
 @RestController
 @RequestMapping("user")

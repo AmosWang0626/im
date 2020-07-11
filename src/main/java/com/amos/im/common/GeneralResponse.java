@@ -34,6 +34,11 @@ public class GeneralResponse<T> implements Serializable {
         this.success = GeneralCode.SUCCESS.getCode().equals(code.getCode());
     }
 
+    public GeneralResponse(GeneralCode code, String msg) {
+        this(code.getCode(), msg);
+        this.success = GeneralCode.SUCCESS.getCode().equals(code.getCode());
+    }
+
     private GeneralResponse(String code, String msg) {
         this.code = code;
         this.msg = msg;
