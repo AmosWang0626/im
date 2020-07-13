@@ -1,8 +1,10 @@
 package com.amos.im.common;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.time.LocalDateTime;
 
@@ -13,23 +15,22 @@ import java.time.LocalDateTime;
  * @author Daoyuan
  * @date 2019/3/19
  */
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 public abstract class BasePacket {
 
-    @ApiModelProperty(value = "是否成功", hidden = true)
-    private Boolean success;
-
-    @ApiModelProperty(value = "失败原因", hidden = true)
-    private GeneralCode generalCode;
-
-    @ApiModelProperty(value = "发送人token")
+    /**
+     * 发送人token
+     */
     private String sender;
-
-    @ApiModelProperty(value = "创建时间", hidden = true)
+    /**
+     * 创建时间
+     */
     private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "协议版本", hidden = true)
+    /**
+     * 协议版本
+     */
     private Byte version = 1;
 
     /**
@@ -37,7 +38,10 @@ public abstract class BasePacket {
      *
      * @return byte
      */
-    @ApiModelProperty(value = "指令", hidden = true)
     public abstract Byte getCommand();
 
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
 }

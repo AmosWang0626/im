@@ -2,17 +2,8 @@ spring:
   application:
     name: im
 
-  redis:
-    host: amos.wang
-    database: 8
-    port: 1998
-
 server:
   port: 8080
-
-im:
-  port: 8090
-  host: localhost
 
 logging:
   pattern:

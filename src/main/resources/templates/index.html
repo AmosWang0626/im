@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/index.css">
+    <script src="../static/index.js"></script>
+</head>
+<body>
+<div class="base-content">
+    <!-- title -->
+    <div class="title-content">
+        <i id="title-status" class="status-point"></i>
+        <span id="username" class="title-info">IM</span>
+        <label style="float: right">在线用户
+            <select id="tokens"></select>
+        </label>
+    </div>
+    <!-- content -->
+    <div id="message-content" class="message-content"></div>
+    <!-- input -->
+    <div id="input-content">
+        <div class="base-textarea">
+            <label>
+                <textarea id="message" rows="4" placeholder="输入消息吧~" required></textarea>
+            </label>
+        </div>
+    </div>
+</div>
+</body>
+</html>
