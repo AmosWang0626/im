@@ -43,6 +43,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         } else {
             // 兼容已登录用户再次请求登录接口
             response.setUsername(username).setToken(msg.getSender());
+            ServerSession.bindToken(ctx.channel(), msg.getSender(), username);
         }
 
         ctx.channel().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));

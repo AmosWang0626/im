@@ -5,7 +5,7 @@ let last_message_id = ""
 
 // WebSocket 相关
 let ws = null;
-const ws_url = "ws://localhost:8080/ws/chat?token="
+const ws_url = "ws://localhost:8090/ws/chat?token="
 
 /**
  * 页面加载完成后执行
@@ -108,20 +108,23 @@ function sendMessage(message) {
  */
 function receiveMessage(message) {
     const res = JSON.parse(message);
-    if (res.code) {
+    if (!res.success) {
         // 发送异常渲染异常信息
         const lastMessageId = document.getElementById(last_message_id);
-        lastMessageId.querySelector('#notice').innerHTML = res.msg;
+        lastMessageId.querySelector('#notice').innerHTML = res.message;
 
         return
     }
 
-    if (res.command === 15) {
+    const body = res.body;
+
+    // 处理服务器主动推送的在线用户
+    if (body.command === 15) {
         // 接收消息内的tokens
         const tokens = document.getElementById("tokens");
         tokens.options.length = 0;
 
-        res.tokens.forEach(value => {
+        body.tokens.forEach(value => {
             const option = document.createElement("option");
             option.text = value;
             option.value = value;
@@ -131,7 +134,8 @@ function receiveMessage(message) {
         return;
     }
 
-    contentInnerHtml(false, res.message, res.sender);
+    // 处理好友发送的消息
+    contentInnerHtml(false, body.message, body.sender);
 }
 
 /**
@@ -143,7 +147,9 @@ function receiveMessage(message) {
  */
 function contentInnerHtml(current, message, sender) {
     let now = new Date()
-    now = now.getHours() + ":" + (now.getMinutes() > 9 ? now.getMinutes() : '0' + now.getMinutes())
+    now = now.getHours()
+        + ":" + (now.getMinutes() > 9 ? now.getMinutes() : '0' + now.getMinutes())
+        + ":" + (now.getSeconds() > 9 ? now.getSeconds() : '0' + now.getSeconds())
 
     document.getElementById("message-content")
         .innerHTML += getMessageContent(current, sender, message, now, '')
@@ -171,7 +177,7 @@ function getMessageContent(current, sender, message, time, notice) {
         '           <span class="time-right">${time}</span>' +
         '           <span id="notice" class="notice-right">${notice}</span>' +
         '       </div>'
-    let me = '<div id="${id}" class="container white"><img src="${avatar}" alt="Avatar" class="right">' +
+    let me = '<div id="${id}" class="container current"><img src="${avatar}" alt="Avatar" class="right">' +
         '            <p>${message}</p>' +
         '            <span class="time-left">${time}</span>' +
         '            <span id="notice" class="notice-left">${notice}</span>' +

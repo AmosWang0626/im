@@ -34,6 +34,8 @@ body {
 }
 
 .container {
+    width: 80%;
+    float: left;
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -41,7 +43,8 @@ body {
     margin: 10px 0;
 }
 
-.white {
+.current {
+    float: right;
     border-color: #ccc;
     background-color: white;
 }

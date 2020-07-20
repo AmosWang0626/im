@@ -8,8 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -36,9 +34,8 @@ public class ServerController {
      */
     @GetMapping("ws")
     @ApiOperation("获取服务端WS地址")
-    public Mono<String> ws() {
-        String wsUrl = imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
-        return Mono.just(wsUrl);
+    public String ws() {
+        return imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
     }
 
     /**
@@ -48,10 +45,9 @@ public class ServerController {
      */
     @GetMapping("logs")
     @ApiOperation("查看服务端日志")
-    public Flux<String> logs() {
-        List<String> logList = RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
+    public List<String> logs() {
 
-        return Flux.fromIterable(logList);
+        return RedisUtil.lrange(RedisKeys.SERVER_RUN_LOG, 0, -1);
     }
 
 }

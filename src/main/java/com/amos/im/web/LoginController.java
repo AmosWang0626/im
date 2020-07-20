@@ -19,7 +19,6 @@ import java.util.List;
  * @author amos
  * @date 2019/6/1
  */
-@ApiIgnore
 @Api(tags = {"A1 登录相关"})
 @RestController
 @RequestMapping("user")
