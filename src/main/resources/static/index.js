@@ -1,11 +1,9 @@
-// 当前用户名或token
-let username = ""
 // 最后一个消息ID，用于自动滚动
 let last_message_id = ""
 
 // WebSocket 相关
 let ws = null;
-const ws_url = "ws://localhost:8090/ws/chat?token="
+let ws_url = "ws://"
 
 /**
  * 页面加载完成后执行
@@ -15,9 +13,13 @@ window.onload = function () {
         alert("您的浏览器不支持 WebSocket!")
         return
     }
+    get("/server/ws", function (data) {
+        ws_url = ws_url + data + "/ws"
+        console.info('ws_url', ws_url)
 
-    initUsername()
-    initWebSocket()
+        // 初始化用户名
+        initUsername()
+    })
 
     const message = document.getElementById("message");
     message.onkeydown = function (e) {
@@ -42,19 +44,35 @@ window.onload = function () {
  * 初始化用户名
  */
 function initUsername() {
+    let username = ""
     while (!username || username.trim().length === 0) {
         username = prompt("请输入用户名")
     }
 
     username = username.trim()
     document.getElementById("username").innerHTML = username
+
+    post("/user/login",
+        JSON.stringify({username: username, password: "123456"}),
+        function (data) {
+            const res = JSON.parse(data)
+            if (res.success) {
+                localStorage.setItem("token", res.token)
+                localStorage.setItem("username", res.username)
+
+                // 初始化 WebSocket 连接
+                initWebSocket()
+            } else {
+                alert(res.resMsg)
+            }
+        })
 }
 
 /**
  * 初始化 WebSocket 连接
  */
 function initWebSocket() {
-    ws = new WebSocket(ws_url + username);
+    ws = new WebSocket(ws_url);
 
     ws.onopen = function () {
         document.getElementById("title-status").className = "status-point status-online"
@@ -93,12 +111,12 @@ function sendMessage(message) {
         "createTime": new Date(),
         "message": message,
         "receiver": receiver,
-        "sender": username
+        "sender": localStorage.getItem("token")
     }
 
     ws.send(JSON.stringify(params));
 
-    contentInnerHtml(true, message, username);
+    contentInnerHtml(true, message, localStorage.getItem("username"));
 }
 
 /**

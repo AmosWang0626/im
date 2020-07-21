@@ -1,6 +1,7 @@
 package com.amos.im.core.business.impl;
 
 import com.amos.im.common.GeneralCode;
+import com.amos.im.common.util.IdUtil;
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.response.LoginResponse;
@@ -45,8 +46,11 @@ public class LoginBusinessImpl implements LoginBusiness {
             return loginResponse;
         }
 
+        loginResponse.setUsername(username);
         loginResponse.setSuccess(true);
+        loginResponse.setToken(IdUtil.getInstance().getToken());
         loginResponse.setGeneralCode(GeneralCode.SUCCESS);
+
         return loginResponse;
     }
 

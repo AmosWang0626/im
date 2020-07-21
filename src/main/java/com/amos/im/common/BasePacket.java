@@ -20,8 +20,10 @@ public abstract class BasePacket {
     @ApiModelProperty(value = "是否成功", hidden = true)
     private Boolean success;
 
-    @ApiModelProperty(value = "失败原因", hidden = true)
-    private GeneralCode generalCode;
+    @ApiModelProperty(value = "状态码", hidden = true)
+    private String resCode;
+    @ApiModelProperty(value = "提示信息", hidden = true)
+    private String resMsg;
 
     @ApiModelProperty(value = "发送人token")
     private String sender;
@@ -31,6 +33,16 @@ public abstract class BasePacket {
 
     @ApiModelProperty(value = "协议版本", hidden = true)
     private Byte version = 1;
+
+    /**
+     * 设置返回消息
+     *
+     * @param generalCode GeneralCode
+     */
+    public void setGeneralCode(GeneralCode generalCode) {
+        this.setResCode(generalCode.getCode());
+        this.setResMsg(generalCode.getMsg());
+    }
 
     /**
      * 指令(由实现类指定,指令数量有限[-128, 127])

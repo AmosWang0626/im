@@ -29,6 +29,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'io.projectreactor:reactor-test'
+    compile 'org.springframework.boot:spring-boot-devtools'
     compile 'io.netty:netty-all:4.1.51.Final'
     compile 'com.alibaba:fastjson:1.2.70'
     compile 'com.caucho:hessian:4.0.60'
