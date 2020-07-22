@@ -1,14 +1,16 @@
 package com.amos.im.core.session;
 
+import com.alibaba.fastjson.JSON;
 import com.amos.im.core.attribute.ImAttribute;
+import com.amos.im.core.command.response.OnlineUserResponse;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.netty.channel.Channel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * DESCRIPTION: 服务端 channel
@@ -27,9 +29,9 @@ public class ServerSession {
      */
     private static final Map<String, LoginInfoVO> TOKEN_USER_INFO_MAP = new ConcurrentHashMap<>();
     /**
-     * 维护一个 [username >>> UserInfoVO] 的映射Map, 供获取在线用户
+     * 用户名唯一
      */
-    private static final Map<String, LoginInfoVO> USERNAME_MAP = new ConcurrentHashMap<>();
+    private static final Set<String> USERNAME_SET = new HashSet<>();
 
 
     /**
@@ -43,41 +45,57 @@ public class ServerSession {
      * 保存登录token
      */
     public static void bindToken(Channel channel, String token, String username) {
-        CHANNEL_TOKEN_MAP.put(token, channel);
         LoginInfoVO loginInfo = new LoginInfoVO().setToken(token).setUsername(username).setCreateTime(LocalDateTime.now());
-        USERNAME_MAP.put(username, loginInfo);
-        TOKEN_USER_INFO_MAP.put(token, loginInfo);
+        // 用户信息置入channel
+        channel.attr(ImAttribute.TOKEN_INFO).set(token);
         channel.attr(ImAttribute.LOGIN_INFO).set(loginInfo);
+
+        // 保存token、channel映射，保证消息转发
+        CHANNEL_TOKEN_MAP.put(token, channel);
+
+        // 用户名唯一
+        USERNAME_SET.add(username);
+
+        // 备份用户信息，防止channel关闭，用户信息丢失
+        TOKEN_USER_INFO_MAP.put(token, loginInfo);
+
+        notifyOnlineUsers();
     }
 
     /**
-     * 重新给 Channel 绑定 token
+     * 重新绑定 token --> channel
      */
     public static void reBindToken(Channel channel, String token) {
         CHANNEL_TOKEN_MAP.put(token, channel);
+        channel.attr(ImAttribute.TOKEN_INFO).set(token);
         channel.attr(ImAttribute.LOGIN_INFO).set(TOKEN_USER_INFO_MAP.get(token));
+
+        notifyOnlineUsers();
     }
 
     /**
-     * 解绑登录token
+     * 解绑 channel
      */
     public static void unBindToken(Channel channel) {
         if (hasLogin(channel)) {
             LoginInfoVO loginInfo = getLoginInfo(channel);
+
+            USERNAME_SET.remove(loginInfo.getUsername());
             CHANNEL_TOKEN_MAP.remove(loginInfo.getToken());
-            channel.attr(ImAttribute.LOGIN_INFO).set(null);
+
+            notifyOnlineUsers();
         }
     }
 
     /**
-     * 根据channel获取登录信息
+     * 根据 channel 获取登录信息
      */
     public static LoginInfoVO getLoginInfo(Channel channel) {
         return channel.attr(ImAttribute.LOGIN_INFO).get();
     }
 
     /**
-     * 根据token获取用户信息
+     * 根据 token 获取 LoginInfoVO
      */
     public static LoginInfoVO getLoginInfo(String token) {
         return TOKEN_USER_INFO_MAP.get(token);
@@ -91,19 +109,37 @@ public class ServerSession {
     }
 
     /**
-     * 根据 username 获取 channel
+     * 用户名唯一
      */
-    public static LoginInfoVO onlyUsername(String username) {
-        return USERNAME_MAP.get(username);
+    public static boolean existedUsername(String username) {
+        return USERNAME_SET.contains(username);
     }
 
     /**
-     * 根据 username 获取 channel
+     * 获取所有在线用户的 LoginInfoVO
      */
-    public static List<LoginInfoVO> onlineList() {
-        List<LoginInfoVO> loginInfoList = new ArrayList<>();
-        CHANNEL_TOKEN_MAP.keySet().forEach(token -> loginInfoList.add(TOKEN_USER_INFO_MAP.get(token)));
-        return loginInfoList;
+    public static List<LoginInfoVO> onlineUserInfoList() {
+        return new ArrayList<>(TOKEN_USER_INFO_MAP.values());
+    }
+
+
+    /**
+     * 通知所有在线用户当前在线用户列表
+     */
+    private static void notifyOnlineUsers() {
+        List<LoginInfoVO> loginInfoList = ServerSession.onlineUserInfoList();
+
+        // 遍历所有在线用户的 Channel
+        CHANNEL_TOKEN_MAP.values().forEach(channel -> {
+            String currentChannelToken = channel.attr(ImAttribute.TOKEN_INFO).get();
+            List<LoginInfoVO> onlineLoginInfoList = loginInfoList.stream()
+                    .filter(loginInfoVO -> !loginInfoVO.getToken().equals(currentChannelToken))
+                    .collect(Collectors.toList());
+
+            OnlineUserResponse onlineUserResponse = new OnlineUserResponse().setLoginInfoList(onlineLoginInfoList);
+
+            channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(onlineUserResponse)));
+        });
     }
 
 }

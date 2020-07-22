@@ -10,7 +10,7 @@ package com.amos.im.core.command;
 public interface Command {
 
     /**
-     * REQUEST
+     * REQUEST 奇数
      */
     byte LOGIN_REQUEST = 1;
     byte MESSAGE_REQUEST = 3;
@@ -21,7 +21,7 @@ public interface Command {
     byte GROUP_MESSAGE_REQUEST = 13;
 
     /**
-     * RESPONSE
+     * RESPONSE 偶数
      */
     byte LOGIN_RESPONSE = 2;
     byte MESSAGE_RESPONSE = 4;
@@ -30,6 +30,6 @@ public interface Command {
     byte GROUP_LIST_RESPONSE = 10;
     byte GROUP_QUIT_RESPONSE = 12;
     byte GROUP_MESSAGE_RESPONSE = 14;
-    byte ONLINE_USER_RESPONSE = 15;
+    byte ONLINE_USER_RESPONSE = 98;
 
 }

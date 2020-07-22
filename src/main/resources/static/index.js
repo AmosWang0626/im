@@ -13,12 +13,18 @@ window.onload = function () {
         alert("您的浏览器不支持 WebSocket!")
         return
     }
+
     get("/server/ws", function (data) {
         ws_url = ws_url + data + "/ws"
         console.info('ws_url', ws_url)
 
-        // 初始化用户名
-        initUsername()
+        if (getToken()) {
+            // 初始化 WebSocket 连接
+            initWebSocket()
+        } else {
+            // 初始化用户名
+            initUsername()
+        }
     })
 
     const message = document.getElementById("message");
@@ -76,6 +82,9 @@ function initWebSocket() {
 
     ws.onopen = function () {
         document.getElementById("title-status").className = "status-point status-online"
+
+        const loginReq = {username: getUsername(), sender: getToken(), command: 1}
+        ws.send(JSON.stringify(loginReq))
     };
 
     ws.onmessage = function (evt) {
@@ -99,11 +108,9 @@ function initWebSocket() {
 function sendMessage(message) {
     const tokens = document.getElementById("tokens");
     const selected = tokens.options[tokens.selectedIndex];
-    let receiver = 'amos'
+    let receiver = 'admin'
     if (selected) {
         receiver = selected.value
-    } else {
-        alert("当前用户都不在线")
     }
 
 
@@ -111,12 +118,13 @@ function sendMessage(message) {
         "createTime": new Date(),
         "message": message,
         "receiver": receiver,
-        "sender": localStorage.getItem("token")
+        "sender": getToken(),
+        "command": 3 // 发消息指令
     }
 
     ws.send(JSON.stringify(params));
 
-    contentInnerHtml(true, message, localStorage.getItem("username"));
+    contentInnerHtml(true, message, getUsername());
 }
 
 /**
@@ -125,35 +133,42 @@ function sendMessage(message) {
  * @param message 消息内容
  */
 function receiveMessage(message) {
-    const res = JSON.parse(message);
-    if (!res.success) {
-        // 发送异常渲染异常信息
+    const body = JSON.parse(message);
+    console.log(body)
+
+    // 发送异常渲染异常信息
+    if (!body.success) {
         const lastMessageId = document.getElementById(last_message_id);
-        lastMessageId.querySelector('#notice').innerHTML = res.message;
+        lastMessageId.querySelector('#notice').innerHTML = body.resMsg;
 
         return
     }
 
-    const body = res.body;
+    switch (body.command) {
+        case 2: // 登录
+            console.info(body.username + " 登录成功!", body.token)
+            break
 
-    // 处理服务器主动推送的在线用户
-    if (body.command === 15) {
-        // 接收消息内的tokens
-        const tokens = document.getElementById("tokens");
-        tokens.options.length = 0;
+        case 98: // 在线用户
+            // 接收消息内的tokens
+            const tokens = document.getElementById("tokens");
+            tokens.options.length = 0;
 
-        body.tokens.forEach(value => {
-            const option = document.createElement("option");
-            option.text = value;
-            option.value = value;
+            body.loginInfoList.forEach(value => {
+                const option = document.createElement("option");
+                option.text = value.username;
+                option.value = value.token;
 
-            tokens.add(option)
-        })
-        return;
+                tokens.add(option)
+            })
+            break
+
+        default:
+            // 处理好友发送的消息
+            contentInnerHtml(false, body.message, body.username);
+            break
     }
 
-    // 处理好友发送的消息
-    contentInnerHtml(false, body.message, body.sender);
 }
 
 /**
@@ -232,4 +247,12 @@ function getAvatar(username) {
     }
 
     return girl;
+}
+
+function getToken() {
+    return localStorage.getItem("token")
+}
+
+function getUsername() {
+    return localStorage.getItem("username")
 }

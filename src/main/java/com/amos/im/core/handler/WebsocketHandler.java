@@ -5,6 +5,7 @@ import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.request.MessageRequest;
+import com.amos.im.core.session.ServerSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -49,6 +50,8 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         USERS.remove(ctx.channel());
         System.out.printf("客户端连接已关闭，客户端ID [%s]，在线人数 [%d人]\n", ctx.channel().id().asShortText(), USERS.size());
+
+        ServerSession.unBindToken(ctx.channel());
     }
 
     @Override
@@ -56,5 +59,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         cause.printStackTrace();
         ctx.channel().close();
         USERS.remove(ctx.channel());
+
+        ServerSession.unBindToken(ctx.channel());
     }
 }

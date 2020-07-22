@@ -32,19 +32,19 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         LoginResponse response = new LoginResponse();
         response.setSuccess(true).setGeneralCode(GeneralCode.SUCCESS);
 
+        String token = msg.getSender();
         String username = msg.getUsername();
+
         // 保存客户端登录状态
         if (StringUtils.isBlank(msg.getSender())) {
-            String token = IdUtil.getInstance().getToken();
-            response.setUsername(username).setToken(token);
-            ServerSession.bindToken(ctx.channel(), token, username);
-            String tempLog = "用户[" + token + "](" + username + ")登录成功! " + ctx.channel().id().asShortText();
-            LogUtils.info(RedisKeys.SERVER_RUN_LOG, tempLog, getClass());
-        } else {
-            // 兼容已登录用户再次请求登录接口
-            response.setUsername(username).setToken(msg.getSender());
-            ServerSession.bindToken(ctx.channel(), msg.getSender(), username);
+            token = IdUtil.getInstance().getToken();
         }
+
+        response.setUsername(username).setToken(token);
+        ServerSession.bindToken(ctx.channel(), token, username);
+
+        String tempLog = "用户[" + token + "](" + username + ")登录成功! " + ctx.channel().id().asShortText();
+        LogUtils.info(RedisKeys.SERVER_RUN_LOG, tempLog, getClass());
 
         ctx.channel().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));
     }

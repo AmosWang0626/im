@@ -20,6 +20,10 @@ public interface ImAttribute {
      */
     AttributeKey<LoginInfoVO> LOGIN_INFO = AttributeKey.newInstance("login");
     /**
+     * 客户端留存 token 信息
+     */
+    AttributeKey<String> TOKEN_INFO = AttributeKey.newInstance("token");
+    /**
      * 客户端留存群组信息
      */
     AttributeKey<Map<String, GroupInfoVO>> GROUP_INFO_MAP = AttributeKey.newInstance("joinedGroups");

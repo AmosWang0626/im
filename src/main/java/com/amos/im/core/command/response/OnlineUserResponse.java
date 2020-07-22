@@ -2,11 +2,12 @@ package com.amos.im.core.command.response;
 
 import com.amos.im.common.BasePacket;
 import com.amos.im.core.command.Command;
+import com.amos.im.core.pojo.vo.LoginInfoVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * DESCRIPTION: 在线用户列表
@@ -19,7 +20,7 @@ import java.util.Set;
 @Accessors(chain = true)
 public class OnlineUserResponse extends BasePacket {
 
-    private Set<String> tokens;
+    private List<LoginInfoVO> loginInfoList;
 
     @Override
     public Byte getCommand() {

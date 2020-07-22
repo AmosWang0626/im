@@ -1,6 +1,7 @@
 package com.amos.im.core.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import com.amos.im.common.GeneralCode;
 import com.amos.im.core.command.request.MessageRequest;
 import com.amos.im.core.command.response.MessageResponse;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
@@ -11,7 +12,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 
 /**
@@ -29,12 +29,13 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         LoginInfoVO userInfo = ServerSession.getLoginInfo(messageRequest.getSender());
         ServerSession.reBindToken(ctx.channel(), messageRequest.getSender());
 
+        String receiver = messageRequest.getReceiver();
         // 根据消息中指定的token，发送给对应用户
-        Channel channel = ServerSession.getChannel(messageRequest.getReceiver());
+        Channel channel = ServerSession.getChannel(receiver);
 
         MessageResponse response = new MessageResponse();
         response.setUsername(userInfo.getUsername())
-                .setReceiver(messageRequest.getReceiver())
+                .setReceiver(receiver)
                 .setMessage(messageRequest.getMessage())
                 .setCreateTime(LocalDateTime.now())
                 .setSender(messageRequest.getSender());
@@ -42,10 +43,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         if (channel != null && ServerSession.hasLogin(channel)) {
             channel.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));
         } else {
-            response.setUsername("服务器")
-                    .setMessage(MessageFormat.format("[{0}] 未登录, 暂不能收到您的消息!!!", messageRequest.getReceiver()))
-                    .setCreateTime(LocalDateTime.now())
-                    .setSender("SERVER");
+            response.setGeneralCode(GeneralCode.ALONE_BOTH_LOGIN);
             ctx.channel().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(response)));
         }
     }

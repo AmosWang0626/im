@@ -40,8 +40,7 @@ public class LoginBusinessImpl implements LoginBusiness {
         }
 
         String username = loginRequest.getUsername();
-        LoginInfoVO loginInfo = ServerSession.onlyUsername(username);
-        if (loginInfo != null) {
+        if (ServerSession.existedUsername(username)) {
             loginResponse.setGeneralCode(GeneralCode.LOGIN_FAIL_USERNAME_EXIST);
             return loginResponse;
         }
@@ -57,7 +56,7 @@ public class LoginBusinessImpl implements LoginBusiness {
 
     @Override
     public List<LoginInfoVO> list() {
-        return ServerSession.onlineList();
+        return ServerSession.onlineUserInfoList();
     }
 
 }
