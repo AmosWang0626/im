@@ -44,6 +44,12 @@ window.onload = function () {
             e.preventDefault();
         }
     }
+    
+    const logout = document.getElementById("logout");
+    logout.onclick = function () {
+        localStorage.clear()
+        location.reload();
+    }
 }
 
 /**
@@ -70,6 +76,7 @@ function initUsername() {
                 initWebSocket()
             } else {
                 alert(res.resMsg)
+                location.reload();
             }
         })
 }

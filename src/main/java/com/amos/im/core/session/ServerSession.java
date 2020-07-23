@@ -82,6 +82,7 @@ public class ServerSession {
 
             USERNAME_SET.remove(loginInfo.getUsername());
             CHANNEL_TOKEN_MAP.remove(loginInfo.getToken());
+            TOKEN_USER_INFO_MAP.remove(loginInfo.getToken());
 
             notifyOnlineUsers();
         }
