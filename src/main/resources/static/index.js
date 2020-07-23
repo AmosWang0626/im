@@ -209,7 +209,7 @@ function contentInnerHtml(current, message, sender) {
  * @param notice  提示语
  */
 function getMessageContent(current, sender, message, time, notice) {
-    const id = "send_" + new Date().getMilliseconds();
+    const id = "send_" + new Date().getTime();
     last_message_id = id
 
     let other = '<div id="${id}" class="container"><img src="${avatar}" alt="Avatar">' +
