@@ -5,6 +5,7 @@ import com.amos.im.core.config.ImConfig;
 import com.amos.im.core.constant.RedisKeys;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,11 @@ public class ServerController {
     @GetMapping("ws")
     @ApiOperation("获取服务端WS地址")
     public String ws() {
-        return imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT);
+        if (StringUtils.isNotBlank(imConfig.getWsDomain())) {
+            return imConfig.getWsDomain();
+        }
+
+        return "ws://" + imConfig.getHost() + ":" + RedisUtil.get(RedisKeys.SERVER_RUN_PORT) + "/ws";
     }
 
     /**

@@ -13,6 +13,7 @@ server:
 im:
   port: 8090
   host: localhost
+  ws_domain: ${IM_WS_DOMAIN:}
 
 logging:
   pattern:

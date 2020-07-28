@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  im:
+    image: 'amos0626/im:1.0.0'
+    restart: always
+    container_name: im
+    ports:
+      - '8089:8080'
+      - '8090:8090'
+    environment:
+      - IM_WS_DOMAIN=wss://im.amos.wang/ws

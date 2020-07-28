@@ -22,4 +22,6 @@ public class ImConfig {
 
     private String host;
 
+    private String wsDomain;
+
 }

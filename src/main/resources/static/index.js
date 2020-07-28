@@ -3,7 +3,7 @@ let last_message_id = ""
 
 // WebSocket 相关
 let ws = null;
-let ws_url = "ws://"
+let ws_url = null;
 
 /**
  * 页面加载完成后执行
@@ -15,7 +15,7 @@ window.onload = function () {
     }
 
     get("/server/ws", function (data) {
-        ws_url = ws_url + data + "/ws"
+        ws_url = data
         console.info('ws_url', ws_url)
 
         if (getToken()) {
@@ -44,7 +44,7 @@ window.onload = function () {
             e.preventDefault();
         }
     }
-    
+
     const logout = document.getElementById("logout");
     logout.onclick = function () {
         localStorage.clear()

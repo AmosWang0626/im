@@ -42,7 +42,7 @@ dependencies {
 
 docker {
     dependsOn build as Task
-    name "dockerhub.amos.wang/${project.name}:${project.version}"
+    name "amos0626/${project.name}:${project.version}"
     files bootJar.archiveFile
     println('1.project.name >>>>> ' + project.name)
     println('2.archive_file >>>>> ' + bootJar.archiveFile.get())
