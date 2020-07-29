@@ -14,6 +14,16 @@ window.onload = function () {
         return
     }
 
+   /*$('#usernameModal').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+    $('#usernameModal').on('hidden.bs.modal', function (event) {
+        debugger
+        var modal = $(this)
+        console.info(modal.find('#init-username').val())
+    })*/
+
     get("/server/ws", function (data) {
         ws_url = data
         console.info('ws_url', ws_url)
@@ -35,14 +45,27 @@ window.onload = function () {
         if (code === 13 && window.event) {
             e.returnValue = false;
 
-            // 主动发送消息
-            sendMessage(this.value)
+            if (this.value && this.value !== "") {
+                // 主动发送消息
+                sendMessage(this.value)
+            }
             // 清空输入框
             this.value = ""
         } else if (code === 13) {
             // 避免回车键换行
             e.preventDefault();
         }
+    }
+
+    const sendBtn = document.getElementById("send-btn");
+    sendBtn.onclick = function () {
+        const value = document.getElementById("message").value;
+        if (value && value !== "") {
+            // 主动发送消息
+            sendMessage(value)
+        }
+        // 清空输入框
+        document.getElementById("message").value = ""
     }
 
     const logout = document.getElementById("logout");
@@ -212,12 +235,12 @@ function getMessageContent(current, sender, message, time, notice) {
     const id = "send_" + new Date().getTime();
     last_message_id = id
 
-    let other = '<div id="${id}" class="container"><img src="${avatar}" alt="Avatar">' +
+    let other = '<div id="${id}" class="msg-item"><img src="${avatar}" alt="Avatar">' +
         '           <p>${message}</p>' +
         '           <span class="time-right">${time}</span>' +
         '           <span id="notice" class="notice-right">${notice}</span>' +
         '       </div>'
-    let me = '<div id="${id}" class="container current"><img src="${avatar}" alt="Avatar" class="right">' +
+    let me = '<div id="${id}" class="msg-item current"><img src="${avatar}" alt="Avatar" class="right">' +
         '            <p>${message}</p>' +
         '            <span class="time-left">${time}</span>' +
         '            <span id="notice" class="notice-left">${notice}</span>' +

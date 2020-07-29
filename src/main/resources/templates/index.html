@@ -1,34 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Chat</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IM</title>
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="../static/bootstrap.min.css">
     <link rel="stylesheet" href="../static/index.css">
+    <script src="../static/jquery.slim.min.js"></script>
+    <script src="../static/bootstrap.min.js"></script>
     <script src="../static/index.js"></script>
     <script src="../static/request.js"></script>
 </head>
 <body>
-<div class="base-content">
+<div class="container">
     <!-- title -->
-    <div class="title-content">
-        <i id="title-status" class="status-point"></i>
-        <span id="username" class="title-info">IM</span>
-        <label style="float: right">在线用户
-            <select id="tokens"></select>
-            <button id="logout">退出</button>
-        </label>
-    </div>
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand">
+            <i id="title-status" class="status-point"></i>
+            <span id="username" class="title-info">IM</span>
+        </span>
+        <div class="form-inline">
+            <label for="tokens"></label>
+            <select class="form-control mr-sm-2" id="tokens"></select>
+            <button class="btn btn-outline-secondary" id="logout">退出</button>
+        </div>
+    </nav>
     <!-- content -->
     <div id="message-content" class="message-content"></div>
     <!-- input -->
-    <div id="input-content">
-        <div class="base-textarea">
-            <label>
-                <textarea id="message" rows="4" placeholder="输入消息吧~" required></textarea>
-            </label>
+    <div class="input-group">
+        <label for="message"></label>
+        <textarea id="message" class="form-control" rows="3" placeholder="输入消息吧~" required></textarea>
+        <div class="input-group-append">
+            <button id="send-btn" class="btn btn-success" type="button">发送</button>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#usernameModal">
+        InitUsername
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">请输入用户名</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="init-username" class="col-form-label"></label>
+                            <input type="text" class="form-control" id="init-username">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<!-- JS, Popper.js, and jQuery -->
+<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>-->
 </body>
 </html>
