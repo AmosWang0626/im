@@ -15,36 +15,46 @@
     <script src="../static/request.js"></script>
 </head>
 <body>
+<!--
+Standard
+1. id is defined before class
+   <label id="xxx" class="xxx"></label>
+2. Use id in JavaScript; Use class in CSS
+-->
+
 <div class="container">
-    <!-- title -->
+
+    <!-- nav -->
     <nav class="navbar navbar-light bg-light">
+
+        <!-- left -->
         <span class="navbar-brand">
-            <i id="title-status" class="status-point"></i>
-            <span id="username" class="title-info">IM</span>
+            <span id="username" class="navbar-text">IM</span>
+            <span id="badge" class="badge badge-secondary">离线</span>
         </span>
+
+        <!-- right -->
         <div class="form-inline">
-            <label for="tokens"></label>
-            <select class="form-control mr-sm-2" id="tokens"></select>
+            <label for="users"></label>
+            <select id="users" class="form-control mr-sm-2"></select>
             <button class="btn btn-outline-secondary" id="logout">退出</button>
         </div>
     </nav>
-    <!-- content -->
-    <div id="message-content" class="message-content"></div>
-    <!-- input -->
+
+    <!-- main -->
+    <div id="main" class="main"></div>
+
+    <!-- footer -->
     <div class="input-group">
         <label for="message"></label>
         <textarea id="message" class="form-control" rows="3" placeholder="输入消息吧~" required></textarea>
         <div class="input-group-append">
-            <button id="send-btn" class="btn btn-success" type="button">发送</button>
+            <button id="send" class="btn btn-success" type="button">发送</button>
         </div>
     </div>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#usernameModal">
-        InitUsername
-    </button>
-    <!-- Modal -->
-    <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
+    <!-- username modal -->
+    <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -52,14 +62,12 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="form-group">
-                            <label for="init-username" class="col-form-label"></label>
-                            <input type="text" class="form-control" id="init-username">
-                        </div>
+                        <label for="init-username" class="col-form-label"></label>
+                        <input id="init-username" class="form-control" type="text">
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
                 </div>
             </div>
         </div>

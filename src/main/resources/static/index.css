@@ -1,36 +1,39 @@
-.title-info {
-    font-size: 16px;
+/*主体*/
+.main {
+    height: 65vh;
+    padding-right: 10px;
+    overflow-y: scroll;
 }
 
-.status-point {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin-right: 5px;
-    border-radius: 50%;
-    background-color: #888888;
+/*滚动条样式*/
+.main::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
 }
 
-.status-online {
-    background-color: #09BB07;
-}
-
-.status-offline {
-    background-color: #888888;
-}
-
-.status-fail {
-    background-color: #E64340;
-}
-
-.msg-item {
-    width: 80%;
-    float: left;
-    border: 2px solid #dedede;
-    background-color: #f1f1f1;
+/*滚动条里面小方块*/
+.main::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
+    -webkit-box-shadow: inset 0 0 5px #f1f1f1;
+    background: #ccc;
+}
+
+/*滚动条里面轨道*/
+.main::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px white;
+    border-radius: 0;
+    background: white;
+}
+
+/*消息体*/
+.msg-item {
+    width: 70%;
+    float: left;
+    border: 1px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    padding: 8px;
+    margin: 4px 0;
 }
 
 .current {
@@ -46,11 +49,14 @@
 }
 
 .msg-item img {
-    float: left;
-    max-width: 60px;
-    width: 100%;
-    margin-right: 20px;
+    max-width: 30px;
     border-radius: 50%;
+}
+
+.msg-item img.left {
+    float: left;
+    margin-left: 0;
+    margin-right: 20px;
 }
 
 .msg-item img.right {
@@ -62,11 +68,13 @@
 .time-right {
     float: right;
     color: #aaa;
+    font-size: 12px;
 }
 
 .time-left {
     float: left;
     color: #999;
+    font-size: 12px;
 }
 
 .notice-right {
@@ -79,44 +87,4 @@
     color: red;
     float: left;
     margin-left: 25px;
-}
-
-.base-content {
-    height: 100vh;
-    overflow-y: auto
-}
-
-.message-content {
-    height: 65vh;
-    padding-right: 10px;
-    overflow-y: scroll;
-}
-
-/*滚动条样式*/
-.message-content::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-}
-
-/*滚动条里面小方块*/
-.message-content::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    -webkit-box-shadow: inset 0 0 5px #f1f1f1;
-    background: #ccc;
-}
-
-/*滚动条里面轨道*/
-.message-content::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 5px white;
-    border-radius: 0;
-    background: white;
-}
-
-textarea {
-    width: calc(100% - 18px);
-    outline: none;
-    padding: 5px;
-    resize: none;
-    border-radius: 5px;
-    border: 2px solid #dedede;
 }
