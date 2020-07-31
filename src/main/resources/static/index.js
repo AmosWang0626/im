@@ -69,9 +69,13 @@ $(function () {
     })
 
     // 退出
-    $("#logout").click(function () {
-        localStorage.clear()
-        location.reload();
+    that.badge.click(function () {
+        const logoutModal = $('#logoutModal');
+        logoutModal.modal()
+        $("#logout").click(function () {
+            localStorage.clear()
+            location.reload();
+        })
     })
 });
 
@@ -143,11 +147,7 @@ function initWebSocket() {
  */
 function sendMessage(message) {
     const selected = $("#users").val();
-    let receiver = 'admin'
-    if (selected) {
-        receiver = selected
-    }
-
+    let receiver = selected ? selected : 'admin'
 
     let params = {
         "createTime": new Date(),
@@ -169,12 +169,10 @@ function sendMessage(message) {
  */
 function receiveMessage(message) {
     const body = JSON.parse(message);
-    console.log(body)
 
     // 发送异常渲染异常信息
     if (!body.success) {
         $("#" + that.last_message_id).find('#notice').html(body.resMsg);
-
         return
     }
 
@@ -184,9 +182,12 @@ function receiveMessage(message) {
             showStatus(1)
             break
 
+        case 4: // 处理好友发送的消息
+            contentInnerHtml(false, body.message, body.username);
+            break
+
         case 98: // 在线用户
-            // 接收消息内的tokens
-            const users = $("#users");
+            const users = $("#users"); // 接收消息内的tokens
             users.empty();
 
             body.loginInfoList.forEach(value => {
@@ -195,8 +196,7 @@ function receiveMessage(message) {
             break
 
         default:
-            // 处理好友发送的消息
-            contentInnerHtml(false, body.message, body.username);
+            console.log(body)
             break
     }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>IM</title>
     <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
@@ -37,7 +37,6 @@ Standard
         <div class="form-inline">
             <label for="users"></label>
             <select id="users" class="form-control mr-sm-2"></select>
-            <button class="btn btn-outline-secondary" id="logout">退出</button>
         </div>
     </nav>
 
@@ -47,7 +46,7 @@ Standard
     <!-- footer -->
     <div class="input-group">
         <label for="message"></label>
-        <textarea id="message" class="form-control" rows="3" placeholder="输入消息吧~" required></textarea>
+        <textarea id="message" class="form-control" placeholder="输入消息吧~" autofocus required></textarea>
         <div class="input-group-append">
             <button id="send" class="btn btn-success" type="button">发送</button>
         </div>
@@ -68,6 +67,20 @@ Standard
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- logout modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">确定退出吗</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button id="logout" class="btn btn-primary" data-dismiss="modal" type="button">确定</button>
                 </div>
             </div>
         </div>
