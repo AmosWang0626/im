@@ -5,7 +5,7 @@ let that = {
     last_message_id: "",
     ws: null,
     ws_url: null,
-    badge: null
+    badge: null // 用户当前状态(在线/离线/登录中/登录失败)
 }
 
 /**
@@ -172,7 +172,7 @@ function receiveMessage(message) {
 
     // 发送异常渲染异常信息
     if (!body.success) {
-        $("#" + that.last_message_id).find('#notice').html(body.resMsg);
+        $("#" + that.last_message_id).find('.notice').html(body.resMsg);
         return
     }
 
@@ -236,19 +236,48 @@ function getMessageContent(current, sender, message, time, notice) {
     const id = "send_" + new Date().getTime();
     that.last_message_id = id
 
-    let other = '<div id="${id}" class="msg-item"><img src="${avatar}" alt="Avatar" class="left">' +
-        '           <p>${message}</p>' +
-        '           <span class="time-right">${time}</span>' +
-        '           <span id="notice" class="notice-right">${notice}</span>' +
-        '       </div>'
-    let me = '<div id="${id}" class="msg-item current"><img src="${avatar}" alt="Avatar" class="right">' +
-        '            <p>${message}</p>' +
-        '            <span class="time-left">${time}</span>' +
-        '            <span id="notice" class="notice-left">${notice}</span>' +
-        '        </div>'
+    let other =
+        '<div id="${id}" class="media msg-item left">' +
+        '   <img src="${avatar}" alt="avatar" class="align-self-center">' +
+        '   <div class="media-body ml-1">' +
+        '       <div class="row">' +
+        '           <div class="col font12 color-username">${sender}</div>' +
+        '       </div>' +
+        '       <div class="row">' +
+        '           <div class="col">' +
+        '               <div class="msg-content left">${message}</div>' +
+        '           </div>' +
+        '       </div>' +
+        '       <div class="row">' +
+        '           <div class="col font12">' +
+        '               <span class="color-red">${notice}</span>' +
+        '               <span class="color-time">${time}</span>' +
+        '           </div>' +
+        '       </div>' +
+        '   </div>' +
+        '</div>';
+
+    let me =
+        '<div id="${id}" class="media msg-item right">' +
+        '   <div class="media-body mr-1">' +
+        '       <div class="row justify-content-end">' +
+        '           <div class="col-md-auto">' +
+        '               <div class="msg-content right current">${message}</div>' +
+        '           </div>' +
+        '       </div>' +
+        '       <div class="row justify-content-end">' +
+        '           <div class="col font12">' +
+        '               <span class="color-red right">${notice}</span>' +
+        '               <span class="color-time right">${time}</span>' +
+        '           </div>' +
+        '       </div>' +
+        '   </div>' +
+        '   <img src="${avatar}" alt="avatar">' +
+        '</div>'
 
     let content = current ? me : other;
     content = content.replace("${id}", id)
+    content = content.replace("${sender}", sender)
     content = content.replace("${avatar}", getAvatar(sender))
     content = content.replace("${message}", message)
     content = content.replace("${time}", time)
@@ -266,7 +295,7 @@ function showStatus(flag) {
     switch (flag) {
         case 0:
             that.badge.attr("class", "badge badge-light")
-            that.badge.text("登录中···")
+            that.badge.text("登录中")
             break
 
         case 1:

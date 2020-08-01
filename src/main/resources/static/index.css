@@ -3,6 +3,7 @@
     height: 75vh;
     padding-right: 10px;
     overflow-y: scroll;
+    background: #F1F1F1;
 }
 
 /*滚动条样式*/
@@ -14,32 +15,34 @@
 /*滚动条里面小方块*/
 .main::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    -webkit-box-shadow: inset 0 0 5px #f1f1f1;
-    background: #ccc;
+    background: #F1F1F1;
+    -webkit-box-shadow: inset 0 0 5px #AAAAAA;
 }
 
 /*滚动条里面轨道*/
 .main::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 5px white;
     border-radius: 0;
-    background: white;
+    background: #F1F1F1;
+    -webkit-box-shadow: inset 0 0 5px #F1F1F1;
 }
 
 /*消息体*/
 .msg-item {
-    width: 70%;
-    float: left;
-    border: 1px solid #dedede;
-    background-color: #f1f1f1;
-    border-radius: 15px;
-    padding: 8px;
+    width: 70vw;
     margin: 4px 0;
+    padding: 8px;
 }
 
-.current {
-    float: right;
-    border-color: #ccc;
+.msg-item .msg-content {
+    margin: 4px 0;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #dedede;
     background-color: white;
+}
+
+.msg-item .current {
+    background-color: #91ED61;
 }
 
 .msg-item::after {
@@ -49,42 +52,51 @@
 }
 
 .msg-item img {
-    max-width: 30px;
-    border-radius: 50%;
+    max-width: 45px;
+    border-radius: 10%;
 }
 
-.msg-item img.left {
+.color-time {
+    color: #AAAAAA;
+}
+
+.color-username {
+    color: #888888;
+}
+
+/* 通用样式 */
+.color-red {
+    color: #D84E43;
+}
+
+.left {
     float: left;
-    margin-left: 0;
-    margin-right: 20px;
 }
 
-.msg-item img.right {
+.right {
     float: right;
-    margin-left: 20px;
-    margin-right: 0;
 }
 
-.time-right {
-    float: right;
-    color: #aaa;
+.font12 {
     font-size: 12px;
 }
 
-.time-left {
-    float: left;
-    color: #999;
-    font-size: 12px;
-}
-
-.notice-right {
-    color: red;
-    float: right;
-    margin-right: 25px;
-}
-
-.notice-left {
-    color: red;
-    float: left;
-    margin-left: 25px;
+/*
+ * 微信标准色彩指引 WeChat Standard Color Guidelines 2017.03
+ * https://res.wx.qq.com/a/wx_fed/wedesign/res/static/res/2b7c/WeChat_Standard_Color_Guidelines_201703.pdf
+ */
+.we_chat-colors {
+    color: #1AAD19;
+    color: #2BA245;
+    color: #4D4D4D;
+    color: #888888;
+    color: #AAAAAA;
+    color: #F1F1F1;
+    color: #91ED61;
+    color: #FFBE00;
+    color: #EA6853;
+    color: #F76260;
+    color: #D84E43;
+    color: #2782D7;
+    color: #10AEFF;
 }
