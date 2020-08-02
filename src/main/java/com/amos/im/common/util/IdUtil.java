@@ -1,5 +1,6 @@
 package com.amos.im.common.util;
 
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -11,8 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class IdUtil {
 
-    private AtomicLong userId = new AtomicLong(0L);
-    private AtomicLong groupId = new AtomicLong(0L);
+    private final AtomicLong groupId = new AtomicLong(0L);
 
     private static volatile IdUtil idUtil;
 
@@ -23,16 +23,12 @@ public class IdUtil {
         return idUtil;
     }
 
-    public Long getUserId() {
-        return userId.getAndAdd(1L);
-    }
-
     public String getGroupId() {
         return "g0" + groupId.getAndAdd(1L);
     }
 
     public String getToken() {
-        return "c" + getUserId();
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
 }

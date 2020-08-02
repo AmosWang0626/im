@@ -1,14 +1,18 @@
 package com.amos.im.core.session;
 
 import com.alibaba.fastjson.JSON;
+import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.attribute.ImAttribute;
 import com.amos.im.core.command.response.OnlineUserResponse;
+import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -28,11 +32,6 @@ public class ServerSession {
      * 维护一个 [token >>> UserInfoVO] 的映射Map, 供获取在线用户
      */
     private static final Map<String, LoginInfoVO> TOKEN_USER_INFO_MAP = new ConcurrentHashMap<>();
-    /**
-     * 用户名唯一
-     */
-    private static final Set<String> USERNAME_SET = new HashSet<>();
-
 
     /**
      * 是否已登录
@@ -54,7 +53,7 @@ public class ServerSession {
         CHANNEL_TOKEN_MAP.put(token, channel);
 
         // 用户名唯一
-        USERNAME_SET.add(username);
+        RedisUtil.hsetnx(RedisKeys.USER_INFO, username, JSON.toJSONString(loginInfo));
 
         // 备份用户信息，防止channel关闭，用户信息丢失
         TOKEN_USER_INFO_MAP.put(token, loginInfo);
@@ -80,7 +79,6 @@ public class ServerSession {
         if (hasLogin(channel)) {
             LoginInfoVO loginInfo = getLoginInfo(channel);
 
-            USERNAME_SET.remove(loginInfo.getUsername());
             CHANNEL_TOKEN_MAP.remove(loginInfo.getToken());
             TOKEN_USER_INFO_MAP.remove(loginInfo.getToken());
 
@@ -107,13 +105,6 @@ public class ServerSession {
      */
     public static Channel getChannel(String token) {
         return CHANNEL_TOKEN_MAP.get(token);
-    }
-
-    /**
-     * 用户名唯一
-     */
-    public static boolean existedUsername(String username) {
-        return USERNAME_SET.contains(username);
     }
 
     /**

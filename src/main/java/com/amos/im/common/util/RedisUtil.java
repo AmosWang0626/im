@@ -5,6 +5,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -43,11 +44,9 @@ public class RedisUtil {
 
     public static void set(String key, String value, Integer index, Integer second) {
         Jedis jedis = getPool().getResource();
-        jedis.set(key, value);
+        Optional.ofNullable(index).ifPresent(jedis::select);
 
-        if (index != null) {
-            jedis.select(index);
-        }
+        jedis.set(key, value);
 
         // 过期时间
         if (second != null && second != 0) {
@@ -62,17 +61,11 @@ public class RedisUtil {
     }
 
     public static String get(String key, Integer index) {
-        Jedis jedis = getPool().getResource();
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        if (index != null) {
-            jedis.select(index);
+            return jedis.get(key);
         }
-
-        String value = jedis.get(key);
-
-        jedis.close();
-
-        return value;
     }
 
     public static Long incr(String key) {
@@ -89,10 +82,7 @@ public class RedisUtil {
 
     public static Long incr(String key, Integer index, Integer second) {
         Jedis jedis = getPool().getResource();
-
-        if (index != null) {
-            jedis.select(index);
-        }
+        Optional.ofNullable(index).ifPresent(jedis::select);
 
         Long count = jedis.incr(key);
 
@@ -115,14 +105,11 @@ public class RedisUtil {
     }
 
     public static void del(String key, Integer index) {
-        Jedis jedis = getPool().getResource();
-        if (index != null) {
-            jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            jedis.del(key);
         }
-
-        jedis.del(key);
-
-        jedis.close();
     }
 
     /*
@@ -140,16 +127,11 @@ public class RedisUtil {
      * 最后插入的在列表第一个位置
      */
     public static Long lpush(String key, Integer index, String... strings) {
-        Jedis jedis = getPool().getResource();
-        if (index != null) {
-            jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            return jedis.lpush(key, strings);
         }
-
-        Long count = jedis.lpush(key, strings);
-
-        jedis.close();
-
-        return count;
     }
 
     /**
@@ -164,16 +146,11 @@ public class RedisUtil {
      * 覆盖列表第一个元素
      */
     public static Long lpushx(String key, Integer index, String... strings) {
-        Jedis jedis = getPool().getResource();
-        if (index != null) {
-            jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            return jedis.lpushx(key, strings);
         }
-
-        Long count = jedis.lpushx(key, strings);
-
-        jedis.close();
-
-        return count;
     }
 
     public static List<String> lrange(String key, long start, long end) {
@@ -181,70 +158,113 @@ public class RedisUtil {
     }
 
     public static List<String> lrange(String key, Integer index, long start, long end) {
-        Jedis jedis = getPool().getResource();
-        if (index != null) {
-            jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            return jedis.lrange(key, start, end);
         }
-
-        List<String> list = jedis.lrange(key, start, end);
-
-        jedis.close();
-
-        return list;
     }
 
     /*
      * hash
      */
 
-
-    public static String hmset(String key, Map<String, String> map, Integer index) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
-
-        String status = jedis.hmset(key, map);
-
-        jedis.close();
-
-        return status;
+    public static boolean hsetnx(String key, String field, String value) {
+        return hsetnx(key, field, value, null);
     }
 
+    public static boolean hsetnx(String key, String field, String value, Integer index) {
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            Long hSetNx = jedis.hsetnx(key, field, value);
+            return hSetNx.equals(1L);
+        }
+    }
+
+    public static boolean hset(String key, String field, String value) {
+        return hsetnx(key, field, value, null);
+    }
+
+    public static boolean hset(String key, String field, String value, Integer index) {
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            Long hSetNx = jedis.hset(key, field, value);
+            return hSetNx.equals(1L);
+        }
+    }
+
+    public static String hmset(String key, Map<String, String> map) {
+        return hmset(key, map, null);
+    }
+
+    public static String hmset(String key, Map<String, String> map, Integer index) {
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            return jedis.hmset(key, map);
+        }
+    }
+
+    public static Long hdel(String key, String field) {
+        return hdel(key, field, null);
+    }
+
+    public static Long hdel(String key, String field, Integer index) {
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            return jedis.hdel(key, field);
+        }
+    }
+
+    public static Boolean hexists(String key, String field) {
+        return hexists(key, field, null);
+    }
+
+    public static Boolean hexists(String key, String field, Integer index) {
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
+
+            return jedis.hexists(key, field);
+        }
+    }
+
+    public static String hget(String key, String field) {
+        return hget(key, field, null);
+    }
 
     public static String hget(String key, String field, Integer index) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        String value = jedis.hget(key, field);
-
-        jedis.close();
-
-        return value;
+            return jedis.hget(key, field);
+        }
     }
 
     /*
      * set
      */
 
+    public static Long sadd(String key, String... strings) {
+        return sadd(key, null, strings);
+    }
+
     public static Long sadd(String key, Integer index, String... strings) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        Long count = jedis.sadd(key, strings);
-
-        jedis.close();
-
-        return count;
+            return jedis.sadd(key, strings);
+        }
     }
 
     public static Set<String> smembers(String key, Integer index) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        Set<String> members = jedis.smembers(key);
-
-        jedis.close();
-
-        return members;
+            return jedis.smembers(key);
+        }
     }
 
     /*
@@ -252,46 +272,35 @@ public class RedisUtil {
      */
 
     public static Long zadd(String key, double score, String member, Integer index) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        Long count = jedis.zadd(key, score, member);
-
-        jedis.close();
-
-        return count;
+            return jedis.zadd(key, score, member);
+        }
     }
 
     public static Long zadd(String key, Map<String, Double> scoreMembers, Integer index) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        Long count = jedis.zadd(key, scoreMembers);
-
-        jedis.close();
-
-        return count;
+            return jedis.zadd(key, scoreMembers);
+        }
     }
 
     public static Set<String> zrange(String key, Integer index, long start, long end) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        Set<String> list = jedis.zrange(key, start, end);
-
-        jedis.close();
-
-        return list;
+            return jedis.zrange(key, start, end);
+        }
     }
 
     public static void zrem(String key, Integer index, String... member) {
-        Jedis jedis = getPool().getResource();
-        jedis.select(index);
+        try (Jedis jedis = getPool().getResource()) {
+            Optional.ofNullable(index).ifPresent(jedis::select);
 
-        jedis.zrem(key, member);
-
-        jedis.close();
+            jedis.zrem(key, member);
+        }
     }
-
 
 }

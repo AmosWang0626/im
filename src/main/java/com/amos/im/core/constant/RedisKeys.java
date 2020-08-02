@@ -17,5 +17,9 @@ public interface RedisKeys {
      * 服务端启动日志
      */
     String SERVER_RUN_LOG = "SERVER_RUN_LOG";
+    /**
+     * 用户名唯一
+     */
+    String USER_INFO = "USER_INFO";
 
 }

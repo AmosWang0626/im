@@ -47,6 +47,7 @@ public class ImNettyServer implements ApplicationListener<ContextRefreshedEvent>
         long start = System.currentTimeMillis();
         RedisUtil.del(RedisKeys.SERVER_RUN_PORT);
         RedisUtil.del(RedisKeys.SERVER_RUN_LOG);
+        RedisUtil.del(RedisKeys.USER_INFO);
         log.info("初始化项目配置完成, 耗时 {}毫秒!", (System.currentTimeMillis() - start));
     }
 

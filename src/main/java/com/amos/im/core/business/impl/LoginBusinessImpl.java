@@ -2,10 +2,12 @@ package com.amos.im.core.business.impl;
 
 import com.amos.im.common.GeneralCode;
 import com.amos.im.common.util.IdUtil;
+import com.amos.im.common.util.RedisUtil;
 import com.amos.im.core.business.LoginBusiness;
 import com.amos.im.core.command.request.LoginRequest;
 import com.amos.im.core.command.response.LoginResponse;
 import com.amos.im.core.constant.ImConstant;
+import com.amos.im.core.constant.RedisKeys;
 import com.amos.im.core.pojo.vo.LoginInfoVO;
 import com.amos.im.core.session.ServerSession;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +42,7 @@ public class LoginBusinessImpl implements LoginBusiness {
         }
 
         String username = loginRequest.getUsername();
-        if (ServerSession.existedUsername(username)) {
+        if (RedisUtil.hexists(RedisKeys.USER_INFO, username)) {
             loginResponse.setGeneralCode(GeneralCode.LOGIN_FAIL_USERNAME_EXIST);
             return loginResponse;
         }
