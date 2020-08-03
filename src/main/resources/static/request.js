@@ -37,3 +37,10 @@ function post(url, body, onSuccess, onError, sync = false) {
     xhr.setRequestHeader("Content-Type", "application/json")
     xhr.send(body)
 }
+
+function del(url, body, onSuccess, onError, sync = false) {
+    const xhr = createXHR;
+    doOnload(xhr, onSuccess, onError)
+    xhr.open('delete', url, sync)
+    xhr.send(body)
+}

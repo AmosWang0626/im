@@ -22,6 +22,14 @@ public interface LoginBusiness {
      * @return 登录结果
      */
     LoginResponse login(LoginRequest loginRequest);
+    
+    /**
+     * 登录
+     *
+     * @param username 用户名
+     * @return 登录结果
+     */
+    void logout(String username);
 
     /**
      * 已登录用户列表

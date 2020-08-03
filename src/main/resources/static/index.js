@@ -73,6 +73,7 @@ $(function () {
         const logoutModal = $('#logoutModal');
         logoutModal.modal()
         $("#logout").click(function () {
+            del("/user/logout/" + getUsername())
             localStorage.clear()
             location.reload();
         })

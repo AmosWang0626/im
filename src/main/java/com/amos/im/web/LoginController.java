@@ -7,7 +7,6 @@ import com.amos.im.core.pojo.vo.LoginInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,6 +32,13 @@ public class LoginController {
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
 
         return loginBusiness.login(loginRequest);
+    }
+
+    @DeleteMapping("logout/{username}")
+    @ApiOperation("用户登录")
+    public void logout(@PathVariable("username") String username) {
+
+        loginBusiness.logout(username);
     }
 
     @GetMapping("list")

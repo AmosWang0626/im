@@ -55,6 +55,10 @@ public class LoginBusinessImpl implements LoginBusiness {
         return loginResponse;
     }
 
+    @Override
+    public void logout(String username) {
+        RedisUtil.hdel(RedisKeys.USER_INFO, username);
+    }
 
     @Override
     public List<LoginInfoVO> list() {
