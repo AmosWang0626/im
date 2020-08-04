@@ -188,11 +188,24 @@ function receiveMessage(message) {
             break
 
         case 98: // 在线用户
-            const users = $("#users"); // 接收消息内的tokens
+            const users = $("#users");
+            const currentReceiver = users.val(); // 当前聊天人
+
+            // 先清空在线用户
             users.empty();
 
-            body.loginInfoList.forEach(value => {
-                users.append("<option value='" + value.token + "'>" + value.username + "</option>");
+            let finalLoginInfoArr = []
+            body.loginInfoList.forEach(loginInfo => {
+                // 当前聊天人优先排在第一个
+                if (loginInfo.token === currentReceiver) {
+                    users.append("<option value='" + loginInfo.token + "'>" + loginInfo.username + "</option>");
+                    return
+                }
+                finalLoginInfoArr.push("<option value='" + loginInfo.token + "'>" + loginInfo.username + "</option>")
+            })
+
+            finalLoginInfoArr.forEach(value => {
+                users.append(value)
             })
             break
 
